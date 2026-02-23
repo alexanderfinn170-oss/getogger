@@ -2,22 +2,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Scratch & Win</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scratch & Win</title>
 
 <style>
 body{
 margin:0;
 font-family: Arial, sans-serif;
+background:#6a0dad;
 text-align:center;
-background:#f8f8f8;
 }
 
 /* HEADER */
 .header-box{
 background:yellow;
 color:red;
-font-size:22px;
+font-size:24px;
 font-weight:bold;
 padding:15px;
 border:2px solid black;
@@ -39,13 +39,13 @@ font-size:18px;
 }
 
 .product-name{
-font-size:24px;
+font-size:26px;
 color:orange;
 font-weight:bold;
-text-shadow: 0 0 5px red, 0 0 10px red;
+text-shadow: 0 0 8px red,0 0 15px red;
 }
 
-/* QUANTITY BOX */
+/* QUANTITY */
 .qty-box{
 display:flex;
 justify-content:center;
@@ -56,14 +56,14 @@ margin:20px;
 .qty-btn{
 background:yellow;
 border:none;
-font-size:25px;
-padding:10px 20px;
+font-size:28px;
+padding:8px 20px;
 cursor:pointer;
 }
 
 .qty-number{
 background:yellow;
-padding:10px 25px;
+padding:8px 25px;
 font-size:22px;
 margin:0 5px;
 }
@@ -72,6 +72,7 @@ margin:0 5px;
 .price{
 font-size:26px;
 font-weight:bold;
+color:white;
 margin:15px;
 }
 
@@ -79,12 +80,15 @@ margin:15px;
 .scratch-container{
 position:relative;
 width:85%;
-max-width:400px;
-height:150px;
+max-width:420px;
+height:180px;
 margin:20px auto;
+border:3px solid black;
+border-radius:15px;
+overflow:hidden;
 }
 
-#scratchResult{
+#discountReveal{
 position:absolute;
 width:100%;
 height:100%;
@@ -92,26 +96,23 @@ display:flex;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-font-size:28px;
+font-size:32px;
 font-weight:bold;
 color:white;
-background:red;
-border:3px solid black;
-border-radius:10px;
+background:linear-gradient(45deg,#ff0000,#990000);
 }
 
 canvas{
 position:absolute;
 top:0;
 left:0;
-border-radius:10px;
 }
 
 .message{
-font-size:20px;
-color:green;
+font-size:22px;
+color:#00ff99;
 font-weight:bold;
-margin:15px;
+margin:20px;
 }
 </style>
 </head>
@@ -140,11 +141,11 @@ margin:15px;
 </div>
 
 <div class="scratch-container">
-<div id="scratchResult"></div>
+<div id="discountReveal"></div>
 <canvas id="scratchCard"></canvas>
 </div>
 
-<div class="message" id="finalMessage"></div>
+<div class="message" id="resultMessage"></div>
 
 <script>
 let basePrice = 999;
@@ -154,12 +155,13 @@ let scratched = false;
 
 const qtyEl = document.getElementById("qty");
 const priceEl = document.getElementById("totalPrice");
-const finalMsg = document.getElementById("finalMessage");
+const revealBox = document.getElementById("discountReveal");
+const resultMsg = document.getElementById("resultMessage");
 
 function changeQty(val){
 qty += val;
-if(qty < 1) qty = 1;
-qtyEl.innerText = qty;
+if(qty<1) qty=1;
+qtyEl.innerText=qty;
 updatePrice();
 }
 
@@ -168,74 +170,89 @@ let total = basePrice * qty;
 if(discount){
 total = total - (total * discount / 100);
 }
-priceEl.innerText = Math.round(total);
+priceEl.innerText=Math.round(total);
 }
 
-/* ---- SCRATCH SYSTEM ---- */
-
-const canvas = document.getElementById("scratchCard");
-const ctx = canvas.getContext("2d");
-const resultBox = document.getElementById("scratchResult");
-
-canvas.width = resultBox.offsetWidth;
-canvas.height = resultBox.offsetHeight;
-
+/* ---- SECURITY LOCK ---- */
 let fingerprint = navigator.userAgent + screen.width + screen.height;
 
-if(localStorage.getItem("usedFingerprint") === fingerprint){
-resultBox.innerHTML = "স্ক্র্যাচ কার্ডটি আগে ব্যবহার হয়েছে";
-scratched = true;
+if(localStorage.getItem("scratchFingerprint")===fingerprint){
+revealBox.innerHTML="স্ক্র্যাচ কার্ডটি আগে ব্যবহার হয়েছে";
+scratched=true;
 }else{
-discount = Math.floor(Math.random() * 21) + 60; // 60-80%
-resultBox.innerHTML = discount + "% ছাড় 🎉";
-localStorage.setItem("discountValue", discount);
-localStorage.setItem("usedFingerprint", fingerprint);
+discount=Math.floor(Math.random()*21)+60;
+revealBox.innerHTML=discount+"% DISCOUNT 🎉";
+localStorage.setItem("savedDiscount",discount);
+localStorage.setItem("scratchFingerprint",fingerprint);
 }
 
-ctx.fillStyle = "gray";
+/* ---- REALISTIC SCRATCH EFFECT ---- */
+
+const canvas=document.getElementById("scratchCard");
+const ctx=canvas.getContext("2d");
+
+canvas.width=revealBox.offsetWidth;
+canvas.height=revealBox.offsetHeight;
+
+/* Metallic gradient */
+let gradient=ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+gradient.addColorStop(0,"#eeeeee");
+gradient.addColorStop(0.5,"#bbbbbb");
+gradient.addColorStop(1,"#eeeeee");
+
+ctx.fillStyle=gradient;
 ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle = "white";
-ctx.font = "22px Arial";
-ctx.textAlign = "center";
-ctx.fillText("এখানে ঘষুন", canvas.width/2, canvas.height/2);
 
-let isDrawing = false;
+/* Noise texture */
+for(let i=0;i<4000;i++){
+ctx.fillStyle="rgba(0,0,0,0.1)";
+ctx.fillRect(Math.random()*canvas.width,Math.random()*canvas.height,1,1);
+}
 
-canvas.addEventListener("mousedown", ()=>{ if(!scratched) isDrawing=true; });
-canvas.addEventListener("mouseup", ()=>{ isDrawing=false; });
-canvas.addEventListener("mousemove", draw);
+/* Scratch and win text */
+ctx.fillStyle="#000";
+ctx.font="bold 24px Arial";
+ctx.textAlign="center";
+ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
 
-canvas.addEventListener("touchstart", ()=>{ if(!scratched) isDrawing=true; });
-canvas.addEventListener("touchend", ()=>{ isDrawing=false; });
-canvas.addEventListener("touchmove", draw);
+let isDrawing=false;
+
+canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true;});
+canvas.addEventListener("mouseup",()=>isDrawing=false);
+canvas.addEventListener("mousemove",draw);
+
+canvas.addEventListener("touchstart",()=>{if(!scratched)isDrawing=true;});
+canvas.addEventListener("touchend",()=>isDrawing=false);
+canvas.addEventListener("touchmove",draw);
 
 function draw(e){
-if(!isDrawing || scratched) return;
+if(!isDrawing||scratched)return;
 
-let rect = canvas.getBoundingClientRect();
-let x = (e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-let y = (e.touches?e.touches[0].clientY:e.clientY)-rect.top;
+let rect=canvas.getBoundingClientRect();
+let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
 
-ctx.globalCompositeOperation = "destination-out";
+ctx.globalCompositeOperation="destination-out";
 ctx.beginPath();
-ctx.arc(x,y,20,0,Math.PI*2);
+ctx.arc(x,y,25,0,Math.PI*2);
 ctx.fill();
 
 checkScratch();
 }
 
 function checkScratch(){
-let pixels = ctx.getImageData(0,0,canvas.width,canvas.height);
-let cleared = 0;
+let pixels=ctx.getImageData(0,0,canvas.width,canvas.height);
+let cleared=0;
 for(let i=0;i<pixels.data.length;i+=4){
 if(pixels.data[i+3]===0) cleared++;
 }
-let percent = cleared/(pixels.data.length/4);
-if(percent>0.10 && !scratched){
-scratched = true;
+let percent=cleared/(pixels.data.length/4);
+
+if(percent>0.10&&!scratched){
+scratched=true;
 canvas.style.display="none";
 updatePrice();
-finalMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! আপনার নতুন মূল্য "+priceEl.innerText+" টাকা!";
+resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! এখন আপনার মূল্য "+priceEl.innerText+" টাকা!";
 }
 }
 </script>
