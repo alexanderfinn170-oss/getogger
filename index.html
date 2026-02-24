@@ -48,7 +48,7 @@ body{
   text-shadow: 0 0 8px red,0 0 15px red;
 }
 
-/* QUANTITY BOXES */
+/* QUANTITY */
 .qty-box{
   display:flex;
   justify-content:center;
@@ -111,10 +111,11 @@ body{
 }
 
 #warning{
-  font-size:12px;
-  color:white;
+  font-size:14px;
+  color:red;
   margin-top:8px;
   text-align:center;
+  font-weight:bold;
 }
 
 canvas{
@@ -123,10 +124,10 @@ canvas{
   left:0;
 }
 
-/* RESULT MESSAGE BOX */
+/* RESULT */
 .result-box{
-  background: #6a0dad;
-  border: 2px solid yellow;
+  background:#6a0dad;
+  border:2px solid yellow;
   padding:15px;
   color:white;
   font-size:22px;
@@ -157,15 +158,15 @@ canvas{
 <button class="qty-btn" onclick="changeQty(1)">+</button>
 </div>
 
-<div class="price">
-মোট দাম: <span id="totalPrice">0</span> টাকা
+<div class="price" id="priceText">
+০টার দাম: ০ টাকা
 </div>
 
 <div class="scratch-container">
 <div id="discountReveal">
-  Lucky Discount 🎉
+  Lucky Discount <span id="discountText"></span>% 🎉
   <div id="warning">
-  🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড
+  🚫 Important: এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড
   </div>
 </div>
 <canvas id="scratchCard"></canvas>
@@ -179,14 +180,15 @@ let qty = 0;
 let discount = Math.floor(Math.random()*11)+40; // 40-50%
 let scratched = false;
 
+document.getElementById("discountText").innerText = discount;
+
 const qtyEl = document.getElementById("qty");
-const priceEl = document.getElementById("totalPrice");
-const revealBox = document.getElementById("discountReveal");
+const priceText = document.getElementById("priceText");
 const resultMsg = document.getElementById("resultMessage");
 const canvas = document.getElementById("scratchCard");
 const ctx = canvas.getContext("2d");
 
-/* ---- QUANTITY & PRICE ---- */
+/* PRICE UPDATE */
 function changeQty(val){
   qty += val;
   if(qty<0) qty=0;
@@ -196,46 +198,39 @@ function changeQty(val){
 
 function updatePrice(){
   let total = basePrice * qty;
-  priceEl.innerText = total;
+  priceText.innerHTML = qty+"টার দাম: "+total+" টাকা";
 
   if(scratched){
     let discountedTotal = total - (total*discount/100);
-    resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+    resultMsg.innerHTML =
+    "🎉 অভিনন্দন! আপনি "+discount+
+    "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
+    Math.round(discountedTotal)+" টাকা";
   }else{
-    resultMsg.innerHTML = "";
+    resultMsg.innerHTML="";
   }
 }
 
-/* ---- SCRATCH CARD ---- */
-canvas.width = revealBox.offsetWidth;
-canvas.height = revealBox.offsetHeight;
+/* SCRATCH */
+canvas.width = document.querySelector(".scratch-container").offsetWidth;
+canvas.height = document.querySelector(".scratch-container").offsetHeight;
 
-let gradient = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-gradient.addColorStop(0,"#eeeeee");
-gradient.addColorStop(0.5,"#bbbbbb");
-gradient.addColorStop(1,"#eeeeee");
-ctx.fillStyle = gradient;
+ctx.fillStyle="#bbbbbb";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
 ctx.fillStyle="#000";
 ctx.font="bold 24px Arial";
 ctx.textAlign="center";
-ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
+ctx.fillText("Scratch Here",canvas.width/2,canvas.height/2);
 
 let isDrawing=false;
 
 canvas.addEventListener("mousedown",()=>{isDrawing=true;});
-canvas.addEventListener("mouseup",()=>{
-  isDrawing=false;
-  revealDiscount();
-});
+canvas.addEventListener("mouseup",()=>{isDrawing=false; scratched=true; updatePrice();});
 canvas.addEventListener("mousemove",draw);
 
 canvas.addEventListener("touchstart",()=>{isDrawing=true;});
-canvas.addEventListener("touchend",()=>{
-  isDrawing=false;
-  revealDiscount();
-});
+canvas.addEventListener("touchend",()=>{isDrawing=false; scratched=true; updatePrice();});
 canvas.addEventListener("touchmove",draw);
 
 function draw(e){
@@ -249,19 +244,6 @@ function draw(e){
   ctx.beginPath();
   ctx.arc(x,y,25,0,Math.PI*2);
   ctx.fill();
-}
-
-function revealDiscount(){
-  scratched=true;
-  revealBox.innerHTML = discount+"% DISCOUNT 🎉";
-
-  let total = basePrice*qty;
-  let discountedTotal = total - (total*discount/100);
-
-  resultMsg.innerHTML =
-  "🎉 অভিনন্দন! আপনি "+discount+
-  "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
-  Math.round(discountedTotal)+" টাকা";
 }
 </script>
 
