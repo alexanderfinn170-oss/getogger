@@ -6,6 +6,7 @@
 <title>Scratch & Win</title>
 
 <style>
+
 body{
 margin:0;
 font-family: Arial, sans-serif;
@@ -129,6 +130,12 @@ font-weight:bold;
 color:white;
 background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
 }
+#warning{
+font-size:14px;
+color:red;
+margin-top:8px;
+font-weight:bold;
+}
 canvas{
 position:absolute;
 top:0;
@@ -175,7 +182,7 @@ width:80%;
 border-radius:10px;
 }
 
-/* BENEFITS BOX (UPDATED) */
+/* ===== NEW BENEFITS BOX (ADDED ONLY) ===== */
 .benefits-box{
 width:85%;
 max-width:420px;
@@ -190,7 +197,7 @@ font-size:14px;
 line-height:22px;
 }
 
-/* SOCIAL NOTIFICATION */
+/* ===== SOCIAL NOTIFICATION (ADDED ONLY) ===== */
 .social-proof{
 position:fixed;
 right:10px;
@@ -211,6 +218,7 @@ animation:fadeIn 0.4s ease;
 from{opacity:0; transform:translateY(-50%) translateX(20px);}
 to{opacity:1; transform:translateY(-50%) translateX(0);}
 }
+
 </style>
 </head>
 
@@ -223,12 +231,22 @@ to{opacity:1; transform:translateY(-50%) translateX(0);}
 
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
+<!-- COUNTDOWN -->
 <div class="countdown-wrapper">
 <div class="countdown-title">Discount Will End in 🔻</div>
 <div class="countdown-box">
-<div class="time-box"><div class="time-number" id="hours">22</div><div class="time-label">Hours</div></div>
-<div class="time-box"><div class="time-number" id="minutes">06</div><div class="time-label">Minutes</div></div>
-<div class="time-box"><div class="time-number" id="seconds">59</div><div class="time-label">Seconds</div></div>
+<div class="time-box">
+<div class="time-number" id="hours">22</div>
+<div class="time-label">Hours</div>
+</div>
+<div class="time-box">
+<div class="time-number" id="minutes">06</div>
+<div class="time-label">Minutes</div>
+</div>
+<div class="time-box">
+<div class="time-number" id="seconds">59</div>
+<div class="time-label">Seconds</div>
+</div>
 </div>
 </div>
 
@@ -247,28 +265,33 @@ Lucky Discount <span id="discountText"></span>% 🎉
 <canvas id="scratchCard"></canvas>
 </div>
 
-<button class="condition-btn" onclick="toggleCondition()">scratch card condition 👈</button>
+<button class="condition-btn" onclick="toggleCondition()"> scratch card condition 👈 </button>
+
 <div class="condition-box" id="conditionBox">
 🚫 স্ক্র্যাচ কার্ডটি একবার ব্যবহারযোগ্য...
 </div>
 
 <div class="result-box" id="resultMessage"></div>
 
+<!-- ===== SAME IMAGE AGAIN (ADDED) ===== -->
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
+<!-- ===== BENEFITS BOX (ADDED) ===== -->
 <div class="benefits-box">
 🔻মূল উপকারিতা🔻<br><br>
 ❇️কোষ্ঠকাঠিন্য ❇️ অতিরিক্ত গ্যাস ❇️অ্যাসিডিটি ❇️ বুক জ্বালা ❇️টক ঢেকুর ❇️বদহজম ❇️পেট কামড়ানো ❇️খাবার হজম না হওয়া-তাৎক্ষণিকভাবে কমায় ❇️পেট ফাঁপা ❇️অরুচি ও খাবারে অনীহা ❇️রক্তের সুগার নিয়ন্ত্রণে সহায়ক-ডায়াবেটিস রোগীদের জন্য খুব উপকারী ❇️শরীরের চর্বি কমাতে ❇️রক্তচাপ নিয়ন্ত্রণে সাহায্য করে ❇️পেট পরিষ্কার রাখে ❇️নিয়মিত ডিটক্সিফায়ার হিসেবে কাজ করে ❇️যৌনশক্তি ❇️শক্তি ও স্ট্যামিনা বাড়াতে সহায়ক ❇️অ্যান্টিব্যাকটেরিয়াল গুণে কৃমি প্রতি অ্যান্টিঅক্সিডেন্টে ইমিউন সিস্টেম শক্তিশালী করে নিয়াদউ❇️<br><br>
 ♻️সম্পূর্ণ স্বস্তিদায়ক ও হালকা রেখে শরীরকে সুস্থ রাখে মেথি, আমলকি, হরিতকি, বহেরা, জোয়ান, আদা♻️
 </div>
 
+<!-- ===== SOCIAL NOTIFICATION (ADDED) ===== -->
 <div class="social-proof" id="socialProof"></div>
 
 <script>
 
-/* আগের JS সব একই আছে (সংক্ষেপ করা হয়নি) */
+/* তোমার আগের JS এখানে অপরিবর্তিত থাকবে */
+/* শুধু নিচে নোটিফিকেশন JS যোগ করা হয়েছে */
 
-const names=["আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন","নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান","সাবিনা ইয়াসমিন"];
+const names=["আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন","নাসরিন আক্তার","ফারজানা ইসলাম"];
 
 function showNotification(){
 const randomName=names[Math.floor(Math.random()*names.length)];
