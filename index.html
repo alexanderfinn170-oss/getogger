@@ -12,18 +12,40 @@ html,body{
     background:#4b0082;
     font-family: Arial, sans-serif;
     text-align:center;
-
     overflow-x:hidden;
     overflow-y:auto;
     touch-action: pan-y;
 }
 
-/* উপরের একদম গ্যাপ বন্ধ */
-body{
-    padding-top:0;
+/* ---------- Premium Notification ---------- */
+.live-notification{
+    position:fixed;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:#fff;
+    padding:12px 18px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:bold;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    border:1px solid rgba(255,255,255,0.3);
+    opacity:0;
+    transition:all 0.5s ease;
+    z-index:9999;
+    max-width:250px;
 }
 
-/* সাদা লেখা + চিকন কালো আউটলাইন */
+.live-notification.show{
+    opacity:1;
+    transform:translateY(-50%) translateX(-10px);
+}
+
+/* ------------------------------------------ */
+
 .outline-text{
     color:#ffffff;
     font-weight:bold;
@@ -36,7 +58,6 @@ body{
     font-weight:bold;
 }
 
-/* প্রোডাক্ট র‍্যাপার */
 .product-wrapper{
     width:100%;
     position:relative;
@@ -45,7 +66,6 @@ body{
     overflow:hidden;
 }
 
-/* চলমান প্রোডাক্ট ছবি */
 .product-img{
     width:230px;
     position:absolute;
@@ -114,7 +134,6 @@ body{
     font-size:20px;
 }
 
-/* বাটন আগের মতো */
 .order-btn{
     display:none;
     margin:15px auto;
@@ -147,6 +166,9 @@ body{
 
 <body>
 
+<!-- Live Notification -->
+<div id="liveNotification" class="live-notification"></div>
+
 <div class="product-wrapper">
     <img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
 </div>
@@ -160,12 +182,10 @@ body{
 </div>
 
 <div class="scratch-container">
-
     <div class="scratch-content outline-text">
         <img id="cardProduct">
         <div id="discountText"></div>
     </div>
-
     <canvas id="scratchCanvas" width="340" height="240"></canvas>
 </div>
 
@@ -176,6 +196,47 @@ body{
 </button>
 
 <script>
+/* ----------- Live Notification System ----------- */
+
+const names = [
+"মাহমুদুল হাসান","সুমাইয়া আক্তার","রাকিব হোসেন","তাসনিম জাহান",
+"সোহেল রানা","নুসরাত জাহান","আরিফুল ইসলাম","মিম আক্তার",
+"শাকিল আহমেদ","সাদিয়া ইসলাম","ইমন খান","মারিয়া সুলতানা",
+"জুবায়ের রহমান","ফারজানা ইয়াসমিন","হাসান মাহমুদ",
+"তানজিনা আক্তার","মোস্তাফিজুর রহমান","সাবিনা ইয়াসমিন",
+"রিফাত হোসেন","তাহমিনা আক্তার"
+];
+
+let notificationIndex = 0;
+const notificationBox = document.getElementById("liveNotification");
+
+function showNotification(){
+    if(notificationIndex >= names.length){
+        notificationIndex = 0;
+    }
+
+    let randomDiscount = Math.floor(Math.random() * 16) + 10;
+
+    notificationBox.innerHTML =
+    names[notificationIndex] + " " + randomDiscount +
+    "% ডিসকাউন্ট পেয়েছে 🎉 এবং অর্ডার করেছে";
+
+    notificationBox.classList.add("show");
+
+    setTimeout(()=>{
+        notificationBox.classList.remove("show");
+    },800);
+
+    notificationIndex++;
+}
+
+setTimeout(()=>{
+    showNotification();
+    setInterval(showNotification,1000);
+},1000);
+
+/* ----------- Scratch System (আগের মতোই) ----------- */
+
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 let scratching = false;
@@ -194,27 +255,12 @@ document.getElementById("discountText").innerHTML =
 function drawScratchLayer(){
     let gradient = ctx.createLinearGradient(0,0,340,240);
     gradient.addColorStop(0,"red");
-    gradient.addColorStop(0.2,"orange");
-    gradient.addColorStop(0.4,"yellow");
-    gradient.addColorStop(0.6,"green");
-    gradient.addColorStop(0.8,"blue");
     gradient.addColorStop(1,"purple");
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,340,240);
-
     ctx.fillStyle="yellow";
-    ctx.strokeStyle="red";
-    ctx.lineWidth=1;
-    ctx.font="bold 20px Arial";
-    ctx.textAlign="center";
-    ctx.strokeText("রমজান অফার গোপন কাট",170,50);
-    ctx.fillText("রমজান অফার গোপন কাট",170,50);
-
-    ctx.fillStyle="red";
-    ctx.strokeStyle="yellow";
-    ctx.lineWidth=1;
     ctx.font="bold 22px Arial";
-    ctx.strokeText("এখানে ঘষুন",170,130);
+    ctx.textAlign="center";
     ctx.fillText("এখানে ঘষুন",170,130);
 }
 
