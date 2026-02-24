@@ -6,7 +6,6 @@
 <title>Scratch & Win</title>
 
 <style>
-/* ===== তোমার আগের সব CSS হুবহু ===== */
 body{
   margin:0;
   font-family: Arial, sans-serif;
@@ -14,6 +13,7 @@ body{
   text-align:center;
 }
 
+/* HEADER BOX */
 .header-box{
   background:purple;
   color:white;
@@ -24,12 +24,14 @@ body{
   margin-bottom:15px;
 }
 
+/* PRODUCT IMAGE */
 .product-img{
   width:100%;
   border:2px solid yellow;
   margin-bottom:15px;
 }
 
+/* COUNTDOWN */
 .countdown-wrapper{
   width:90%;
   max-width:500px;
@@ -74,6 +76,7 @@ body{
   margin-top:5px;
 }
 
+/* QUANTITY */
 .qty-box{
   display:flex;
   justify-content:center;
@@ -102,6 +105,7 @@ body{
   color:yellow;
 }
 
+/* PRICE */
 .price{
   font-size:26px;
   font-weight:bold;
@@ -109,6 +113,7 @@ body{
   margin:15px 0;
 }
 
+/* SCRATCH CARD */
 .scratch-container{
   position:relative;
   width:85%;
@@ -139,6 +144,7 @@ canvas{
   left:0;
 }
 
+/* CONDITION BUTTON */
 .condition-btn{
   background:purple;
   border:1px solid yellow;
@@ -150,6 +156,7 @@ canvas{
   margin-top:10px;
 }
 
+/* CONDITION BOX */
 .condition-box{
   display:none;
   width:85%;
@@ -164,6 +171,7 @@ canvas{
   text-align:left;
 }
 
+/* RESULT */
 .result-box{
   background:#6a0dad;
   border:2px solid yellow;
@@ -176,57 +184,182 @@ canvas{
   border-radius:10px;
 }
 
-/* ===== NEW SOCIAL NOTIFICATION ===== */
+/* ===== SOCIAL NOTIFICATION ===== */
 .social-proof{
   position:fixed;
   bottom:20px;
   left:20px;
   background:white;
   color:#000;
-  padding:10px 15px;
+  padding:8px 12px;
   border-radius:8px;
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  font-size:14px;
-  max-width:250px;
+  font-size:13px;
   display:none;
-  animation:fadeIn 0.5s ease;
   z-index:9999;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== তোমার আগের সম্পূর্ণ HTML আগের মতো থাকবে এখানে ===== -->
-<!-- (সংক্ষেপ না করে, বাস্তবে তুমি তোমার পুরো আগের HTML রাখবে) -->
+<div class="header-box">
+পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
+স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
+</div>
 
+<img src="YOUR_IMAGE_LINK.jpg" class="product-img">
+
+<!-- COUNTDOWN -->
+<div class="countdown-wrapper">
+  <div class="countdown-title">Discount Will End in 🔻</div>
+  <div class="countdown-box">
+    <div class="time-box">
+      <div class="time-number" id="hours">22</div>
+      <div class="time-label">Hours</div>
+    </div>
+    <div class="time-box">
+      <div class="time-number" id="minutes">06</div>
+      <div class="time-label">Minutes</div>
+    </div>
+    <div class="time-box">
+      <div class="time-number" id="seconds">59</div>
+      <div class="time-label">Seconds</div>
+    </div>
+  </div>
+</div>
+
+<div class="qty-box">
+<button class="qty-btn" onclick="changeQty(-1)">−</button>
+<div class="qty-number" id="qty">0</div>
+<button class="qty-btn" onclick="changeQty(1)">+</button>
+</div>
+
+<div class="price" id="priceText">
+০টার দাম: ০ টাকা
+</div>
+
+<div class="scratch-container">
+<div id="discountReveal">
+  Lucky Discount <span id="discountText"></span>% 🎉
+</div>
+<canvas id="scratchCard"></canvas>
+</div>
+
+<button class="condition-btn" onclick="toggleCondition()">
+scratch card condition 👈
+</button>
+
+<div class="condition-box" id="conditionBox">
+🚫 স্ক্র্যাচ কার্ডটি একবার ব্যবহারযোগ্য...
+</div>
+
+<div class="result-box" id="resultMessage"></div>
+
+<!-- SOCIAL BAR -->
 <div class="social-proof" id="socialProof"></div>
 
 <script>
-/* ===== তোমার আগের JS হুবহু থাকবে ===== */
 
-/* ===== NEW SOCIAL PROOF JS ===== */
+/* ===== আগের সব JS একই ===== */
+let totalSeconds = (22*60*60)+(6*60)+59;
+
+function updateCountdown(){
+  let hours=Math.floor(totalSeconds/3600);
+  let minutes=Math.floor((totalSeconds%3600)/60);
+  let seconds=totalSeconds%60;
+
+  document.getElementById("hours").innerText=String(hours).padStart(2,'0');
+  document.getElementById("minutes").innerText=String(minutes).padStart(2,'0');
+  document.getElementById("seconds").innerText=String(seconds).padStart(2,'0');
+
+  if(totalSeconds>0){ totalSeconds--; }
+}
+setInterval(updateCountdown,1000);
+
+let basePrice=999;
+let qty=0;
+let discount=Math.floor(Math.random()*11)+40;
+let scratched=false;
+
+document.getElementById("discountText").innerText=discount;
+
+const qtyEl=document.getElementById("qty");
+const priceText=document.getElementById("priceText");
+const resultMsg=document.getElementById("resultMessage");
+const canvas=document.getElementById("scratchCard");
+const ctx=canvas.getContext("2d");
+
+function changeQty(val){
+  qty+=val;
+  if(qty<0) qty=0;
+  qtyEl.innerText=qty;
+  updatePrice();
+}
+
+function updatePrice(){
+  let total=basePrice*qty;
+  priceText.innerHTML=qty+"টার দাম: "+total+" টাকা";
+  if(scratched){
+    let discountedTotal=total-(total*discount/100);
+    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+
+    "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
+    Math.round(discountedTotal)+" টাকা";
+  }
+}
+
+canvas.width=document.querySelector(".scratch-container").offsetWidth;
+canvas.height=document.querySelector(".scratch-container").offsetHeight;
+
+ctx.fillStyle="#bbbbbb";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#000";
+ctx.font="bold 24px Arial";
+ctx.textAlign="center";
+ctx.fillText("এখানে ঘষুন",canvas.width/2,canvas.height/2);
+
+let isDrawing=false;
+
+canvas.addEventListener("mousedown",()=>{isDrawing=true;});
+canvas.addEventListener("mouseup",()=>{isDrawing=false;scratched=true;updatePrice();});
+canvas.addEventListener("mousemove",draw);
+
+canvas.addEventListener("touchstart",()=>{isDrawing=true;});
+canvas.addEventListener("touchend",()=>{isDrawing=false;scratched=true;updatePrice();});
+canvas.addEventListener("touchmove",draw);
+
+function draw(e){
+  if(!isDrawing) return;
+  let rect=canvas.getBoundingClientRect();
+  let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+  let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
+
+  ctx.globalCompositeOperation="destination-out";
+  ctx.beginPath();
+  ctx.arc(x,y,25,0,Math.PI*2);
+  ctx.fill();
+}
+
+function toggleCondition(){
+  let box=document.getElementById("conditionBox");
+  box.style.display = box.style.display==="block" ? "none" : "block";
+}
+
+/* ===== SOCIAL NOTIFICATION JS ===== */
 
 const names = [
-"আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন",
-"নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান","সাবিনা ইয়াসমিন",
-"রুবেল মিয়া","আলমগীর হোসেন","শারমিন সুলতানা","জাহিদুল ইসলাম",
-"মরিয়ম আক্তার","ইমরান হোসেন","রিমি আক্তার","তামান্না ইসলাম"
+"আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান",
+"নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান",
+"রুবেল মিয়া","শারমিন সুলতানা","ইমরান হোসেন","মরিয়ম আক্তার"
 ];
 
 function showNotification(){
   const randomName = names[Math.floor(Math.random()*names.length)];
-  const randomDiscount = Math.floor(Math.random()*29)+10; // 10% - 38%
-
+  const randomDiscount = Math.floor(Math.random()*29)+10; // 10-38%
   const box = document.getElementById("socialProof");
-  box.innerHTML = "🎉 <b>"+randomName+"</b> "+randomDiscount+
-  "% ডিসকাউন্ট জিতেছে!";
-  
+
+  box.innerHTML = "🎉 <b>"+randomName+"</b> "+randomDiscount+"% ডিসকাউন্ট জিতেছে!";
   box.style.display="block";
 
   setTimeout(()=>{
@@ -235,6 +368,7 @@ function showNotification(){
 }
 
 setInterval(showNotification,6000);
+
 </script>
 
 </body>
