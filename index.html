@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scratch & Win</title>
+<title>Scratch & Win Secure</title>
 
 <style>
 body{
@@ -11,6 +11,7 @@ body{
   font-family: Arial, sans-serif;
   background:#6a0dad;
   text-align:center;
+  color:white;
 }
 
 /* HEADER BOX */
@@ -21,14 +22,14 @@ body{
   font-weight:bold;
   padding:15px;
   border:2px solid yellow;
-  margin-bottom:15px; /* Distance to product image */
+  margin-bottom:15px;
 }
 
 /* PRODUCT IMAGE */
 .product-img{
   width:100%;
   border:2px solid yellow;
-  margin-bottom:15px; /* Distance to info box */
+  margin-bottom:15px;
 }
 
 /* INFO BOX */
@@ -38,7 +39,7 @@ body{
   padding:15px;
   border:2px solid yellow;
   font-size:18px;
-  margin-bottom:15px; /* Distance to quantity box */
+  margin-bottom:15px;
 }
 
 .product-name{
@@ -94,6 +95,7 @@ body{
   margin:20px auto;
   border-radius:15px;
   overflow:hidden;
+  border:2px solid yellow;
 }
 
 #discountReveal{
@@ -111,16 +113,13 @@ body{
 }
 
 #warning{
-  font-size:12px;
-  color:white;
+  font-size:14px;
   margin-top:8px;
   text-align:center;
-}
-
-canvas{
-  position:absolute;
-  top:0;
-  left:0;
+  font-weight:bold;
+  background:red;
+  padding:2px 5px;
+  border-radius:5px;
 }
 
 /* RESULT MESSAGE BOX */
@@ -163,7 +162,8 @@ canvas{
 
 <div class="scratch-container">
 <div id="discountReveal">
-  <div id="warning">🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>
+  <div id="discountText">Lucky Discount --% Off 🔥</div>
+  <div id="warning">🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে প্রভাবিত করা যাবে না 🚫</div>
 </div>
 <canvas id="scratchCard"></canvas>
 </div>
@@ -173,76 +173,85 @@ canvas{
 <script>
 let basePrice = 999;
 let qty = 1;
-let discount = Math.floor(Math.random()*11)+40; // 40-50%
+let discount = 0;
 let scratched = false;
 
 const qtyEl = document.getElementById("qty");
 const priceEl = document.getElementById("totalPrice");
-const revealBox = document.getElementById("discountReveal");
 const resultMsg = document.getElementById("resultMessage");
+const discountText = document.getElementById("discountText");
+
 const canvas = document.getElementById("scratchCard");
 const ctx = canvas.getContext("2d");
 
-/* ---- QUANTITY & PRICE ---- */
+canvas.width = document.querySelector(".scratch-container").offsetWidth;
+canvas.height = document.querySelector(".scratch-container").offsetHeight;
+
+/* Load security state from localStorage */
+if(localStorage.getItem("scratched") === "true"){
+    scratched=true;
+    discount = parseInt(localStorage.getItem("discount"));
+    discountText.innerText="Lucky Discount "+discount+"% Off 🔥";
+}
+
+/* Rainbow background */
+function createRainbow(){
+    ctx.fillStyle = "linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#000";
+    ctx.font="bold 24px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("Scratch Here!",canvas.width/2,canvas.height/2);
+}
+
+if(!scratched){
+    createRainbow();
+}
+
 function changeQty(val){
-  qty += val;
-  if(qty<1) qty=1;
-  qtyEl.innerText = qty;
-  updatePrice();
+    qty += val;
+    if(qty<1) qty=1;
+    qtyEl.innerText = qty;
+    updatePrice();
 }
 
 function updatePrice(){
-  let total = basePrice * qty;
-  priceEl.innerText = total;
-
-  if(scratched){
-    let discountedTotal = total - (total*discount/100);
-    resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
-  }else{
-    resultMsg.innerHTML = "";
-  }
+    let total = basePrice*qty;
+    priceEl.innerText=total;
+    if(scratched){
+        let discountedTotal = total - (total*discount/100);
+        resultMsg.innerHTML="🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+    }else{
+        resultMsg.innerHTML="";
+    }
 }
 
-/* ---- SCRATCH CARD ---- */
-canvas.width = revealBox.offsetWidth;
-canvas.height = revealBox.offsetHeight;
-
-let gradient = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-gradient.addColorStop(0,"#eeeeee");
-gradient.addColorStop(0.5,"#bbbbbb");
-gradient.addColorStop(1,"#eeeeee");
-ctx.fillStyle = gradient;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-/* Scratch and win text */
-ctx.fillStyle="#000";
-ctx.font="bold 24px Arial";
-ctx.textAlign="center";
-ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
-
-/* Scratch drawing */
+/* SCRATCH CARD LOGIC */
 let isDrawing=false;
 
-canvas.addEventListener("mousedown",()=>{isDrawing=true;});
+canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true;});
 canvas.addEventListener("mouseup",()=>{
-  isDrawing=false;
-  revealDiscount();
+  if(isDrawing){
+    isDrawing=false;
+    revealDiscount();
+  }
 });
 canvas.addEventListener("mousemove",draw);
 
-canvas.addEventListener("touchstart",(e)=>{isDrawing=true;});
+canvas.addEventListener("touchstart",(e)=>{if(!scratched)isDrawing=true;});
 canvas.addEventListener("touchend",(e)=>{
-  isDrawing=false;
-  revealDiscount();
+    if(isDrawing){
+        isDrawing=false;
+        revealDiscount();
+    }
 });
 canvas.addEventListener("touchmove",draw);
 
 function draw(e){
   if(!isDrawing || scratched) return;
-
   let rect = canvas.getBoundingClientRect();
-  let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
-  let y = (e.touches ? e.touches[0].clientY : e.clientY)-rect.top;
+  let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
   ctx.globalCompositeOperation="destination-out";
   ctx.beginPath();
@@ -252,10 +261,14 @@ function draw(e){
 
 function revealDiscount(){
   scratched=true;
-  let total = basePrice*qty;
-  let discountedTotal = total - (total*discount/100);
-  resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+  discount = Math.floor(Math.random()*11)+40; // 40-50%
+  localStorage.setItem("scratched","true");
+  localStorage.setItem("discount",discount);
+  discountText.innerText="Lucky Discount "+discount+"% Off 🔥";
+  updatePrice();
 }
+
+updatePrice();
 </script>
 
 </body>
