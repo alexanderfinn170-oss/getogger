@@ -31,21 +31,49 @@ body{
   margin-bottom:15px;
 }
 
-/* INFO BOX */
-.info-box{
-  background:purple;
-  color:yellow;
-  padding:15px;
-  border:2px solid yellow;
-  font-size:18px;
-  margin-bottom:15px;
+/* COUNTDOWN SECTION */
+.countdown-wrapper{
+  width:90%;
+  max-width:500px;
+  margin:20px auto;
+  text-align:center;
 }
 
-.product-name{
-  font-size:26px;
-  color:orange;
+.countdown-title{
+  color:white;
+  font-size:20px;
   font-weight:bold;
-  text-shadow: 0 0 8px red,0 0 15px red;
+  margin-bottom:10px;
+}
+
+.countdown-box{
+  display:flex;
+  justify-content:space-between;
+  background:purple;
+  border:2px solid yellow;
+  padding:15px 10px;
+  border-radius:10px;
+}
+
+.time-box{
+  flex:1;
+  margin:0 5px;
+  background:#4b0082;
+  border:1px solid yellow;
+  border-radius:8px;
+  padding:10px 0;
+}
+
+.time-number{
+  font-size:28px;
+  font-weight:bold;
+  color:white;
+}
+
+.time-label{
+  font-size:14px;
+  color:yellow;
+  margin-top:5px;
 }
 
 /* QUANTITY */
@@ -114,7 +142,6 @@ body{
   font-size:14px;
   color:red;
   margin-top:8px;
-  text-align:center;
   font-weight:bold;
 }
 
@@ -124,7 +151,6 @@ canvas{
   left:0;
 }
 
-/* RESULT */
 .result-box{
   background:#6a0dad;
   border:2px solid yellow;
@@ -148,8 +174,23 @@ canvas{
 
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
-<div class="info-box">
-আপনি কয়টা <span class="product-name">[PRODUCT_NAME]</span> নিতে চান আগে সিলেক্ট করুন তারপর স্ক্র্যাচ করুন।
+<!-- COUNTDOWN TIMER -->
+<div class="countdown-wrapper">
+  <div class="countdown-title">Discount Will End in 🔻</div>
+  <div class="countdown-box">
+    <div class="time-box">
+      <div class="time-number" id="hours">22</div>
+      <div class="time-label">Hours</div>
+    </div>
+    <div class="time-box">
+      <div class="time-number" id="minutes">06</div>
+      <div class="time-label">Minutes</div>
+    </div>
+    <div class="time-box">
+      <div class="time-number" id="seconds">59</div>
+      <div class="time-label">Seconds</div>
+    </div>
+  </div>
 </div>
 
 <div class="qty-box">
@@ -175,9 +216,29 @@ canvas{
 <div class="result-box" id="resultMessage"></div>
 
 <script>
+/* COUNTDOWN TIMER */
+let totalSeconds = (22*60*60) + (6*60) + 59;
+
+function updateCountdown(){
+  let hours = Math.floor(totalSeconds / 3600);
+  let minutes = Math.floor((totalSeconds % 3600) / 60);
+  let seconds = totalSeconds % 60;
+
+  document.getElementById("hours").innerText = String(hours).padStart(2,'0');
+  document.getElementById("minutes").innerText = String(minutes).padStart(2,'0');
+  document.getElementById("seconds").innerText = String(seconds).padStart(2,'0');
+
+  if(totalSeconds > 0){
+    totalSeconds--;
+  }
+}
+
+setInterval(updateCountdown,1000);
+
+/* SCRATCH SYSTEM */
 let basePrice = 999;
 let qty = 0;
-let discount = Math.floor(Math.random()*11)+40; // 40-50%
+let discount = Math.floor(Math.random()*11)+40;
 let scratched = false;
 
 document.getElementById("discountText").innerText = discount;
@@ -188,7 +249,6 @@ const resultMsg = document.getElementById("resultMessage");
 const canvas = document.getElementById("scratchCard");
 const ctx = canvas.getContext("2d");
 
-/* PRICE UPDATE */
 function changeQty(val){
   qty += val;
   if(qty<0) qty=0;
@@ -206,12 +266,9 @@ function updatePrice(){
     "🎉 অভিনন্দন! আপনি "+discount+
     "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
     Math.round(discountedTotal)+" টাকা";
-  }else{
-    resultMsg.innerHTML="";
   }
 }
 
-/* SCRATCH */
 canvas.width = document.querySelector(".scratch-container").offsetWidth;
 canvas.height = document.querySelector(".scratch-container").offsetHeight;
 
@@ -235,7 +292,6 @@ canvas.addEventListener("touchmove",draw);
 
 function draw(e){
   if(!isDrawing) return;
-
   let rect = canvas.getBoundingClientRect();
   let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
   let y = (e.touches ? e.touches[0].clientY : e.clientY)-rect.top;
