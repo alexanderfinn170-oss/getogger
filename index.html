@@ -108,11 +108,17 @@ canvas{
   left:0;
 }
 
-.message{
+/* RESULT MESSAGE BOX */
+.result-box{
+  background: #6a0dad;
+  border: 2px solid yellow;
+  padding:15px;
+  color:white;
   font-size:22px;
-  color:#00ff99;
   font-weight:bold;
-  margin:20px;
+  margin:20px auto;
+  width:80%;
+  border-radius:10px;
 }
 </style>
 </head>
@@ -145,7 +151,7 @@ canvas{
 <canvas id="scratchCard"></canvas>
 </div>
 
-<div class="message" id="resultMessage"></div>
+<div class="result-box" id="resultMessage"></div>
 
 <script>
 let basePrice = 999;
@@ -164,16 +170,20 @@ const ctx = canvas.getContext("2d");
 function changeQty(val){
   qty += val;
   if(qty<0) qty=0;
-  qtyEl.innerText=qty;
+  qtyEl.innerText = qty;
   updatePrice();
 }
 
 function updatePrice(){
   let total = basePrice * qty;
+  priceEl.innerText = total;
+
   if(discount && scratched){
-    total = total - (total * discount / 100);
+    let discountedTotal = total - (total * discount / 100);
+    resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+  }else{
+    resultMsg.innerHTML = "";
   }
-  priceEl.innerText = Math.round(total);
 }
 
 /* ---- FINGERPRINT LOCK & SAVED DISCOUNT ---- */
@@ -183,8 +193,8 @@ if(localStorage.getItem("scratchFingerprint") === fingerprint){
     discount = localStorage.getItem("savedDiscount");
     canvas.style.display="none";
     revealBox.innerHTML = discount + "% DISCOUNT 🎉";
-    resultMsg.innerHTML = "আপনি পূর্বে এই কার্ড ব্যবহার করেছেন। ডিসকাউন্টের পরে মূল্য "+(qty*basePrice - qty*basePrice*discount/100)+" টাকা";
     scratched = true;
+    updatePrice();
 }else{
     discount = Math.floor(Math.random()*11)+40; // 40-50%
     localStorage.setItem("savedDiscount", discount);
@@ -249,7 +259,9 @@ function checkScratch(){
     scratched=true;
     canvas.style.display="none";
     updatePrice();
-    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! ডিসকাউন্টের পরে মূল্য "+priceEl.innerText+" টাকা";
+    let total = basePrice*qty;
+    let discountedTotal = total - (total*discount/100);
+    resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
   }
 }
 </script>
