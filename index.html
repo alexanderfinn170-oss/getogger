@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,190 +13,82 @@ body{
   text-align:center;
 }
 
-/* HEADER BOX */
+/* ===== Header ===== */
 .header-box{
   background:purple;
   color:white;
-  font-size:24px;
+  font-size:22px;
   font-weight:bold;
   padding:15px;
   border:2px solid yellow;
-  margin-bottom:15px;
 }
 
-/* PRODUCT IMAGE */
+/* ===== Product Image ===== */
 .product-img{
-  width:100%;
-  border:2px solid yellow;
-  margin-bottom:15px;
-}
-
-/* COUNTDOWN */
-.countdown-wrapper{
   width:90%;
-  max-width:500px;
-  margin:20px auto;
-  text-align:center;
-}
-
-.countdown-title{
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.countdown-box{
-  display:flex;
-  justify-content:space-between;
-  background:purple;
+  max-width:400px;
   border:2px solid yellow;
-  padding:15px 10px;
-  border-radius:10px;
+  margin:15px auto;
+  display:block;
 }
 
-.time-box{
-  flex:1;
-  margin:0 5px;
-  background:#4b0082;
-  border:1px solid yellow;
-  border-radius:8px;
-  padding:10px 0;
-}
-
-.time-number{
-  font-size:28px;
-  font-weight:bold;
-  color:white;
-}
-
-.time-label{
-  font-size:14px;
-  color:yellow;
-  margin-top:5px;
-}
-
-/* QUANTITY */
-.qty-box{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:20px 0;
-}
-
-.qty-btn{
-  background:purple;
-  border:2px solid yellow;
-  font-size:22px;
-  padding:6px 16px;
-  cursor:pointer;
-  margin:0 5px;
-  border-radius:5px;
-  color:yellow;
-}
-
-.qty-number{
-  background:purple;
-  border:2px solid yellow;
-  padding:8px 25px;
-  font-size:22px;
-  margin:0 5px;
-  border-radius:5px;
-  color:yellow;
-}
-
-/* PRICE */
-.price{
-  font-size:26px;
-  font-weight:bold;
-  color:white;
-  margin:15px 0;
-}
-
-/* SCRATCH CARD */
-.scratch-container{
-  position:relative;
-  width:85%;
-  max-width:420px;
-  height:180px;
-  margin:20px auto;
-  border-radius:15px;
-  overflow:hidden;
-}
-
-#discountReveal{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  font-size:30px;
-  font-weight:bold;
-  color:white;
-  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-}
-
-canvas{
-  position:absolute;
-  top:0;
-  left:0;
-}
-
-/* CONDITION BUTTON */
-.condition-btn{
-  background:purple;
-  border:1px solid yellow;
-  color:white;
-  padding:6px 12px;
-  font-size:14px;
-  border-radius:5px;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-/* CONDITION BOX */
-.condition-box{
-  display:none;
-  width:85%;
-  max-width:420px;
-  margin:10px auto;
-  background:purple;
-  border:1px solid red;
-  border-radius:8px;
-  padding:10px;
-  color:red;
-  font-size:13px;
-  text-align:left;
-}
-
-/* RESULT */
+/* ===== Result Box ===== */
 .result-box{
   background:#6a0dad;
   border:2px solid yellow;
   padding:15px;
   color:white;
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
   margin:20px auto;
-  width:80%;
+  width:85%;
   border-radius:10px;
 }
 
-/* ===== SOCIAL NOTIFICATION ===== */
+/* ===== Extra Image Box ===== */
+.extra-image{
+  width:90%;
+  max-width:400px;
+  border:2px solid yellow;
+  margin:15px auto;
+  display:block;
+}
+
+/* ===== Benefits Box ===== */
+.benefits-box{
+  width:90%;
+  max-width:400px;
+  margin:15px auto;
+  background:purple;
+  border:2px solid yellow;
+  border-radius:10px;
+  padding:15px;
+  color:white;
+  text-align:left;
+  font-size:14px;
+}
+
+/* ===== Social Notification ===== */
 .social-proof{
   position:fixed;
-  bottom:20px;
-  left:20px;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
   background:white;
   color:#000;
-  padding:8px 12px;
+  padding:10px 14px;
   border-radius:8px;
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
   font-size:13px;
+  max-width:220px;
   display:none;
   z-index:9999;
+  animation:fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(-50%) translateX(20px);}
+  to{opacity:1; transform:translateY(-50%) translateX(0);}
 }
 </style>
 </head>
@@ -204,162 +96,45 @@ canvas{
 <body>
 
 <div class="header-box">
-পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
-স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
+অভিনন্দন আপনি ডিসকাউন্ট জিতেছেন 🎉
 </div>
 
-<img src="YOUR_IMAGE_LINK.jpg" class="product-img">
+<img src="https://via.placeholder.com/400x300" class="product-img">
 
-<!-- COUNTDOWN -->
-<div class="countdown-wrapper">
-  <div class="countdown-title">Discount Will End in 🔻</div>
-  <div class="countdown-box">
-    <div class="time-box">
-      <div class="time-number" id="hours">22</div>
-      <div class="time-label">Hours</div>
-    </div>
-    <div class="time-box">
-      <div class="time-number" id="minutes">06</div>
-      <div class="time-label">Minutes</div>
-    </div>
-    <div class="time-box">
-      <div class="time-number" id="seconds">59</div>
-      <div class="time-label">Seconds</div>
-    </div>
-  </div>
+<div class="result-box">
+আপনি ২৫% ডিসকাউন্ট পেয়েছেন
 </div>
 
-<div class="qty-box">
-<button class="qty-btn" onclick="changeQty(-1)">−</button>
-<div class="qty-number" id="qty">0</div>
-<button class="qty-btn" onclick="changeQty(1)">+</button>
+<!-- Extra Image Box (তুমি এখানে নিজের লিংক বসাবে) -->
+<img src="https://via.placeholder.com/400x300" class="extra-image">
+
+<!-- Benefits Section -->
+<div class="benefits-box">
+✔ শরীরের শক্তি বৃদ্ধি করে<br><br>
+✔ দীর্ঘ সময় পারফরম্যান্স ধরে রাখতে সাহায্য করে<br><br>
+✔ ক্লান্তি দূর করে সতেজ রাখে<br><br>
+✔ বিবাহিত জীবনে আত্মবিশ্বাস বাড়ায়<br><br>
+✔ সম্পূর্ণ হারবাল ও পার্শ্বপ্রতিক্রিয়াহীন
 </div>
 
-<div class="price" id="priceText">
-০টার দাম: ০ টাকা
-</div>
-
-<div class="scratch-container">
-<div id="discountReveal">
-  Lucky Discount <span id="discountText"></span>% 🎉
-</div>
-<canvas id="scratchCard"></canvas>
-</div>
-
-<button class="condition-btn" onclick="toggleCondition()">
-scratch card condition 👈
-</button>
-
-<div class="condition-box" id="conditionBox">
-🚫 স্ক্র্যাচ কার্ডটি একবার ব্যবহারযোগ্য...
-</div>
-
-<div class="result-box" id="resultMessage"></div>
-
-<!-- SOCIAL BAR -->
+<!-- Social Notification -->
 <div class="social-proof" id="socialProof"></div>
 
 <script>
-
-/* ===== আগের সব JS একই ===== */
-let totalSeconds = (22*60*60)+(6*60)+59;
-
-function updateCountdown(){
-  let hours=Math.floor(totalSeconds/3600);
-  let minutes=Math.floor((totalSeconds%3600)/60);
-  let seconds=totalSeconds%60;
-
-  document.getElementById("hours").innerText=String(hours).padStart(2,'0');
-  document.getElementById("minutes").innerText=String(minutes).padStart(2,'0');
-  document.getElementById("seconds").innerText=String(seconds).padStart(2,'0');
-
-  if(totalSeconds>0){ totalSeconds--; }
-}
-setInterval(updateCountdown,1000);
-
-let basePrice=999;
-let qty=0;
-let discount=Math.floor(Math.random()*11)+40;
-let scratched=false;
-
-document.getElementById("discountText").innerText=discount;
-
-const qtyEl=document.getElementById("qty");
-const priceText=document.getElementById("priceText");
-const resultMsg=document.getElementById("resultMessage");
-const canvas=document.getElementById("scratchCard");
-const ctx=canvas.getContext("2d");
-
-function changeQty(val){
-  qty+=val;
-  if(qty<0) qty=0;
-  qtyEl.innerText=qty;
-  updatePrice();
-}
-
-function updatePrice(){
-  let total=basePrice*qty;
-  priceText.innerHTML=qty+"টার দাম: "+total+" টাকা";
-  if(scratched){
-    let discountedTotal=total-(total*discount/100);
-    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+
-    "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
-    Math.round(discountedTotal)+" টাকা";
-  }
-}
-
-canvas.width=document.querySelector(".scratch-container").offsetWidth;
-canvas.height=document.querySelector(".scratch-container").offsetHeight;
-
-ctx.fillStyle="#bbbbbb";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-ctx.fillStyle="#000";
-ctx.font="bold 24px Arial";
-ctx.textAlign="center";
-ctx.fillText("এখানে ঘষুন",canvas.width/2,canvas.height/2);
-
-let isDrawing=false;
-
-canvas.addEventListener("mousedown",()=>{isDrawing=true;});
-canvas.addEventListener("mouseup",()=>{isDrawing=false;scratched=true;updatePrice();});
-canvas.addEventListener("mousemove",draw);
-
-canvas.addEventListener("touchstart",()=>{isDrawing=true;});
-canvas.addEventListener("touchend",()=>{isDrawing=false;scratched=true;updatePrice();});
-canvas.addEventListener("touchmove",draw);
-
-function draw(e){
-  if(!isDrawing) return;
-  let rect=canvas.getBoundingClientRect();
-  let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-  let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-
-  ctx.globalCompositeOperation="destination-out";
-  ctx.beginPath();
-  ctx.arc(x,y,25,0,Math.PI*2);
-  ctx.fill();
-}
-
-function toggleCondition(){
-  let box=document.getElementById("conditionBox");
-  box.style.display = box.style.display==="block" ? "none" : "block";
-}
-
-/* ===== SOCIAL NOTIFICATION JS ===== */
-
 const names = [
-"আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান",
-"নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান",
-"রুবেল মিয়া","শারমিন সুলতানা","ইমরান হোসেন","মরিয়ম আক্তার"
+"আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন",
+"নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান","সাবিনা ইয়াসমিন",
+"রুবেল মিয়া","আলমগীর হোসেন","শারমিন সুলতানা","জাহিদুল ইসলাম",
+"মরিয়ম আক্তার","ইমরান হোসেন","রিমি আক্তার","তামান্না ইসলাম"
 ];
 
 function showNotification(){
   const randomName = names[Math.floor(Math.random()*names.length)];
-  const randomDiscount = Math.floor(Math.random()*29)+10; // 10-38%
-  const box = document.getElementById("socialProof");
+  const randomDiscount = Math.floor(Math.random()*29)+10;
 
-  box.innerHTML = "🎉 <b>"+randomName+"</b> "+randomDiscount+"% ডিসকাউন্ট জিতেছে!";
+  const box = document.getElementById("socialProof");
+  box.innerHTML = "🎉 <b>"+randomName+"</b> "+randomDiscount+"% ডিসকাউন্ট পেয়েছেন";
+  
   box.style.display="block";
 
   setTimeout(()=>{
@@ -368,7 +143,6 @@ function showNotification(){
 }
 
 setInterval(showNotification,6000);
-
 </script>
 
 </body>
