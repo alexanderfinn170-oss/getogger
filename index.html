@@ -191,8 +191,7 @@ canvas{
   border-radius:10px;
 }
 
-/* ====== NEW ADDED SECTION (ONLY BELOW) ====== */
-
+/* BENEFIT SECTION */
 .benefit-section{
   width:90%;
   max-width:600px;
@@ -263,8 +262,10 @@ scratch card condition 👈
 
 <div class="result-box" id="resultMessage"></div>
 
-<!-- ===== NEW CONTENT ADDED ONLY BELOW ===== -->
+<!-- NEW IMAGE BOX (SAME STYLE AS ABOVE) -->
+<img src="YOUR_SECOND_IMAGE_LINK.jpg" class="product-img">
 
+<!-- BENEFIT SECTION -->
 <div class="benefit-section">
 আমাদের YOUR_PRODUCT_NAME এর উপকারিতা এবং কার্যকারিতা<br><br>
 
@@ -296,7 +297,7 @@ scratch card condition 👈
 
 <script>
 
-/* ====== তোমার আগের সম্পূর্ণ JavaScript হুবহু ====== */
+/* তোমার আগের JS একদম হুবহু */
 
 let totalSeconds = (22*60*60)+(6*60)+59;
 
@@ -313,7 +314,6 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);
 
-/* SCRATCH */
 let basePrice=999;
 let qty=0;
 let discount=Math.floor(Math.random()*11)+40;
@@ -378,7 +378,6 @@ function draw(e){
   ctx.fill();
 }
 
-/* CONDITION TOGGLE */
 function toggleCondition(){
   let box=document.getElementById("conditionBox");
   box.style.display = box.style.display==="block" ? "none" : "block";
