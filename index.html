@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Methi Mixd Powder Offer</title>
 
 <style>
@@ -12,7 +12,7 @@ body{
     background:#4b0082;
     font-family: Arial, sans-serif;
     text-align:center;
-    overflow-x:hidden;
+    overflow:hidden; /* পুরো পেজ স্থির */
 }
 
 /* সাদা লেখা + চিকন কালো আউটলাইন */
@@ -29,30 +29,31 @@ body{
     font-weight:bold;
 }
 
-/* প্রোডাক্ট র‍্যাপার (গ্যাপ রিমুভ) */
+/* প্রোডাক্ট র‍্যাপার */
 .product-wrapper{
     width:100%;
     position:relative;
-    height:200px;      /* কমানো হয়েছে */
-    margin:0;          /* গ্যাপ রিমুভ */
+    height:200px;
+    margin:0;
+    overflow:hidden;
 }
 
 /* চলমান প্রোডাক্ট ছবি */
 .product-img{
     width:230px;
     position:absolute;
-    bottom:0;          /* বক্সের একদম উপর বসবে */
+    bottom:0;
     animation: moveLeftRight 6s ease-in-out infinite alternate;
 }
 
-/* বাম ↔ ডান অ্যানিমেশন */
+/* দুই পাশ থেকে একটু ভিতরে ঘুরবে */
 @keyframes moveLeftRight{
-    0%{ left:5%; }
-    100%{ left:65%; }
+    0%{ left:10%; }
+    100%{ left:55%; }
 }
 
 .offer-box{
-    margin:0 auto 15px auto;  /* উপরের গ্যাপ রিমুভ */
+    margin:0 auto 15px auto;
     width:90%;
     max-width:500px;
     padding:15px;
@@ -80,6 +81,7 @@ body{
     cursor:pointer;
     border-radius:15px;
     border:2px solid yellow;
+    touch-action:none; /* স্ক্রল বন্ধ */
 }
 
 .scratch-content{
@@ -139,7 +141,6 @@ body{
 
 <body>
 
-<!-- চলমান মেইন প্রোডাক্ট -->
 <div class="product-wrapper">
     <img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
 </div>
@@ -234,9 +235,9 @@ canvas.addEventListener("mousedown",()=>scratching=true);
 canvas.addEventListener("mouseup",showResult);
 canvas.addEventListener("mousemove",scratch);
 
-canvas.addEventListener("touchstart",()=>scratching=true);
+canvas.addEventListener("touchstart",(e)=>{ scratching=true; e.preventDefault(); });
 canvas.addEventListener("touchend",showResult);
-canvas.addEventListener("touchmove",scratch);
+canvas.addEventListener("touchmove",(e)=>{ scratch(e); e.preventDefault(); });
 
 function showResult(){
     scratching=false;
