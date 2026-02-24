@@ -17,34 +17,29 @@ html,body{
     touch-action: pan-y;
 }
 
-/* ---------- Premium Notification ---------- */
+/* ===== Premium Notification (Top Right) ===== */
 .live-notification{
     position:fixed;
+    top:15px;
     right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+    background:rgba(0,0,0,0.75);
     color:#fff;
     padding:12px 18px;
-    border-radius:12px;
+    border-radius:10px;
     font-size:14px;
     font-weight:bold;
-    box-shadow:0 8px 25px rgba(0,0,0,0.3);
-    border:1px solid rgba(255,255,255,0.3);
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
     opacity:0;
-    transition:all 0.5s ease;
+    transition:all 0.4s ease;
     z-index:9999;
-    max-width:250px;
+    max-width:260px;
 }
 
 .live-notification.show{
     opacity:1;
-    transform:translateY(-50%) translateX(-10px);
+    transform:translateY(5px);
 }
-
-/* ------------------------------------------ */
+/* ============================================ */
 
 .outline-text{
     color:#ffffff;
@@ -196,7 +191,8 @@ html,body{
 </button>
 
 <script>
-/* ----------- Live Notification System ----------- */
+
+/* ===== Live Notification (3 Second Loop) ===== */
 
 const names = [
 "মাহমুদুল হাসান","সুমাইয়া আক্তার","রাকিব হোসেন","তাসনিম জাহান",
@@ -211,6 +207,7 @@ let notificationIndex = 0;
 const notificationBox = document.getElementById("liveNotification");
 
 function showNotification(){
+
     if(notificationIndex >= names.length){
         notificationIndex = 0;
     }
@@ -225,17 +222,17 @@ function showNotification(){
 
     setTimeout(()=>{
         notificationBox.classList.remove("show");
-    },800);
+    },2500);
 
     notificationIndex++;
 }
 
 setTimeout(()=>{
     showNotification();
-    setInterval(showNotification,1000);
-},1000);
+    setInterval(showNotification,3000);
+},3000);
 
-/* ----------- Scratch System (আগের মতোই) ----------- */
+/* ===== Scratch Card (আগের মতো অপরিবর্তিত) ===== */
 
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
@@ -255,12 +252,27 @@ document.getElementById("discountText").innerHTML =
 function drawScratchLayer(){
     let gradient = ctx.createLinearGradient(0,0,340,240);
     gradient.addColorStop(0,"red");
+    gradient.addColorStop(0.2,"orange");
+    gradient.addColorStop(0.4,"yellow");
+    gradient.addColorStop(0.6,"green");
+    gradient.addColorStop(0.8,"blue");
     gradient.addColorStop(1,"purple");
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,340,240);
+
     ctx.fillStyle="yellow";
-    ctx.font="bold 22px Arial";
+    ctx.strokeStyle="red";
+    ctx.lineWidth=1;
+    ctx.font="bold 20px Arial";
     ctx.textAlign="center";
+    ctx.strokeText("রমজান অফার গোপন কাট",170,50);
+    ctx.fillText("রমজান অফার গোপন কাট",170,50);
+
+    ctx.fillStyle="red";
+    ctx.strokeStyle="yellow";
+    ctx.lineWidth=1;
+    ctx.font="bold 22px Arial";
+    ctx.strokeText("এখানে ঘষুন",170,130);
     ctx.fillText("এখানে ঘষুন",170,130);
 }
 
@@ -301,6 +313,7 @@ function showResult(){
 document.getElementById("orderBtn").onclick=function(){
     alert("অর্ডার পেজে নিয়ে যাওয়া হবে");
 };
+
 </script>
 
 </body>
