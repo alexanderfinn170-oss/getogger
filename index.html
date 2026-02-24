@@ -21,12 +21,14 @@ body{
   font-weight:bold;
   padding:15px;
   border:2px solid yellow;
+  margin-bottom:15px; /* Distance to product image */
 }
 
 /* PRODUCT IMAGE */
 .product-img{
   width:100%;
   border:2px solid yellow;
+  margin-bottom:15px; /* Distance to info box */
 }
 
 /* INFO BOX */
@@ -36,6 +38,7 @@ body{
   padding:15px;
   border:2px solid yellow;
   font-size:18px;
+  margin-bottom:15px; /* Distance to quantity box */
 }
 
 .product-name{
@@ -50,7 +53,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  margin:20px;
+  margin:20px 0;
 }
 
 .qty-btn{
@@ -79,7 +82,7 @@ body{
   font-size:26px;
   font-weight:bold;
   color:white;
-  margin:15px;
+  margin:15px 0;
 }
 
 /* SCRATCH CARD */
@@ -89,7 +92,6 @@ body{
   max-width:420px;
   height:180px;
   margin:20px auto;
-  border:3px solid black;
   border-radius:15px;
   overflow:hidden;
 }
@@ -105,13 +107,14 @@ body{
   font-size:32px;
   font-weight:bold;
   color:white;
-  background:linear-gradient(45deg,#ff0000,#990000);
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
 }
 
 #warning{
   font-size:12px;
   color:white;
   margin-top:8px;
+  text-align:center;
 }
 
 canvas{
@@ -180,6 +183,27 @@ const resultMsg = document.getElementById("resultMessage");
 const canvas = document.getElementById("scratchCard");
 const ctx = canvas.getContext("2d");
 
+/* Fingerprint for one-time use */
+let fingerprint = navigator.userAgent + screen.width + screen.height;
+if(localStorage.getItem("scratchFingerprint")===fingerprint){
+    discount = localStorage.getItem("savedDiscount");
+    let savedData = localStorage.getItem("scratchData");
+    scratched = true;
+    updatePrice();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(savedData){
+        let img = new Image();
+        img.src = savedData;
+        img.onload = function(){
+            ctx.drawImage(img,0,0);
+        }
+    }
+    revealBox.innerHTML = discount + "% DISCOUNT 🎉<div id='warning'>🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>";
+}else{
+    localStorage.setItem("scratchFingerprint",fingerprint);
+    localStorage.setItem("savedDiscount",discount);
+}
+
 /* ---- QUANTITY & PRICE ---- */
 function changeQty(val){
   qty += val;
@@ -193,21 +217,17 @@ function updatePrice(){
   priceEl.innerText = total;
 
   if(scratched){
-    let discountedTotal = total - (total * discount / 100);
+    let discountedTotal = total - (total*discount/100);
     resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
-  } else {
+  }else{
     resultMsg.innerHTML = "";
   }
 }
 
 /* ---- SCRATCH CARD ---- */
-revealBox.innerHTML = discount + "% DISCOUNT 🎉<div id='warning'>🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>";
-
-/* ---- REALISTIC SCRATCH EFFECT ---- */
 canvas.width = revealBox.offsetWidth;
 canvas.height = revealBox.offsetHeight;
 
-/* Metallic gradient */
 let gradient = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
 gradient.addColorStop(0,"#eeeeee");
 gradient.addColorStop(0.5,"#bbbbbb");
@@ -215,32 +235,27 @@ gradient.addColorStop(1,"#eeeeee");
 ctx.fillStyle = gradient;
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-/* Noise texture */
-for(let i=0;i<4000;i++){
-  ctx.fillStyle="rgba(0,0,0,0.1)";
-  ctx.fillRect(Math.random()*canvas.width,Math.random()*canvas.height,1,1);
-}
-
 /* Scratch and win text */
 ctx.fillStyle="#000";
 ctx.font="bold 24px Arial";
 ctx.textAlign="center";
 ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
 
-/* SCRATCH DRAWING (Touch Reveal System) */
+/* Scratch drawing */
 let isDrawing=false;
+let showFullCard=false;
 
-canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true; showFullCard=false;});
+canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true;});
 canvas.addEventListener("mouseup",()=>{
   isDrawing=false;
-  revealFullCard();
+  revealDiscount();
 });
 canvas.addEventListener("mousemove",draw);
 
-canvas.addEventListener("touchstart",(e)=>{if(!scratched)isDrawing=true; showFullCard=false;});
+canvas.addEventListener("touchstart",(e)=>{if(!scratched)isDrawing=true;});
 canvas.addEventListener("touchend",(e)=>{
   isDrawing=false;
-  revealFullCard();
+  revealDiscount();
 });
 canvas.addEventListener("touchmove",draw);
 
@@ -255,12 +270,16 @@ function draw(e){
   ctx.beginPath();
   ctx.arc(x,y,25,0,Math.PI*2);
   ctx.fill();
+
+  saveScratchProgress();
 }
 
-function revealFullCard(){
+function saveScratchProgress(){
+    localStorage.setItem("scratchData", canvas.toDataURL());
+}
+
+function revealDiscount(){
   scratched=true;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  updatePrice();
   let total = basePrice*qty;
   let discountedTotal = total - (total*discount/100);
   resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
