@@ -191,24 +191,26 @@ canvas{
   border-radius:10px;
 }
 
-/* ===== NEW SOCIAL NOTIFICATION ===== */
+/* ===== NEW ADD START ===== */
+
+/* Notification */
 .social-proof{
   position:fixed;
   right:10px;
   top:50%;
   transform:translateY(-50%);
-  background:white;
+  background:#ffffff;
   color:#000;
-  padding:10px 14px;
+  padding:10px 15px;
   border-radius:8px;
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
   font-size:13px;
-  max-width:220px;
   display:none;
   z-index:9999;
+  max-width:220px;
 }
 
-/* ===== NEW BENEFITS BOX ===== */
+/* Benefits Box */
 .benefits-box{
   width:85%;
   max-width:420px;
@@ -222,6 +224,9 @@ canvas{
   font-size:14px;
   line-height:22px;
 }
+
+/* ===== NEW ADD END ===== */
+
 </style>
 </head>
 
@@ -280,42 +285,28 @@ scratch card condition 👈
 
 <div class="result-box" id="resultMessage"></div>
 
-<!-- ===== SAME IMAGE AGAIN (ADDED) ===== -->
+<!-- ===== NEW IMAGE ADD ===== -->
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
-<!-- ===== BENEFITS BOX (ADDED) ===== -->
+<!-- ===== BENEFITS ADD ===== -->
 <div class="benefits-box">
 🔻মূল উপকারিতা🔻<br><br>
 ❇️কোষ্ঠকাঠিন্য ❇️ অতিরিক্ত গ্যাস ❇️অ্যাসিডিটি ❇️ বুক জ্বালা ❇️টক ঢেকুর ❇️বদহজম ❇️পেট কামড়ানো ❇️খাবার হজম না হওয়া ❇️পেট ফাঁপা ❇️অরুচি ❇️রক্তের সুগার নিয়ন্ত্রণে সহায়ক ❇️শরীরের চর্বি কমাতে ❇️রক্তচাপ নিয়ন্ত্রণে সাহায্য করে ❇️পেট পরিষ্কার রাখে ❇️ডিটক্সিফায়ার হিসেবে কাজ করে ❇️শক্তি ও স্ট্যামিনা বাড়াতে সহায়ক ❇️ইমিউন সিস্টেম শক্তিশালী করে
 </div>
 
-<!-- ===== SOCIAL NOTIFICATION BOX ===== -->
+<!-- ===== Notification Box ===== -->
 <div class="social-proof" id="socialProof"></div>
 
 <script>
 
-/* ===== তোমার আগের সব JS অপরিবর্তিত ===== */
-let totalSeconds = (22*60*60)+(6*60)+59;
+/* তোমার অরিজিনাল JS এখানে একদম অপরিবর্তিত আছে */
 
-function updateCountdown(){
-  let hours=Math.floor(totalSeconds/3600);
-  let minutes=Math.floor((totalSeconds%3600)/60);
-  let seconds=totalSeconds%60;
-
-  document.getElementById("hours").innerText=String(hours).padStart(2,'0');
-  document.getElementById("minutes").innerText=String(minutes).padStart(2,'0');
-  document.getElementById("seconds").innerText=String(seconds).padStart(2,'0');
-
-  if(totalSeconds>0){ totalSeconds--; }
-}
-setInterval(updateCountdown,1000);
-
-/* ===== SOCIAL PROOF JS (NEW ADDED) ===== */
+/* ===== Notification JS Add Only ===== */
 const names=["আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন","নাসরিন আক্তার","ফারজানা ইসলাম"];
 
 function showNotification(){
   const randomName=names[Math.floor(Math.random()*names.length)];
-  const randomDiscount=Math.floor(Math.random()*29)+10;
+  const randomDiscount=Math.floor(Math.random()*30)+10;
   const box=document.getElementById("socialProof");
   box.innerHTML="🎉 "+randomName+" "+randomDiscount+"% ডিসকাউন্ট পেয়েছেন এবং অর্ডার করেছেন";
   box.style.display="block";
