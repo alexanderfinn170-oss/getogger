@@ -13,7 +13,7 @@ body{
   text-align:center;
 }
 
-/* HEADER BOX */
+/* HEADER */
 .header-box{
   background:purple;
   color:white;
@@ -36,7 +36,6 @@ body{
   width:90%;
   max-width:500px;
   margin:20px auto;
-  text-align:center;
 }
 
 .countdown-title{
@@ -73,36 +72,6 @@ body{
 .time-label{
   font-size:14px;
   color:yellow;
-  margin-top:5px;
-}
-
-/* QUANTITY */
-.qty-box{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:20px 0;
-}
-
-.qty-btn{
-  background:purple;
-  border:2px solid yellow;
-  font-size:22px;
-  padding:6px 16px;
-  cursor:pointer;
-  margin:0 5px;
-  border-radius:5px;
-  color:yellow;
-}
-
-.qty-number{
-  background:purple;
-  border:2px solid yellow;
-  padding:8px 25px;
-  font-size:22px;
-  margin:0 5px;
-  border-radius:5px;
-  color:yellow;
 }
 
 /* PRICE */
@@ -113,7 +82,7 @@ body{
   margin:15px 0;
 }
 
-/* SCRATCH CARD */
+/* SCRATCH */
 .scratch-container{
   position:relative;
   width:85%;
@@ -131,51 +100,16 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   font-size:30px;
   font-weight:bold;
   color:white;
   background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
 }
 
-#warning{
-  font-size:14px;
-  color:red;
-  margin-top:8px;
-  font-weight:bold;
-}
-
 canvas{
   position:absolute;
   top:0;
   left:0;
-}
-
-/* CONDITION BUTTON */
-.condition-btn{
-  background:purple;
-  border:1px solid yellow;
-  color:white;
-  padding:6px 12px;
-  font-size:14px;
-  border-radius:5px;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-/* CONDITION BOX */
-.condition-box{
-  display:none;
-  width:85%;
-  max-width:420px;
-  margin:10px auto;
-  background:purple;
-  border:1px solid red;
-  border-radius:8px;
-  padding:10px;
-  color:red;
-  font-size:13px;
-  text-align:left;
 }
 
 /* RESULT */
@@ -190,19 +124,53 @@ canvas{
   width:80%;
   border-radius:10px;
 }
+
+/* AFTER RESULT IMAGE */
+.after-img{
+  width:100%;
+  border:2px solid yellow;
+  margin:20px 0;
+}
+
+/* BENEFIT HEADLINE */
+.benefit-title{
+  font-size:22px;
+  font-weight:bold;
+  color:white;
+  margin:20px 10px;
+}
+
+.product-highlight{
+  font-size:28px;
+  font-weight:bold;
+  background: linear-gradient(45deg, red, orange, yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BENEFIT BOX */
+.benefit-box{
+  background:#ffffff10;
+  border:2px solid green;
+  padding:20px;
+  margin:20px;
+  border-radius:10px;
+  color:white;
+  text-align:left;
+  line-height:1.8;
+  font-size:16px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="header-box">
-পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
-স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
+পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!
 </div>
 
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
-<!-- COUNTDOWN -->
 <div class="countdown-wrapper">
   <div class="countdown-title">Discount Will End in 🔻</div>
   <div class="countdown-box">
@@ -221,12 +189,6 @@ canvas{
   </div>
 </div>
 
-<div class="qty-box">
-<button class="qty-btn" onclick="changeQty(-1)">−</button>
-<div class="qty-number" id="qty">0</div>
-<button class="qty-btn" onclick="changeQty(1)">+</button>
-</div>
-
 <div class="price" id="priceText">
 ০টার দাম: ০ টাকা
 </div>
@@ -238,65 +200,60 @@ canvas{
 <canvas id="scratchCard"></canvas>
 </div>
 
-<button class="condition-btn" onclick="toggleCondition()">
-scratch card condition 👈
-</button>
+<div class="result-box" id="resultMessage"></div>
 
-<div class="condition-box" id="conditionBox">
-🚫 স্ক্র্যাচ কার্ডটি একবার ব্যবহারযোগ্য, আপনি যদি দ্বিতীয়বার বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে চান তখন আপনাকে আমাদের ওয়েবসাইট ডিটেক্ট করে নিবে 🚫  
-ভাগ্যের উপর নির্ভর করে প্রত্যেক জন আলাদা আলাদা ডিসকাউন্ট পাবে, আর সেই ডিসকাউন্টটি ফিক্সড দ্বিতীয়বার ট্রাই করে লাভ হবে না ❌
+<!-- IMAGE AFTER RESULT -->
+<img src="YOUR_SECOND_IMAGE.jpg" class="after-img">
+
+<!-- BENEFIT TITLE -->
+<div class="benefit-title">
+❇️আমাদের <span class="product-highlight">[PRODUCT_NAME]</span> এর উপকারিতা এবং কার্যকারিতা ❇️
 </div>
 
-<div class="result-box" id="resultMessage"></div>
+<!-- BENEFIT BOX -->
+<div class="benefit-box">
+🔻মূল উপকারিতা🔻 <br><br>
+
+❇️ কোষ্ঠকাঠিন্য দূর করে<br>
+❇️ অতিরিক্ত গ্যাস কমায়<br>
+❇️ অ্যাসিডিটি ও বুক জ্বালা নিয়ন্ত্রণ করে<br>
+❇️ টক ঢেকুর ও বদহজম কমায়<br>
+❇️ পেট কামড়ানো ও পেট ফাঁপা দূর করে<br>
+❇️ খাবার হজম না হওয়া তাৎক্ষণিকভাবে কমায়<br>
+❇️ অরুচি ও খাবারে অনীহা দূর করে<br>
+❇️ রক্তের সুগার নিয়ন্ত্রণে সহায়ক (ডায়াবেটিস রোগীদের জন্য উপকারী)<br>
+❇️ শরীরের চর্বি কমাতে সাহায্য করে<br>
+❇️ রক্তচাপ নিয়ন্ত্রণে সাহায্য করে<br>
+❇️ পেট পরিষ্কার রাখে<br>
+❇️ নিয়মিত ডিটক্সিফায়ার হিসেবে কাজ করে<br>
+❇️ যৌনশক্তি বৃদ্ধি করে<br>
+❇️ শক্তি ও স্ট্যামিনা বাড়াতে সহায়ক<br>
+❇️ অ্যান্টিব্যাকটেরিয়াল গুণে কৃমি প্রতিরোধ করে<br>
+❇️ অ্যান্টিঅক্সিডেন্টে ইমিউন সিস্টেম শক্তিশালী করে<br><br>
+
+♻️ সম্পূর্ণ স্বস্তিদায়ক ও হালকা রেখে শরীরকে সুস্থ রাখে — মেথি, আমলকি, হরিতকি, বহেরা, জোয়ান, আদা ♻️
+</div>
 
 <script>
 /* COUNTDOWN */
-let totalSeconds = (22*60*60)+(6*60)+59;
-
+let totalSeconds=(22*60*60)+(6*60)+59;
 function updateCountdown(){
-  let hours=Math.floor(totalSeconds/3600);
-  let minutes=Math.floor((totalSeconds%3600)/60);
-  let seconds=totalSeconds%60;
-
-  document.getElementById("hours").innerText=String(hours).padStart(2,'0');
-  document.getElementById("minutes").innerText=String(minutes).padStart(2,'0');
-  document.getElementById("seconds").innerText=String(seconds).padStart(2,'0');
-
-  if(totalSeconds>0){ totalSeconds--; }
+  let h=Math.floor(totalSeconds/3600);
+  let m=Math.floor((totalSeconds%3600)/60);
+  let s=totalSeconds%60;
+  document.getElementById("hours").innerText=String(h).padStart(2,'0');
+  document.getElementById("minutes").innerText=String(m).padStart(2,'0');
+  document.getElementById("seconds").innerText=String(s).padStart(2,'0');
+  if(totalSeconds>0) totalSeconds--;
 }
 setInterval(updateCountdown,1000);
 
 /* SCRATCH */
-let basePrice=999;
-let qty=0;
 let discount=Math.floor(Math.random()*11)+40;
-let scratched=false;
-
 document.getElementById("discountText").innerText=discount;
 
-const qtyEl=document.getElementById("qty");
-const priceText=document.getElementById("priceText");
-const resultMsg=document.getElementById("resultMessage");
 const canvas=document.getElementById("scratchCard");
 const ctx=canvas.getContext("2d");
-
-function changeQty(val){
-  qty+=val;
-  if(qty<0) qty=0;
-  qtyEl.innerText=qty;
-  updatePrice();
-}
-
-function updatePrice(){
-  let total=basePrice*qty;
-  priceText.innerHTML=qty+"টার দাম: "+total+" টাকা";
-  if(scratched){
-    let discountedTotal=total-(total*discount/100);
-    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+
-    "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
-    Math.round(discountedTotal)+" টাকা";
-  }
-}
 
 canvas.width=document.querySelector(".scratch-container").offsetWidth;
 canvas.height=document.querySelector(".scratch-container").offsetHeight;
@@ -310,31 +267,19 @@ ctx.textAlign="center";
 ctx.fillText("এখানে ঘষুন",canvas.width/2,canvas.height/2);
 
 let isDrawing=false;
-
 canvas.addEventListener("mousedown",()=>{isDrawing=true;});
-canvas.addEventListener("mouseup",()=>{isDrawing=false;scratched=true;updatePrice();});
+canvas.addEventListener("mouseup",()=>{isDrawing=false;});
 canvas.addEventListener("mousemove",draw);
-
-canvas.addEventListener("touchstart",()=>{isDrawing=true;});
-canvas.addEventListener("touchend",()=>{isDrawing=false;scratched=true;updatePrice();});
-canvas.addEventListener("touchmove",draw);
 
 function draw(e){
   if(!isDrawing) return;
   let rect=canvas.getBoundingClientRect();
-  let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-  let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-
+  let x=e.clientX-rect.left;
+  let y=e.clientY-rect.top;
   ctx.globalCompositeOperation="destination-out";
   ctx.beginPath();
   ctx.arc(x,y,25,0,Math.PI*2);
   ctx.fill();
-}
-
-/* CONDITION TOGGLE */
-function toggleCondition(){
-  let box=document.getElementById("conditionBox");
-  box.style.display = box.style.display==="block" ? "none" : "block";
 }
 </script>
 
