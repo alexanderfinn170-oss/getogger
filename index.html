@@ -15,18 +15,18 @@ body{
 
 /* HEADER BOX */
 .header-box{
-  background:purple;       /* Purple background */
-  color:white;             /* লেখা now white */
+  background:purple;
+  color:white;
   font-size:24px;
   font-weight:bold;
   padding:15px;
-  border:2px solid yellow;  /* হালুদ বর্ডার */
+  border:2px solid yellow;
 }
 
 /* PRODUCT IMAGE */
 .product-img{
   width:100%;
-  border:2px solid yellow;   /* পাতলা হলুদ বর্ডার */
+  border:2px solid yellow;
 }
 
 /* INFO BOX */
@@ -61,7 +61,7 @@ body{
   cursor:pointer;
   margin:0 5px;
   border-radius:5px;
-  color:yellow;       /* Text color yellow */
+  color:yellow;
 }
 
 .qty-number{
@@ -71,7 +71,7 @@ body{
   font-size:22px;
   margin:0 5px;
   border-radius:5px;
-  color:yellow;       /* Text color yellow */
+  color:yellow;
 }
 
 /* PRICE */
@@ -106,6 +106,12 @@ body{
   font-weight:bold;
   color:white;
   background:linear-gradient(45deg,#ff0000,#990000);
+}
+
+#warning{
+  font-size:12px;
+  color:white;
+  margin-top:8px;
 }
 
 canvas{
@@ -153,7 +159,9 @@ canvas{
 </div>
 
 <div class="scratch-container">
-<div id="discountReveal"></div>
+<div id="discountReveal">
+  <div id="warning">🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>
+</div>
 <canvas id="scratchCard"></canvas>
 </div>
 
@@ -162,7 +170,7 @@ canvas{
 <script>
 let basePrice = 999;
 let qty = 0;
-let discount = Math.floor(Math.random()*11)+40; // 40-50% random
+let discount = Math.floor(Math.random()*11)+40; // 40-50%
 let scratched = false;
 
 const qtyEl = document.getElementById("qty");
@@ -193,7 +201,7 @@ function updatePrice(){
 }
 
 /* ---- SCRATCH CARD ---- */
-revealBox.innerHTML = discount + "% DISCOUNT 🎉";
+revealBox.innerHTML = discount + "% DISCOUNT 🎉<div id='warning'>🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>";
 
 /* ---- REALISTIC SCRATCH EFFECT ---- */
 canvas.width = revealBox.offsetWidth;
@@ -219,13 +227,21 @@ ctx.font="bold 24px Arial";
 ctx.textAlign="center";
 ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
 
-/* Scratch drawing */
+/* SCRATCH DRAWING (Touch Reveal System) */
 let isDrawing=false;
-canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true;});
-canvas.addEventListener("mouseup",()=>isDrawing=false);
+
+canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true; showFullCard=false;});
+canvas.addEventListener("mouseup",()=>{
+  isDrawing=false;
+  revealFullCard();
+});
 canvas.addEventListener("mousemove",draw);
-canvas.addEventListener("touchstart",()=>{if(!scratched)isDrawing=true;});
-canvas.addEventListener("touchend",()=>isDrawing=false);
+
+canvas.addEventListener("touchstart",(e)=>{if(!scratched)isDrawing=true; showFullCard=false;});
+canvas.addEventListener("touchend",(e)=>{
+  isDrawing=false;
+  revealFullCard();
+});
 canvas.addEventListener("touchmove",draw);
 
 function draw(e){
@@ -234,28 +250,20 @@ function draw(e){
   let rect = canvas.getBoundingClientRect();
   let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
   let y = (e.touches ? e.touches[0].clientY : e.clientY)-rect.top;
+
   ctx.globalCompositeOperation="destination-out";
   ctx.beginPath();
   ctx.arc(x,y,25,0,Math.PI*2);
   ctx.fill();
-  checkScratch();
 }
 
-function checkScratch(){
-  let pixels = ctx.getImageData(0,0,canvas.width,canvas.height);
-  let cleared = 0;
-  for(let i=0;i<pixels.data.length;i+=4){
-    if(pixels.data[i+3]===0) cleared++;
-  }
-  let percent = cleared/(pixels.data.length/4);
-  if(percent>0.10 && !scratched){
-    scratched=true;
-    canvas.style.display="none";
-    updatePrice();
-    let total = basePrice*qty;
-    let discountedTotal = total - (total*discount/100);
-    resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
-  }
+function revealFullCard(){
+  scratched=true;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  updatePrice();
+  let total = basePrice*qty;
+  let discountedTotal = total - (total*discount/100);
+  resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
 }
 </script>
 
