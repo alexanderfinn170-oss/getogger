@@ -7,112 +7,112 @@
 
 <style>
 body{
-margin:0;
-font-family: Arial, sans-serif;
-background:#6a0dad;
-text-align:center;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#6a0dad;
+  text-align:center;
 }
 
 /* HEADER */
 .header-box{
-background:yellow;
-color:red;
-font-size:24px;
-font-weight:bold;
-padding:15px;
-border:2px solid black;
+  background:yellow;
+  color:red;
+  font-size:24px;
+  font-weight:bold;
+  padding:15px;
+  border:2px solid black;
 }
 
 /* PRODUCT IMAGE */
 .product-img{
-width:100%;
-border:5px solid red;
+  width:100%;
+  border:5px solid red;
 }
 
 /* INFO BOX */
 .info-box{
-background:purple;
-color:yellow;
-padding:15px;
-border:2px solid yellow;
-font-size:18px;
+  background:purple;
+  color:yellow;
+  padding:15px;
+  border:2px solid yellow;
+  font-size:18px;
 }
 
 .product-name{
-font-size:26px;
-color:orange;
-font-weight:bold;
-text-shadow: 0 0 8px red,0 0 15px red;
+  font-size:26px;
+  color:orange;
+  font-weight:bold;
+  text-shadow: 0 0 8px red,0 0 15px red;
 }
 
 /* QUANTITY */
 .qty-box{
-display:flex;
-justify-content:center;
-align-items:center;
-margin:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:20px;
 }
 
 .qty-btn{
-background:yellow;
-border:none;
-font-size:28px;
-padding:8px 20px;
-cursor:pointer;
+  background:yellow;
+  border:none;
+  font-size:28px;
+  padding:8px 20px;
+  cursor:pointer;
 }
 
 .qty-number{
-background:yellow;
-padding:8px 25px;
-font-size:22px;
-margin:0 5px;
+  background:yellow;
+  padding:8px 25px;
+  font-size:22px;
+  margin:0 5px;
 }
 
 /* PRICE */
 .price{
-font-size:26px;
-font-weight:bold;
-color:white;
-margin:15px;
+  font-size:26px;
+  font-weight:bold;
+  color:white;
+  margin:15px;
 }
 
 /* SCRATCH CARD */
 .scratch-container{
-position:relative;
-width:85%;
-max-width:420px;
-height:180px;
-margin:20px auto;
-border:3px solid black;
-border-radius:15px;
-overflow:hidden;
+  position:relative;
+  width:85%;
+  max-width:420px;
+  height:180px;
+  margin:20px auto;
+  border:3px solid black;
+  border-radius:15px;
+  overflow:hidden;
 }
 
 #discountReveal{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-font-size:32px;
-font-weight:bold;
-color:white;
-background:linear-gradient(45deg,#ff0000,#990000);
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  font-size:32px;
+  font-weight:bold;
+  color:white;
+  background:linear-gradient(45deg,#ff0000,#990000);
 }
 
 canvas{
-position:absolute;
-top:0;
-left:0;
+  position:absolute;
+  top:0;
+  left:0;
 }
 
 .message{
-font-size:22px;
-color:#00ff99;
-font-weight:bold;
-margin:20px;
+  font-size:22px;
+  color:#00ff99;
+  font-weight:bold;
+  margin:20px;
 }
 </style>
 </head>
@@ -121,7 +121,7 @@ margin:20px;
 
 <div class="header-box">
 পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
-স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৯০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
+স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
 </div>
 
 <img src="YOUR_IMAGE_LINK.jpg" class="product-img">
@@ -132,12 +132,12 @@ margin:20px;
 
 <div class="qty-box">
 <button class="qty-btn" onclick="changeQty(-1)">−</button>
-<div class="qty-number" id="qty">1</div>
+<div class="qty-number" id="qty">0</div>
 <button class="qty-btn" onclick="changeQty(1)">+</button>
 </div>
 
 <div class="price">
-মোট দাম: <span id="totalPrice">999</span> টাকা
+মোট দাম: <span id="totalPrice">0</span> টাকা
 </div>
 
 <div class="scratch-container">
@@ -149,7 +149,7 @@ margin:20px;
 
 <script>
 let basePrice = 999;
-let qty = 1;
+let qty = 0;
 let discount;
 let scratched = false;
 
@@ -163,17 +163,17 @@ const ctx = canvas.getContext("2d");
 /* ---- QUANTITY & PRICE ---- */
 function changeQty(val){
   qty += val;
-  if(qty<1) qty=1;
+  if(qty<0) qty=0;
   qtyEl.innerText=qty;
   updatePrice();
 }
 
 function updatePrice(){
   let total = basePrice * qty;
-  if(discount){
+  if(discount && scratched){
     total = total - (total * discount / 100);
   }
-  priceEl.innerText=Math.round(total);
+  priceEl.innerText = Math.round(total);
 }
 
 /* ---- FINGERPRINT LOCK & SAVED DISCOUNT ---- */
@@ -183,10 +183,10 @@ if(localStorage.getItem("scratchFingerprint") === fingerprint){
     discount = localStorage.getItem("savedDiscount");
     canvas.style.display="none";
     revealBox.innerHTML = discount + "% DISCOUNT 🎉";
-    resultMsg.innerHTML = "আপনি পূর্বে এই কার্ড ব্যবহার করেছেন। আপনার ডিসকাউন্ট: "+discount+"%";
+    resultMsg.innerHTML = "আপনি পূর্বে এই কার্ড ব্যবহার করেছেন। ডিসকাউন্টের পরে মূল্য "+(qty*basePrice - qty*basePrice*discount/100)+" টাকা";
     scratched = true;
 }else{
-    discount = Math.floor(Math.random()*21)+60; // 60-80%
+    discount = Math.floor(Math.random()*11)+40; // 40-50%
     localStorage.setItem("savedDiscount", discount);
     localStorage.setItem("scratchFingerprint", fingerprint);
     revealBox.innerHTML = discount + "% DISCOUNT 🎉";
@@ -227,6 +227,7 @@ canvas.addEventListener("touchmove",draw);
 
 function draw(e){
   if(!isDrawing || scratched) return;
+
   let rect = canvas.getBoundingClientRect();
   let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
   let y = (e.touches ? e.touches[0].clientY : e.clientY)-rect.top;
@@ -248,7 +249,7 @@ function checkScratch(){
     scratched=true;
     canvas.style.display="none";
     updatePrice();
-    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! এখন আপনার মূল্য "+priceEl.innerText+" টাকা!";
+    resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! ডিসকাউন্টের পরে মূল্য "+priceEl.innerText+" টাকা";
   }
 }
 </script>
