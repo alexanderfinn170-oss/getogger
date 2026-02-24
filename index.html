@@ -6,16 +6,21 @@
 <title>Methi Mixd Powder Offer</title>
 
 <style>
-body{
+html,body{
     margin:0;
     padding:0;
     background:#4b0082;
     font-family: Arial, sans-serif;
     text-align:center;
 
-    overflow-x:hidden;   /* ডান-বাম বন্ধ */
-    overflow-y:auto;     /* উপরে-নিচে চালু */
-    touch-action: pan-y; /* শুধু vertical scroll */
+    overflow-x:hidden;
+    overflow-y:auto;
+    touch-action: pan-y;
+}
+
+/* উপরের একদম গ্যাপ বন্ধ */
+body{
+    padding-top:0;
 }
 
 /* সাদা লেখা + চিকন কালো আউটলাইন */
@@ -48,7 +53,6 @@ body{
     animation: moveLeftRight 6s ease-in-out infinite alternate;
 }
 
-/* দুই পাশ থেকে একটু ভিতরে ঘুরবে */
 @keyframes moveLeftRight{
     0%{ left:10%; }
     100%{ left:55%; }
@@ -83,7 +87,7 @@ body{
     cursor:pointer;
     border-radius:15px;
     border:2px solid yellow;
-    touch-action:none; /* স্ক্র্যাচ করার সময় স্ক্রল হবে না */
+    touch-action:none;
 }
 
 .scratch-content{
@@ -110,10 +114,10 @@ body{
     font-size:20px;
 }
 
-/* রেইনবো বাটন */
+/* বাটন আগের মতো */
 .order-btn{
     display:none;
-    margin:30px auto; /* নিচে একটু স্পেস */
+    margin:15px auto;
     width:80%;
     max-width:350px;
     padding:14px;
@@ -237,7 +241,7 @@ canvas.addEventListener("mousedown",()=>scratching=true);
 canvas.addEventListener("mouseup",showResult);
 canvas.addEventListener("mousemove",scratch);
 
-canvas.addEventListener("touchstart",(e)=>{ scratching=true; });
+canvas.addEventListener("touchstart",()=>scratching=true);
 canvas.addEventListener("touchend",showResult);
 canvas.addEventListener("touchmove",scratch);
 
