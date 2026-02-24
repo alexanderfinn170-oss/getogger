@@ -29,31 +29,30 @@ body{
     font-weight:bold;
 }
 
-/* মেইন প্রোডাক্ট অ্যানিমেশন কন্টেইনার */
+/* প্রোডাক্ট র‍্যাপার (গ্যাপ রিমুভ) */
 .product-wrapper{
     width:100%;
-    overflow:hidden;
     position:relative;
-    height:250px;
-    margin-top:20px;
+    height:200px;      /* কমানো হয়েছে */
+    margin:0;          /* গ্যাপ রিমুভ */
 }
 
 /* চলমান প্রোডাক্ট ছবি */
 .product-img{
     width:230px;
     position:absolute;
-    left:0;
+    bottom:0;          /* বক্সের একদম উপর বসবে */
     animation: moveLeftRight 6s ease-in-out infinite alternate;
 }
 
-/* বাম ↔ ডান চলার অ্যানিমেশন */
+/* বাম ↔ ডান অ্যানিমেশন */
 @keyframes moveLeftRight{
     0%{ left:5%; }
     100%{ left:65%; }
 }
 
 .offer-box{
-    margin:15px auto;
+    margin:0 auto 15px auto;  /* উপরের গ্যাপ রিমুভ */
     width:90%;
     max-width:500px;
     padding:15px;
