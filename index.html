@@ -9,29 +9,29 @@
 body{
     margin:0;
     padding:0;
-    background:#4b0082; /* Deep Purple */
+    background:#4b0082;
     font-family: Arial, sans-serif;
     text-align:center;
 }
 
-/* বাংলা লেখা হলুদ আউটলাইন */
+/* সব বাংলা লেখা সাদা + চিকন কালো আউটলাইন */
 .outline-text{
-    color:white;
+    color:#ffffff;
     font-weight:bold;
-    -webkit-text-stroke: 1.5px yellow;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    -webkit-text-stroke: 0.6px black;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
-/* Methi Mixd powder লাল আউটলাইন */
+/* Methi Mixd powder লাল রঙ */
 .product-name{
-    color:white;
+    color:#ff2d2d;
     font-weight:bold;
-    -webkit-text-stroke: 1.5px red;
+    -webkit-text-stroke: 0.6px black;
 }
 
 .product-img{
     margin-top:20px;
-    width:220px;
+    width:230px;
 }
 
 .offer-box{
@@ -51,8 +51,8 @@ body{
 
 .scratch-container{
     position:relative;
-    width:320px;
-    height:200px;
+    width:340px;
+    height:220px;
     margin:10px auto;
 }
 
@@ -64,6 +64,7 @@ body{
     border-radius:15px;
 }
 
+/* কার্ড ভেতরের কন্টেন্ট */
 .scratch-content{
     position:absolute;
     width:100%;
@@ -72,14 +73,16 @@ body{
     border-radius:15px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     padding:10px;
     box-sizing:border-box;
 }
 
+/* কার্ডের প্রোডাক্ট ছবি */
 .scratch-content img{
-    width:70px;
+    width:110px;   /* আগের থেকে বড় */
+    margin-bottom:10px;
 }
 
 .result-text{
@@ -91,10 +94,9 @@ body{
 
 <body>
 
-<!-- প্রোডাক্ট ছবি (এখানে শুধু লিংক পরিবর্তন করবেন) -->
-<img id="mainProduct" src="YOUR_IMAGE_LINK_HERE" class="product-img">
+<!-- প্রোডাক্ট ছবি (শুধু এখানে লিংক পরিবর্তন করবেন) -->
+<img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
 
-<!-- অফার বক্স -->
 <div class="offer-box outline-text">
 আমাদের <span class="product-name">Methi Mixd powder</span> 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
 </div>
@@ -103,15 +105,15 @@ body{
 এই স্ক্রেচ কার্ড ঘোষণ এবং <span class="product-name">Methi Mixd powder</span> এর উপরে ডিসকাউন্ট নিন!!
 </div>
 
-<!-- স্ক্র্যাচ কার্ড -->
 <div class="scratch-container">
 
     <div class="scratch-content outline-text">
+        <!-- ছবি মাঝ বরাবর উপরে -->
         <img id="cardProduct">
         <div id="discountText"></div>
     </div>
 
-    <canvas id="scratchCanvas" width="320" height="200"></canvas>
+    <canvas id="scratchCanvas" width="340" height="220"></canvas>
 </div>
 
 <div class="result-text outline-text" id="finalResult"></div>
@@ -121,7 +123,7 @@ const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 let scratching = false;
 
-let discount = Math.floor(Math.random() * 21) + 30; // 30-50%
+let discount = Math.floor(Math.random() * 21) + 30; 
 let originalPrice = 999;
 let discountedPrice = Math.round(originalPrice - (originalPrice * discount / 100));
 
@@ -134,7 +136,7 @@ document.getElementById("discountText").innerHTML =
 "আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
 function drawScratchLayer(){
-    let gradient = ctx.createLinearGradient(0,0,320,200);
+    let gradient = ctx.createLinearGradient(0,0,340,220);
     gradient.addColorStop(0,"red");
     gradient.addColorStop(0.2,"orange");
     gradient.addColorStop(0.4,"yellow");
@@ -142,12 +144,12 @@ function drawScratchLayer(){
     gradient.addColorStop(0.8,"blue");
     gradient.addColorStop(1,"purple");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,320,200);
+    ctx.fillRect(0,0,340,220);
 
     ctx.fillStyle="white";
     ctx.font="bold 22px Arial";
     ctx.textAlign="center";
-    ctx.fillText("এখানে ঘষুন",160,110);
+    ctx.fillText("এখানে ঘষুন",170,120);
 }
 
 drawScratchLayer();
@@ -165,7 +167,7 @@ function scratch(e){
     let pos = getPosition(e);
     ctx.globalCompositeOperation="destination-out";
     ctx.beginPath();
-    ctx.arc(pos.x,pos.y,18,0,Math.PI*2);
+    ctx.arc(pos.x,pos.y,20,0,Math.PI*2);
     ctx.fill();
 }
 
