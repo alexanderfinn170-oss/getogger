@@ -1,480 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scratch & Win</title>
+<title>Methi Mixd Powder Offer</title>
 
 <style>
 body{
-margin:0;
-font-family: Arial, sans-serif;
-background:#6a0dad;
-text-align:center;
+    margin:0;
+    padding:0;
+    background:#e6ccff;
+    font-family: Arial, sans-serif;
+    text-align:center;
 }
 
-/* HEADER BOX */
-.header-box{
-background:purple;
-color:white;
-font-size:24px;
-font-weight:bold;
-padding:15px;
-border:2px solid yellow;
-margin-bottom:15px;
+/* বাংলা লেখা আউটলাইন */
+.outline-text{
+    color:white;
+    font-weight:bold;
+    -webkit-text-stroke: 1px black;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
 
-/* PRODUCT IMAGE */
 .product-img{
-width:100%;
-border:2px solid yellow;
-margin-bottom:15px;
+    margin-top:20px;
+    width:220px;
 }
 
-/* COUNTDOWN */
-.countdown-wrapper{
-width:90%;
-max-width:500px;
-margin:20px auto;
-text-align:center;
-}
-.countdown-title{
-color:white;
-font-size:20px;
-font-weight:bold;
-margin-bottom:10px;
-}
-.countdown-box{
-display:flex;
-justify-content:space-between;
-background:purple;
-border:2px solid yellow;
-padding:15px 10px;
-border-radius:10px;
-}
-.time-box{
-flex:1;
-margin:0 5px;
-background:#4b0082;
-border:1px solid yellow;
-border-radius:8px;
-padding:10px 0;
-}
-.time-number{
-font-size:28px;
-font-weight:bold;
-color:white;
-}
-.time-label{
-font-size:14px;
-color:yellow;
-margin-top:5px;
+.offer-box{
+    margin:15px auto;
+    width:90%;
+    max-width:500px;
+    padding:15px;
+    background:#e6ccff;
+    border:2px solid yellow;
+    border-radius:10px;
 }
 
-/* QUANTITY */
-.qty-box{
-display:flex;
-justify-content:center;
-align-items:center;
-margin:20px 0;
-}
-.qty-btn{
-background:purple;
-border:2px solid yellow;
-font-size:22px;
-padding:6px 16px;
-cursor:pointer;
-margin:0 5px;
-border-radius:5px;
-color:yellow;
-}
-.qty-number{
-background:purple;
-border:2px solid yellow;
-padding:8px 25px;
-font-size:22px;
-margin:0 5px;
-border-radius:5px;
-color:yellow;
+.big-text{
+    font-size:22px;
+    margin:10px 0;
 }
 
-/* PRICE */
-.price{
-font-size:26px;
-font-weight:bold;
-color:white;
-margin:15px 0;
-}
-
-/* SCRATCH CARD */
 .scratch-container{
-position:relative;
-width:85%;
-max-width:420px;
-height:180px;
-margin:20px auto;
-border-radius:15px;
-overflow:hidden;
-}
-#discountReveal{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-font-size:30px;
-font-weight:bold;
-color:white;
-background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-}
-#warning{
-font-size:14px;
-color:red;
-margin-top:8px;
-font-weight:bold;
-}
-canvas{
-position:absolute;
-top:0;
-left:0;
+    position:relative;
+    width:320px;
+    height:200px;
+    margin:10px auto;
 }
 
-/* CONDITION BUTTON */
-.condition-btn{
-background:purple;
-border:1px solid yellow;
-color:white;
-padding:6px 12px;
-font-size:14px;
-border-radius:5px;
-cursor:pointer;
-margin-top:10px;
+#scratchCanvas{
+    position:absolute;
+    top:0;
+    left:0;
+    cursor:pointer;
+    border-radius:15px;
 }
 
-/* CONDITION BOX */
-.condition-box{
-display:none;
-width:85%;
-max-width:420px;
-margin:10px auto;
-background:purple;
-border:1px solid red;
-border-radius:8px;
-padding:10px;
-color:red;
-font-size:13px;
-text-align:left;
+.scratch-content{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:white;
+    border-radius:15px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+    box-sizing:border-box;
 }
 
-/* RESULT */
-.result-box{
-background:#6a0dad;
-border:2px solid yellow;
-padding:15px;
-color:white;
-font-size:22px;
-font-weight:bold;
-margin:20px auto;
-width:80%;
-border-radius:10px;
+.scratch-content img{
+    width:70px;
 }
 
-/* ===== NEW BENEFITS BOX ===== */
-.benefits-box{
-width:85%;
-max-width:420px;
-margin:15px auto;
-background:purple;
-border:2px solid yellow;
-border-radius:10px;
-padding:15px;
-color:white;
-text-align:left;
-font-size:14px;
-}
-
-/* ===== SOCIAL NOTIFICATION ===== */
-.social-proof{
-position:fixed;
-right:10px;
-top:50%;
-transform:translateY(-50%);
-background:white;
-color:#000;
-padding:10px 14px;
-border-radius:8px;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-font-size:13px;
-max-width:220px;
-display:none;
-z-index:9999;
-animation:fadeIn 0.4s ease;
-}
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(-50%) translateX(20px);}
-to{opacity:1; transform:translateY(-50%) translateX(0);}
+.result-text{
+    margin-top:15px;
+    font-size:20px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header-box">
-পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
-স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
+<!-- প্রোডাক্ট ছবি -->
+<img src="product.png" class="product-img">
+
+<!-- অফার বক্স -->
+<div class="offer-box outline-text">
+আমাদের Methi Mixd powder 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
 </div>
 
-<img src="YOUR_IMAGE_LINK.jpg" class="product-img">
-
-<!-- COUNTDOWN -->
-<div class="countdown-wrapper">
-<div class="countdown-title">Discount Will End in 🔻</div>
-<div class="countdown-box">
-<div class="time-box">
-<div class="time-number" id="hours">22</div>
-<div class="time-label">Hours</div>
-</div>
-<div class="time-box">
-<div class="time-number" id="minutes">06</div>
-<div class="time-label">Minutes</div>
-</div>
-<div class="time-box">
-<div class="time-number" id="seconds">59</div>
-<div class="time-label">Seconds</div>
-</div>
-</div>
+<div class="big-text outline-text">
+এই স্ক্রেচ কার্ড ঘোষণ এবং Methi Mixd powder এর উপরে ডিসকাউন্ট নিন!!
 </div>
 
-<div class="qty-box">
-<button class="qty-btn" onclick="changeQty(-1)">−</button>
-<div class="qty-number" id="qty">0</div>
-<button class="qty-btn" onclick="changeQty(1)">+</button>
-</div>
-
-<div class="price" id="priceText">
-০টার দাম: ০ টাকা
-</div>
-
+<!-- স্ক্র্যাচ কার্ড -->
 <div class="scratch-container">
-<div id="discountReveal">
-Lucky Discount <span id="discountText"></span>% 🎉
-</div>
-<canvas id="scratchCard"></canvas>
-</div>
 
-<button class="condition-btn" onclick="toggleCondition()">
-scratch card condition 👈
-</button>
+    <div class="scratch-content outline-text" id="scratchContent">
+        <img src="product.png">
+        <div id="discountText"></div>
+    </div>
 
-<div class="condition-box" id="conditionBox">
-🚫 স্ক্র্যাচ কার্ডটি একবার ব্যবহারযোগ্য...
+    <canvas id="scratchCanvas" width="320" height="200"></canvas>
 </div>
 
-<div class="result-box" id="resultMessage"></div>
-
-<!-- ===== NEW IMAGE ===== -->
-<img src="YOUR_IMAGE_LINK.jpg" class="product-img">
-
-<!-- ===== BENEFITS ===== -->
-<div class="benefits-box">
-🔻মূল উপকারিতা🔻<br><br>
-
-❇️ কোষ্ঠকাঠিন্য<br>
-❇️ অতিরিক্ত গ্যাস<br>
-❇️ অ্যাসিডিটি<br>
-❇️ বুক জ্বালা<br>
-❇️ টক ঢেকুর<br>
-❇️ বদহজম<br>
-❇️ পেট কামড়ানো<br>
-❇️ খাবার হজম না হওয়া – তাৎক্ষণিকভাবে কমায়<br>
-❇️ পেট ফাঁপা<br>
-❇️ অরুচি ও খাবারে অনীহা<br>
-❇️ রক্তের সুগার নিয়ন্ত্রণে সহায়ক – ডায়াবেটিস রোগীদের জন্য উপকারী<br>
-❇️ শরীরের চর্বি কমাতে সহায়ক<br>
-❇️ রক্তচাপ নিয়ন্ত্রণে সাহায্য করে<br>
-❇️ পেট পরিষ্কার রাখে<br>
-❇️ নিয়মিত ডিটক্সিফায়ার হিসেবে কাজ করে<br>
-❇️ যৌনশক্তি<br>
-❇️ শক্তি ও স্ট্যামিনা বাড়াতে সহায়ক<br>
-❇️ অ্যান্টিব্যাকটেরিয়াল গুণে কৃমিনাশক<br>
-❇️ অ্যান্টিঅক্সিডেন্টে ইমিউন সিস্টেম শক্তিশালী করে
-</div>
-
-<!-- SOCIAL NOTIFICATION -->
-<div class="social-proof" id="socialProof"></div>
+<div class="result-text outline-text" id="finalResult"></div>
 
 <script>
+const canvas = document.getElementById("scratchCanvas");
+const ctx = canvas.getContext("2d");
+let scratching = false;
+let discount = Math.floor(Math.random() * 21) + 30; // 30-50%
+let originalPrice = 999;
+let discountedPrice = Math.round(originalPrice - (originalPrice * discount / 100));
 
-/* ===== তোমার আগের JS একদম অপরিবর্তিত ===== */
-let totalSeconds=(22*60*60)+(6*60)+59;
-function updateCountdown(){
-let hours=Math.floor(totalSeconds/3600);
-let minutes=Math.floor((totalSeconds%3600)/60);
-let seconds=totalSeconds%60;
-document.getElementById("hours").innerText=String(hours).padStart(2,'0');
-document.getElementById("minutes").innerText=String(minutes).padStart(2,'0');
-document.getElementById("seconds").innerText=String(seconds).padStart(2,'0');
-if(totalSeconds>0){totalSeconds--;}
-}
-setInterval(updateCountdown,1000);
+document.getElementById("discountText").innerHTML =
+"আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
-let basePrice=999;
-let qty=0;
-let discount=Math.floor(Math.random()*11)+40;
-let scratched=false;
+function drawScratchLayer(){
+    let gradient = ctx.createLinearGradient(0,0,320,200);
+    gradient.addColorStop(0,"red");
+    gradient.addColorStop(0.2,"orange");
+    gradient.addColorStop(0.4,"yellow");
+    gradient.addColorStop(0.6,"green");
+    gradient.addColorStop(0.8,"blue");
+    gradient.addColorStop(1,"purple");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0,0,320,200);
 
-document.getElementById("discountText").innerText=discount;
-
-const qtyEl=document.getElementById("qty");
-const priceText=document.getElementById("priceText");
-const resultMsg=document.getElementById("resultMessage");
-const canvas=document.getElementById("scratchCard");
-const ctx=canvas.getContext("2d");
-
-function changeQty(val){
-qty+=val;
-if(qty<0) qty=0;
-qtyEl.innerText=qty;
-updatePrice();
+    ctx.fillStyle="white";
+    ctx.font="bold 22px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("এখানে ঘষুন",160,110);
 }
 
-function updatePrice(){
-let total=basePrice*qty;
-priceText.innerHTML=qty+"টার দাম: "+total+" টাকা";
-if(scratched){
-let discountedTotal=total-(total*discount/100);
-resultMsg.innerHTML="🎉 অভিনন্দন! আপনি "+discount+ "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+ Math.round(discountedTotal)+" টাকা";
-}
-}
+drawScratchLayer();
 
-canvas.width=document.querySelector(".scratch-container").offsetWidth;
-canvas.height=document.querySelector(".scratch-container").offsetHeight;
-ctx.fillStyle="#bbbbbb";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="#000";
-ctx.font="bold 24px Arial";
-ctx.textAlign="center";
-ctx.fillText("এখানে ঘষুন",canvas.width/2,canvas.height/2);
-
-let isDrawing=false;
-canvas.addEventListener("mousedown",()=>{isDrawing=true;});
-canvas.addEventListener("mouseup",()=>{isDrawing=false;scratched=true;updatePrice();});
-canvas.addEventListener("mousemove",draw);
-canvas.addEventListener("touchstart",()=>{isDrawing=true;});
-canvas.addEventListener("touchend",()=>{isDrawing=false;scratched=true;updatePrice();});
-canvas.addEventListener("touchmove",draw);
-
-function draw(e){
-if(!isDrawing) return;
-let rect=canvas.getBoundingClientRect();
-let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-ctx.globalCompositeOperation="destination-out";
-ctx.beginPath();
-ctx.arc(x,y,25,0,Math.PI*2);
-ctx.fill();
+function getPosition(e){
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x:(e.touches?e.touches[0].clientX:e.clientX)-rect.left,
+        y:(e.touches?e.touches[0].clientY:e.clientY)-rect.top
+    }
 }
 
-function toggleCondition(){
-let box=document.getElementById("conditionBox");
-box.style.display=box.style.display==="block"?"none":"block";
+function scratch(e){
+    if(!scratching) return;
+    let pos = getPosition(e);
+    ctx.globalCompositeOperation="destination-out";
+    ctx.beginPath();
+    ctx.arc(pos.x,pos.y,15,0,Math.PI*2);
+    ctx.fill();
 }
 
-const names=[
-"আমিনুল ইসলাম","সোহেল রানা","মাহমুদুল হাসান","রাকিব হোসেন",
-"নাসরিন আক্তার","ফারজানা ইসলাম","তানিয়া রহমান","সাবিনা ইয়াসমিন",
-"রুবেল মিয়া","আলমগীর হোসেন","শারমিন সুলতানা","জাহিদুল ইসলাম"
-];
-
-function showNotification(){
-const randomName=names[Math.floor(Math.random()*names.length)];
-const randomDiscount=Math.floor(Math.random()*29)+10;
-const box=document.getElementById("socialProof");
-box.innerHTML="🎉 <b>"+randomName+"</b> "+randomDiscount+"% ডিসকাউন্ট পেয়েছেন";
-box.style.display="block";
-setTimeout(()=>{box.style.display="none";},4000);
-}
-setInterval(showNotification,6000);
-<!-- ================= PAYMENT FORM START ================= -->
-
-<style>
-.payment-section{
-width:90%;
-max-width:500px;
-margin:40px auto;
-background:purple;
-border:2px solid yellow;
-border-radius:10px;
-padding:20px;
-color:white;
-}
-.payment-section h2{
-margin-bottom:15px;
-}
-.payment-form input,
-.payment-form select{
-width:100%;
-padding:10px;
-margin-bottom:12px;
-border-radius:6px;
-border:1px solid yellow;
-font-size:14px;
-}
-.payment-form button{
-width:100%;
-padding:12px;
-background:yellow;
-border:none;
-font-weight:bold;
-font-size:16px;
-border-radius:6px;
-cursor:pointer;
-}
-</style>
-
-<div class="payment-section">
-<h2>🛒 অর্ডার ও পেমেন্ট ফর্ম</h2>
-
-<form class="payment-form" 
-action="https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_LINK/exec" 
-method="POST">
-
-<input type="text" name="name" placeholder="আপনার নাম" required>
-<input type="tel" name="phone" placeholder="মোবাইল নাম্বার" required>
-<input type="text" name="address" placeholder="সম্পূর্ণ ঠিকানা" required>
-
-<select name="payment_method" required>
-<option value="">পেমেন্ট পদ্ধতি নির্বাচন করুন</option>
-<option value="Cash On Delivery">Cash On Delivery</option>
-<option value="Bkash">Bkash</option>
-<option value="Nagad">Nagad</option>
-<option value="Rocket">Rocket</option>
-</select>
-
-<input type="hidden" name="quantity" id="hiddenQty">
-<input type="hidden" name="discount" id="hiddenDiscount">
-<input type="hidden" name="total_price" id="hiddenTotal">
-
-<button type="submit">অর্ডার কনফার্ম করুন</button>
-</form>
-</div>
-
-<script>
-document.querySelector(".payment-form").addEventListener("submit", function(){
-document.getElementById("hiddenQty").value = qty;
-document.getElementById("hiddenDiscount").value = scratched ? discount : 0;
-
-let total = basePrice * qty;
-let finalTotal = scratched ? total - (total * discount / 100) : total;
-
-document.getElementById("hiddenTotal").value = Math.round(finalTotal);
+canvas.addEventListener("mousedown",()=>scratching=true);
+canvas.addEventListener("mouseup",()=>{
+    scratching=false;
+    document.getElementById("finalResult").innerHTML=
+    discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
 });
+canvas.addEventListener("mousemove",scratch);
+
+canvas.addEventListener("touchstart",()=>scratching=true);
+canvas.addEventListener("touchend",()=>{
+    scratching=false;
+    document.getElementById("finalResult").innerHTML=
+    discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
+});
+canvas.addEventListener("touchmove",scratch);
 </script>
 
-<!-- ================= PAYMENT FORM END ================= -->
-</script>
 </body>
 </html>
-
