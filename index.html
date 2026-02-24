@@ -28,7 +28,7 @@ body{
     font-weight:bold;
 }
 
-/* নতুন লাইন - রমজান অফার */
+/* রমজান অফার */
 .ramadan-offer{
     color:yellow;
     font-weight:bold;
@@ -60,7 +60,7 @@ body{
 .scratch-container{
     position:relative;
     width:340px;
-    height:230px;
+    height:240px;
     margin:10px auto;
 }
 
@@ -70,10 +70,9 @@ body{
     left:0;
     cursor:pointer;
     border-radius:15px;
-    border:2px solid yellow; /* হলুদ লাইন */
+    border:2px solid yellow;
 }
 
-/* কার্ড ভিতরের কন্টেন্ট */
 .scratch-content{
     position:absolute;
     width:100%;
@@ -98,7 +97,7 @@ body{
     font-size:20px;
 }
 
-/* রেইনবো লাইভ বাটন */
+/* রেইনবো বাটন */
 .order-btn{
     display:none;
     margin:15px auto;
@@ -126,7 +125,6 @@ body{
     0%,100%{transform:translateY(0);}
     50%{transform:translateY(-6px);}
 }
-
 </style>
 </head>
 
@@ -146,11 +144,10 @@ body{
 
     <div class="scratch-content outline-text">
         <img id="cardProduct">
-
         <div id="discountText"></div>
     </div>
 
-    <canvas id="scratchCanvas" width="340" height="230"></canvas>
+    <canvas id="scratchCanvas" width="340" height="240"></canvas>
 </div>
 
 <div class="result-text outline-text" id="finalResult"></div>
@@ -175,8 +172,13 @@ cardImage.src = mainImage.src;
 document.getElementById("discountText").innerHTML =
 "আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
+let movingImg = new Image();
+movingImg.src = mainImage.src;
+
+let imgX = -50;
+
 function drawScratchLayer(){
-    let gradient = ctx.createLinearGradient(0,0,340,230);
+    let gradient = ctx.createLinearGradient(0,0,340,240);
     gradient.addColorStop(0,"red");
     gradient.addColorStop(0.2,"orange");
     gradient.addColorStop(0.4,"yellow");
@@ -184,27 +186,39 @@ function drawScratchLayer(){
     gradient.addColorStop(0.8,"blue");
     gradient.addColorStop(1,"purple");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,340,230);
+    ctx.fillRect(0,0,340,240);
 
-    // উপরের নতুন লাইন
+    // রমজান অফার
     ctx.fillStyle="yellow";
     ctx.strokeStyle="red";
     ctx.lineWidth=1;
     ctx.font="bold 20px Arial";
     ctx.textAlign="center";
-    ctx.strokeText("রমজান অফার গোপন কাট",170,60);
-    ctx.fillText("রমজান অফার গোপন কাট",170,60);
+    ctx.strokeText("রমজান অফার গোপন কাট",170,50);
+    ctx.fillText("রমজান অফার গোপন কাট",170,50);
 
-    // এখানে ঘষুন লেখা
+    // চলমান ছবি
+    ctx.drawImage(movingImg, imgX, 70, 50, 50);
+
+    // এখানে ঘষুন
     ctx.fillStyle="red";
     ctx.strokeStyle="yellow";
     ctx.lineWidth=1;
     ctx.font="bold 22px Arial";
-    ctx.strokeText("এখানে ঘষুন",170,130);
-    ctx.fillText("এখানে ঘষুন",170,130);
+    ctx.strokeText("এখানে ঘষুন",170,150);
+    ctx.fillText("এখানে ঘষুন",170,150);
 }
 
-drawScratchLayer();
+function animate(){
+    imgX += 0.5;
+    if(imgX > 340) imgX = -60;
+    drawScratchLayer();
+    requestAnimationFrame(animate);
+}
+
+movingImg.onload = function(){
+    animate();
+};
 
 function getPosition(e){
     const rect = canvas.getBoundingClientRect();
@@ -235,11 +249,9 @@ function showResult(){
     scratching=false;
     document.getElementById("finalResult").innerHTML=
     discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
-
     document.getElementById("orderBtn").style.display="block";
 }
 
-// বাটন ক্লিক করলে (ডেমো লিংক)
 document.getElementById("orderBtn").onclick=function(){
     alert("অর্ডার পেজে নিয়ে যাওয়া হবে");
 };
