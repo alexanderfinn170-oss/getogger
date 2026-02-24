@@ -9,17 +9,24 @@
 body{
     margin:0;
     padding:0;
-    background:#e6ccff;
+    background:#4b0082; /* Deep Purple */
     font-family: Arial, sans-serif;
     text-align:center;
 }
 
-/* বাংলা লেখা আউটলাইন */
+/* বাংলা লেখা হলুদ আউটলাইন */
 .outline-text{
     color:white;
     font-weight:bold;
-    -webkit-text-stroke: 1px black;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    -webkit-text-stroke: 1.5px yellow;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+
+/* Methi Mixd powder লাল আউটলাইন */
+.product-name{
+    color:white;
+    font-weight:bold;
+    -webkit-text-stroke: 1.5px red;
 }
 
 .product-img{
@@ -32,7 +39,7 @@ body{
     width:90%;
     max-width:500px;
     padding:15px;
-    background:#e6ccff;
+    background:#4b0082;
     border:2px solid yellow;
     border-radius:10px;
 }
@@ -84,23 +91,23 @@ body{
 
 <body>
 
-<!-- প্রোডাক্ট ছবি -->
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGNVE449TirWRm-2JOgy6cIpm215zCpiTt6yW6x9PO2KvbylzVyJXQyj0s_7zZL4K-RlmgN-tQzGQOLugwRAHeeiwcxMhz-LvQs28MvfYDwhug0F5DEaSVORIuQgTyZ_WOl8EZBaMSRKQr0hAJz1FTilE-DrMOpnHFxDxrdgo_EUHVxQiN3LpHHPwgk24/s612/WhatsApp_Image_2026-02-24_at_12.50.35-removebg-preview.png" class="product-img">
+<!-- প্রোডাক্ট ছবি (এখানে শুধু লিংক পরিবর্তন করবেন) -->
+<img id="mainProduct" src="YOUR_IMAGE_LINK_HERE" class="product-img">
 
 <!-- অফার বক্স -->
 <div class="offer-box outline-text">
-আমাদের Methi Mixd powder 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
+আমাদের <span class="product-name">Methi Mixd powder</span> 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
 </div>
 
 <div class="big-text outline-text">
-এই স্ক্রেচ কার্ড ঘোষণ এবং Methi Mixd powder এর উপরে ডিসকাউন্ট নিন!!
+এই স্ক্রেচ কার্ড ঘোষণ এবং <span class="product-name">Methi Mixd powder</span> এর উপরে ডিসকাউন্ট নিন!!
 </div>
 
 <!-- স্ক্র্যাচ কার্ড -->
 <div class="scratch-container">
 
-    <div class="scratch-content outline-text" id="scratchContent">
-        <img src="product.png">
+    <div class="scratch-content outline-text">
+        <img id="cardProduct">
         <div id="discountText"></div>
     </div>
 
@@ -113,9 +120,15 @@ body{
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 let scratching = false;
+
 let discount = Math.floor(Math.random() * 21) + 30; // 30-50%
 let originalPrice = 999;
 let discountedPrice = Math.round(originalPrice - (originalPrice * discount / 100));
+
+// অটো ইমেজ সিঙ্ক
+const mainImage = document.getElementById("mainProduct");
+const cardImage = document.getElementById("cardProduct");
+cardImage.src = mainImage.src;
 
 document.getElementById("discountText").innerHTML =
 "আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
@@ -152,7 +165,7 @@ function scratch(e){
     let pos = getPosition(e);
     ctx.globalCompositeOperation="destination-out";
     ctx.beginPath();
-    ctx.arc(pos.x,pos.y,15,0,Math.PI*2);
+    ctx.arc(pos.x,pos.y,18,0,Math.PI*2);
     ctx.fill();
 }
 
@@ -175,4 +188,3 @@ canvas.addEventListener("touchmove",scratch);
 
 </body>
 </html>
-
