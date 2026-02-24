@@ -15,8 +15,8 @@ body{
 
 /* HEADER BOX */
 .header-box{
-  background:purple;       /* পরিবর্তন করা হয়েছে */
-  color:red;
+  background:purple;       /* Purple background */
+  color:white;             /* লেখা now white */
   font-size:24px;
   font-weight:bold;
   padding:15px;
@@ -26,7 +26,7 @@ body{
 /* PRODUCT IMAGE */
 .product-img{
   width:100%;
-  border:5px solid red;
+  border:2px solid yellow;   /* পাতলা হলুদ বর্ডার */
 }
 
 /* INFO BOX */
@@ -54,22 +54,24 @@ body{
 }
 
 .qty-btn{
-  background:purple;          /* ব্যাকগ্রাউন্ড কালার */
-  border:2px solid yellow;    /* হালুদ বর্ডার */
+  background:purple;
+  border:2px solid yellow;
   font-size:22px;
-  padding:6px 16px;           /* ছোট বক্স */
+  padding:6px 16px;
   cursor:pointer;
   margin:0 5px;
   border-radius:5px;
+  color:yellow;       /* Text color yellow */
 }
 
 .qty-number{
-  background:purple;           /* ব্যাকগ্রাউন্ড কালার */
-  border:2px solid yellow;     /* হালুদ বর্ডার */
+  background:purple;
+  border:2px solid yellow;
   padding:8px 25px;
   font-size:22px;
   margin:0 5px;
   border-radius:5px;
+  color:yellow;       /* Text color yellow */
 }
 
 /* PRICE */
@@ -160,7 +162,7 @@ canvas{
 <script>
 let basePrice = 999;
 let qty = 0;
-let discount;
+let discount = Math.floor(Math.random()*11)+40; // 40-50% random
 let scratched = false;
 
 const qtyEl = document.getElementById("qty");
@@ -182,29 +184,16 @@ function updatePrice(){
   let total = basePrice * qty;
   priceEl.innerText = total;
 
-  if(discount && scratched){
+  if(scratched){
     let discountedTotal = total - (total * discount / 100);
     resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
-  }else{
+  } else {
     resultMsg.innerHTML = "";
   }
 }
 
-/* ---- FINGERPRINT LOCK & SAVED DISCOUNT ---- */
-let fingerprint = navigator.userAgent + screen.width + screen.height;
-
-if(localStorage.getItem("scratchFingerprint") === fingerprint){
-    discount = localStorage.getItem("savedDiscount");
-    canvas.style.display="none";
-    revealBox.innerHTML = discount + "% DISCOUNT 🎉";
-    scratched = true;
-    updatePrice();
-}else{
-    discount = Math.floor(Math.random()*11)+40; // 40-50%
-    localStorage.setItem("savedDiscount", discount);
-    localStorage.setItem("scratchFingerprint", fingerprint);
-    revealBox.innerHTML = discount + "% DISCOUNT 🎉";
-}
+/* ---- SCRATCH CARD ---- */
+revealBox.innerHTML = discount + "% DISCOUNT 🎉";
 
 /* ---- REALISTIC SCRATCH EFFECT ---- */
 canvas.width = revealBox.offsetWidth;
