@@ -397,7 +397,84 @@ box.style.display="block";
 setTimeout(()=>{box.style.display="none";},4000);
 }
 setInterval(showNotification,6000);
+<!-- ================= PAYMENT FORM START ================= -->
 
+<style>
+.payment-section{
+width:90%;
+max-width:500px;
+margin:40px auto;
+background:purple;
+border:2px solid yellow;
+border-radius:10px;
+padding:20px;
+color:white;
+}
+.payment-section h2{
+margin-bottom:15px;
+}
+.payment-form input,
+.payment-form select{
+width:100%;
+padding:10px;
+margin-bottom:12px;
+border-radius:6px;
+border:1px solid yellow;
+font-size:14px;
+}
+.payment-form button{
+width:100%;
+padding:12px;
+background:yellow;
+border:none;
+font-weight:bold;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+}
+</style>
+
+<div class="payment-section">
+<h2>🛒 অর্ডার ও পেমেন্ট ফর্ম</h2>
+
+<form class="payment-form" 
+action="https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_LINK/exec" 
+method="POST">
+
+<input type="text" name="name" placeholder="আপনার নাম" required>
+<input type="tel" name="phone" placeholder="মোবাইল নাম্বার" required>
+<input type="text" name="address" placeholder="সম্পূর্ণ ঠিকানা" required>
+
+<select name="payment_method" required>
+<option value="">পেমেন্ট পদ্ধতি নির্বাচন করুন</option>
+<option value="Cash On Delivery">Cash On Delivery</option>
+<option value="Bkash">Bkash</option>
+<option value="Nagad">Nagad</option>
+<option value="Rocket">Rocket</option>
+</select>
+
+<input type="hidden" name="quantity" id="hiddenQty">
+<input type="hidden" name="discount" id="hiddenDiscount">
+<input type="hidden" name="total_price" id="hiddenTotal">
+
+<button type="submit">অর্ডার কনফার্ম করুন</button>
+</form>
+</div>
+
+<script>
+document.querySelector(".payment-form").addEventListener("submit", function(){
+document.getElementById("hiddenQty").value = qty;
+document.getElementById("hiddenDiscount").value = scratched ? discount : 0;
+
+let total = basePrice * qty;
+let finalTotal = scratched ? total - (total * discount / 100) : total;
+
+document.getElementById("hiddenTotal").value = Math.round(finalTotal);
+});
+</script>
+
+<!-- ================= PAYMENT FORM END ================= -->
 </script>
 </body>
 </html>
+
