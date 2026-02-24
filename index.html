@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,209 +7,255 @@
 
 <style>
 body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#6a0dad;
-    text-align:center;
-    color:white;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#6a0dad;
+  text-align:center;
 }
 
-.container{
-    max-width:400px;
-    margin:auto;
-    padding:20px;
+/* HEADER BOX */
+.header-box{
+  background:purple;
+  color:white;
+  font-size:24px;
+  font-weight:bold;
+  padding:15px;
+  border:2px solid yellow;
+  margin-bottom:15px; /* Distance to product image */
 }
 
-.box{
-    border:2px solid yellow;
-    padding:10px;
-    margin:15px 0;
-    border-radius:8px;
-    background:#6a0dad;
+/* PRODUCT IMAGE */
+.product-img{
+  width:100%;
+  border:2px solid yellow;
+  margin-bottom:15px; /* Distance to info box */
 }
 
-.box h2{
-    margin:0;
-    color:white;
+/* INFO BOX */
+.info-box{
+  background:purple;
+  color:yellow;
+  padding:15px;
+  border:2px solid yellow;
+  font-size:18px;
+  margin-bottom:15px; /* Distance to quantity box */
 }
 
-.warning{
-    font-size:12px;
-    margin-top:5px;
+.product-name{
+  font-size:26px;
+  color:orange;
+  font-weight:bold;
+  text-shadow: 0 0 8px red,0 0 15px red;
 }
 
-img{
-    width:100%;
-    border:2px solid yellow;
-    border-radius:8px;
-    margin:15px 0;
-}
-
-canvas{
-    border-radius:10px;
-    margin-top:10px;
-}
-
-.price{
-    font-size:20px;
-    margin:10px 0;
-}
-
-.qty-control{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:8px;
-    margin-top:10px;
+/* QUANTITY BOXES */
+.qty-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:20px 0;
 }
 
 .qty-btn{
-    width:30px;
-    height:30px;
-    background:yellow;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
+  background:purple;
+  border:2px solid yellow;
+  font-size:22px;
+  padding:6px 16px;
+  cursor:pointer;
+  margin:0 5px;
+  border-radius:5px;
+  color:yellow;
 }
 
-.qty-box{
-    width:50px;
-    height:30px;
-    text-align:center;
-    border:2px solid yellow;
-    background:yellow;
+.qty-number{
+  background:purple;
+  border:2px solid yellow;
+  padding:8px 25px;
+  font-size:22px;
+  margin:0 5px;
+  border-radius:5px;
+  color:yellow;
+}
+
+/* PRICE */
+.price{
+  font-size:26px;
+  font-weight:bold;
+  color:white;
+  margin:15px 0;
+}
+
+/* SCRATCH CARD */
+.scratch-container{
+  position:relative;
+  width:85%;
+  max-width:420px;
+  height:180px;
+  margin:20px auto;
+  border-radius:15px;
+  overflow:hidden;
+}
+
+#discountReveal{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  font-size:32px;
+  font-weight:bold;
+  color:white;
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+}
+
+#warning{
+  font-size:12px;
+  color:white;
+  margin-top:8px;
+  text-align:center;
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+/* RESULT MESSAGE BOX */
+.result-box{
+  background: #6a0dad;
+  border: 2px solid yellow;
+  padding:15px;
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  margin:20px auto;
+  width:80%;
+  border-radius:10px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="container">
-
-<div class="box">
-<h2>Scratch and Win Discount</h2>
-<div class="warning">
-🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | 
-দ্বিতীয়বার ট্রাই করে বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫
-</div>
+<div class="header-box">
+পণ্যটি ক্রয় করার আগে আপনার ভাগ্য যাচাই করে নিন!<br>
+স্ক্র্যাচ কার্ডটি আপনার আঙ্গুল দিয়ে ঘষুন এবং সর্বোচ্চ ৫০% পর্যন্ত ডিসকাউন্ট লুফে নিন!
 </div>
 
-<img src="https://via.placeholder.com/400x250.png?text=Product+Image">
+<img src="YOUR_IMAGE_LINK.jpg" class="product-img">
 
-<canvas id="scratchCard" width="350" height="150"></canvas>
-
-<div class="price">
-Original Price: 999৳
+<div class="info-box">
+আপনি কয়টা <span class="product-name">[PRODUCT_NAME]</span> নিতে চান আগে সিলেক্ট করুন তারপর স্ক্র্যাচ করুন।
 </div>
 
-<div class="price" id="discountPrice">
-Discounted Price: --
-</div>
-
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty(-1)">-</button>
-<input type="text" id="qty" class="qty-box" value="1" readonly>
+<div class="qty-box">
+<button class="qty-btn" onclick="changeQty(-1)">−</button>
+<div class="qty-number" id="qty">1</div>
 <button class="qty-btn" onclick="changeQty(1)">+</button>
 </div>
 
+<div class="price">
+মোট দাম: <span id="totalPrice">999</span> টাকা
 </div>
 
+<div class="scratch-container">
+<div id="discountReveal">
+  <div id="warning">🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>
+</div>
+<canvas id="scratchCard"></canvas>
+</div>
+
+<div class="result-box" id="resultMessage"></div>
+
 <script>
-let canvas = document.getElementById("scratchCard");
-let ctx = canvas.getContext("2d");
-let isDrawing = false;
-let revealed = false;
-
-let originalPrice = 999;
-let discountPercent = 0;
+let basePrice = 999;
 let qty = 1;
+let discount = Math.floor(Math.random()*11)+40; // 40-50%
+let scratched = false;
 
-function createRainbow(){
-    let gradient = ctx.createLinearGradient(0,0,canvas.width,0);
-    gradient.addColorStop(0,"red");
-    gradient.addColorStop(0.17,"orange");
-    gradient.addColorStop(0.34,"yellow");
-    gradient.addColorStop(0.51,"green");
-    gradient.addColorStop(0.68,"blue");
-    gradient.addColorStop(0.85,"indigo");
-    gradient.addColorStop(1,"violet");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-}
+const qtyEl = document.getElementById("qty");
+const priceEl = document.getElementById("totalPrice");
+const revealBox = document.getElementById("discountReveal");
+const resultMsg = document.getElementById("resultMessage");
+const canvas = document.getElementById("scratchCard");
+const ctx = canvas.getContext("2d");
 
-function loadSavedState(){
-    let savedImage = localStorage.getItem("scratchImage");
-    let savedDiscount = localStorage.getItem("discountPercent");
-    if(savedImage){
-        let img = new Image();
-        img.src = savedImage;
-        img.onload = function(){
-            ctx.drawImage(img,0,0);
-        }
-        revealed = true;
-        discountPercent = savedDiscount;
-        updatePrice();
-    }else{
-        createRainbow();
-    }
-}
-
-canvas.addEventListener("mousedown",start);
-canvas.addEventListener("touchstart",start);
-
-canvas.addEventListener("mousemove",draw);
-canvas.addEventListener("touchmove",draw);
-
-canvas.addEventListener("mouseup",stop);
-canvas.addEventListener("touchend",stop);
-
-function start(e){
-    if(revealed) return;
-    isDrawing = true;
-}
-
-function draw(e){
-    if(!isDrawing) return;
-    e.preventDefault();
-    let rect = canvas.getBoundingClientRect();
-    let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath();
-    ctx.arc(x,y,20,0,Math.PI*2);
-    ctx.fill();
-}
-
-function stop(){
-    if(!isDrawing) return;
-    isDrawing = false;
-
-    if(!revealed){
-        discountPercent = Math.floor(Math.random()*30)+10; 
-        revealed = true;
-        localStorage.setItem("discountPercent",discountPercent);
-    }
-
-    localStorage.setItem("scratchImage",canvas.toDataURL());
-    updatePrice();
+/* ---- QUANTITY & PRICE ---- */
+function changeQty(val){
+  qty += val;
+  if(qty<1) qty=1;
+  qtyEl.innerText = qty;
+  updatePrice();
 }
 
 function updatePrice(){
-    let discounted = originalPrice - (originalPrice*discountPercent/100);
-    let finalPrice = discounted * qty;
-    document.getElementById("discountPrice").innerText =
-    "Discounted Price: " + finalPrice.toFixed(0) + "৳ ("+discountPercent+"% OFF)";
+  let total = basePrice * qty;
+  priceEl.innerText = total;
+
+  if(scratched){
+    let discountedTotal = total - (total*discount/100);
+    resultMsg.innerHTML = "🎉 ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+  }else{
+    resultMsg.innerHTML = "";
+  }
 }
 
-function changeQty(change){
-    qty += change;
-    if(qty < 1) qty = 1;
-    document.getElementById("qty").value = qty;
-    if(revealed){
-        updatePrice();
-    }
+/* ---- SCRATCH CARD ---- */
+canvas.width = revealBox.offsetWidth;
+canvas.height = revealBox.offsetHeight;
+
+let gradient = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+gradient.addColorStop(0,"#eeeeee");
+gradient.addColorStop(0.5,"#bbbbbb");
+gradient.addColorStop(1,"#eeeeee");
+ctx.fillStyle = gradient;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+/* Scratch and win text */
+ctx.fillStyle="#000";
+ctx.font="bold 24px Arial";
+ctx.textAlign="center";
+ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
+
+/* Scratch drawing */
+let isDrawing=false;
+
+canvas.addEventListener("mousedown",()=>{isDrawing=true;});
+canvas.addEventListener("mouseup",()=>{
+  isDrawing=false;
+  revealDiscount();
+});
+canvas.addEventListener("mousemove",draw);
+
+canvas.addEventListener("touchstart",(e)=>{isDrawing=true;});
+canvas.addEventListener("touchend",(e)=>{
+  isDrawing=false;
+  revealDiscount();
+});
+canvas.addEventListener("touchmove",draw);
+
+function draw(e){
+  if(!isDrawing || scratched) return;
+
+  let rect = canvas.getBoundingClientRect();
+  let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
+  let y = (e.touches ? e.touches[0].clientY : e.clientY)-rect.top;
+
+  ctx.globalCompositeOperation="destination-out";
+  ctx.beginPath();
+  ctx.arc(x,y,25,0,Math.PI*2);
+  ctx.fill();
 }
 
-loadSavedState();
+function revealDiscount(){
+  scratched=true;
+  let total = basePrice*qty;
+  let discountedTotal = total - (total*discount/100);
+  resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+}
 </script>
 
 </body>
