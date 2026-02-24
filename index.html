@@ -21,14 +21,14 @@ body{
   font-weight:bold;
   padding:15px;
   border:2px solid yellow;
-  margin-bottom:15px; /* Distance to product image */
+  margin-bottom:15px;
 }
 
 /* PRODUCT IMAGE */
 .product-img{
   width:100%;
   border:2px solid yellow;
-  margin-bottom:15px; /* Distance to info box */
+  margin-bottom:15px;
 }
 
 /* INFO BOX */
@@ -38,7 +38,7 @@ body{
   padding:15px;
   border:2px solid yellow;
   font-size:18px;
-  margin-bottom:15px; /* Distance to quantity box */
+  margin-bottom:15px;
 }
 
 .product-name{
@@ -163,7 +163,10 @@ canvas{
 
 <div class="scratch-container">
 <div id="discountReveal">
-  <div id="warning">🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>
+  Lucky Discount 🎉
+  <div id="warning">
+  🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড
+  </div>
 </div>
 <canvas id="scratchCard"></canvas>
 </div>
@@ -182,27 +185,6 @@ const revealBox = document.getElementById("discountReveal");
 const resultMsg = document.getElementById("resultMessage");
 const canvas = document.getElementById("scratchCard");
 const ctx = canvas.getContext("2d");
-
-/* Fingerprint for one-time use */
-let fingerprint = navigator.userAgent + screen.width + screen.height;
-if(localStorage.getItem("scratchFingerprint")===fingerprint){
-    discount = localStorage.getItem("savedDiscount");
-    let savedData = localStorage.getItem("scratchData");
-    scratched = true;
-    updatePrice();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(savedData){
-        let img = new Image();
-        img.src = savedData;
-        img.onload = function(){
-            ctx.drawImage(img,0,0);
-        }
-    }
-    revealBox.innerHTML = discount + "% DISCOUNT 🎉<div id='warning'>🚫Important🚫 এটি একটি রিয়েল স্টিক ভার্চুয়াল ডিসকাউন্ট স্ক্র্যাচ কার্ড | দ্বিতীয়বার ট্রাই বা VPN ব্যবহার করে ডিসকাউন্ট প্রভাবিত করতে পারবেন না 🚫</div>";
-}else{
-    localStorage.setItem("scratchFingerprint",fingerprint);
-    localStorage.setItem("savedDiscount",discount);
-}
 
 /* ---- QUANTITY & PRICE ---- */
 function changeQty(val){
@@ -235,32 +217,29 @@ gradient.addColorStop(1,"#eeeeee");
 ctx.fillStyle = gradient;
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-/* Scratch and win text */
 ctx.fillStyle="#000";
 ctx.font="bold 24px Arial";
 ctx.textAlign="center";
 ctx.fillText("Scratch and Win Discount",canvas.width/2,canvas.height/2);
 
-/* Scratch drawing */
 let isDrawing=false;
-let showFullCard=false;
 
-canvas.addEventListener("mousedown",()=>{if(!scratched)isDrawing=true;});
+canvas.addEventListener("mousedown",()=>{isDrawing=true;});
 canvas.addEventListener("mouseup",()=>{
   isDrawing=false;
   revealDiscount();
 });
 canvas.addEventListener("mousemove",draw);
 
-canvas.addEventListener("touchstart",(e)=>{if(!scratched)isDrawing=true;});
-canvas.addEventListener("touchend",(e)=>{
+canvas.addEventListener("touchstart",()=>{isDrawing=true;});
+canvas.addEventListener("touchend",()=>{
   isDrawing=false;
   revealDiscount();
 });
 canvas.addEventListener("touchmove",draw);
 
 function draw(e){
-  if(!isDrawing || scratched) return;
+  if(!isDrawing) return;
 
   let rect = canvas.getBoundingClientRect();
   let x = (e.touches ? e.touches[0].clientX : e.clientX)-rect.left;
@@ -270,19 +249,19 @@ function draw(e){
   ctx.beginPath();
   ctx.arc(x,y,25,0,Math.PI*2);
   ctx.fill();
-
-  saveScratchProgress();
-}
-
-function saveScratchProgress(){
-    localStorage.setItem("scratchData", canvas.toDataURL());
 }
 
 function revealDiscount(){
   scratched=true;
+  revealBox.innerHTML = discount+"% DISCOUNT 🎉";
+
   let total = basePrice*qty;
   let discountedTotal = total - (total*discount/100);
-  resultMsg.innerHTML = "🎉 অভিনন্দন! আপনি "+discount+"% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+Math.round(discountedTotal)+" টাকা";
+
+  resultMsg.innerHTML =
+  "🎉 অভিনন্দন! আপনি "+discount+
+  "% ছাড় পেয়েছেন! <br> ডিসকাউন্টের পরে মূল্য: "+
+  Math.round(discountedTotal)+" টাকা";
 }
 </script>
 
