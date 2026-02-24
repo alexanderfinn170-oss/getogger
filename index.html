@@ -12,6 +12,7 @@ body{
     background:#4b0082;
     font-family: Arial, sans-serif;
     text-align:center;
+    overflow-x:hidden;
 }
 
 /* সাদা লেখা + চিকন কালো আউটলাইন */
@@ -28,18 +29,27 @@ body{
     font-weight:bold;
 }
 
-/* রমজান অফার */
-.ramadan-offer{
-    color:yellow;
-    font-weight:bold;
-    -webkit-text-stroke:0.6px red;
-    font-size:22px;
-    margin-bottom:8px;
+/* মেইন প্রোডাক্ট অ্যানিমেশন কন্টেইনার */
+.product-wrapper{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    height:250px;
+    margin-top:20px;
 }
 
+/* চলমান প্রোডাক্ট ছবি */
 .product-img{
-    margin-top:20px;
     width:230px;
+    position:absolute;
+    left:0;
+    animation: moveLeftRight 6s ease-in-out infinite alternate;
+}
+
+/* বাম ↔ ডান চলার অ্যানিমেশন */
+@keyframes moveLeftRight{
+    0%{ left:5%; }
+    100%{ left:65%; }
 }
 
 .offer-box{
@@ -130,7 +140,10 @@ body{
 
 <body>
 
-<img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
+<!-- চলমান মেইন প্রোডাক্ট -->
+<div class="product-wrapper">
+    <img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
+</div>
 
 <div class="offer-box outline-text">
 আমাদের <span class="product-name">Methi Mixd powder</span> 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
@@ -172,11 +185,6 @@ cardImage.src = mainImage.src;
 document.getElementById("discountText").innerHTML =
 "আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
-let movingImg = new Image();
-movingImg.src = mainImage.src;
-
-let imgX = -50;
-
 function drawScratchLayer(){
     let gradient = ctx.createLinearGradient(0,0,340,240);
     gradient.addColorStop(0,"red");
@@ -188,7 +196,6 @@ function drawScratchLayer(){
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,340,240);
 
-    // রমজান অফার
     ctx.fillStyle="yellow";
     ctx.strokeStyle="red";
     ctx.lineWidth=1;
@@ -197,28 +204,15 @@ function drawScratchLayer(){
     ctx.strokeText("রমজান অফার গোপন কাট",170,50);
     ctx.fillText("রমজান অফার গোপন কাট",170,50);
 
-    // চলমান ছবি
-    ctx.drawImage(movingImg, imgX, 70, 50, 50);
-
-    // এখানে ঘষুন
     ctx.fillStyle="red";
     ctx.strokeStyle="yellow";
     ctx.lineWidth=1;
     ctx.font="bold 22px Arial";
-    ctx.strokeText("এখানে ঘষুন",170,150);
-    ctx.fillText("এখানে ঘষুন",170,150);
+    ctx.strokeText("এখানে ঘষুন",170,130);
+    ctx.fillText("এখানে ঘষুন",170,130);
 }
 
-function animate(){
-    imgX += 0.5;
-    if(imgX > 340) imgX = -60;
-    drawScratchLayer();
-    requestAnimationFrame(animate);
-}
-
-movingImg.onload = function(){
-    animate();
-};
+drawScratchLayer();
 
 function getPosition(e){
     const rect = canvas.getBoundingClientRect();
