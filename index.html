@@ -14,19 +14,27 @@ body{
     text-align:center;
 }
 
-/* সব বাংলা লেখা সাদা + চিকন কালো আউটলাইন */
+/* সাদা লেখা + চিকন কালো আউটলাইন */
 .outline-text{
     color:#ffffff;
     font-weight:bold;
     -webkit-text-stroke: 0.6px black;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
-/* Methi Mixd powder লাল রঙ */
+/* প্রোডাক্ট নাম */
 .product-name{
     color:#ff2d2d;
+    -webkit-text-stroke:0.6px black;
     font-weight:bold;
-    -webkit-text-stroke: 0.6px black;
+}
+
+/* নতুন লাইন - রমজান অফার */
+.ramadan-offer{
+    color:yellow;
+    font-weight:bold;
+    -webkit-text-stroke:0.6px red;
+    font-size:22px;
+    margin-bottom:8px;
 }
 
 .product-img{
@@ -52,7 +60,7 @@ body{
 .scratch-container{
     position:relative;
     width:340px;
-    height:220px;
+    height:230px;
     margin:10px auto;
 }
 
@@ -62,9 +70,10 @@ body{
     left:0;
     cursor:pointer;
     border-radius:15px;
+    border:2px solid yellow; /* হলুদ লাইন */
 }
 
-/* কার্ড ভেতরের কন্টেন্ট */
+/* কার্ড ভিতরের কন্টেন্ট */
 .scratch-content{
     position:absolute;
     width:100%;
@@ -79,9 +88,8 @@ body{
     box-sizing:border-box;
 }
 
-/* কার্ডের প্রোডাক্ট ছবি */
 .scratch-content img{
-    width:110px;   /* আগের থেকে বড় */
+    width:120px;
     margin-bottom:10px;
 }
 
@@ -89,12 +97,41 @@ body{
     margin-top:15px;
     font-size:20px;
 }
+
+/* রেইনবো লাইভ বাটন */
+.order-btn{
+    display:none;
+    margin:15px auto;
+    width:80%;
+    max-width:350px;
+    padding:14px;
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+    border:2px solid white;
+    border-radius:40px;
+    cursor:pointer;
+    background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
+    background-size: 400% 400%;
+    animation: rainbowMove 4s linear infinite, bounce 1.5s infinite;
+}
+
+@keyframes rainbowMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- প্রোডাক্ট ছবি (শুধু এখানে লিংক পরিবর্তন করবেন) -->
 <img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
 
 <div class="offer-box outline-text">
@@ -108,26 +145,29 @@ body{
 <div class="scratch-container">
 
     <div class="scratch-content outline-text">
-        <!-- ছবি মাঝ বরাবর উপরে -->
         <img id="cardProduct">
+
         <div id="discountText"></div>
     </div>
 
-    <canvas id="scratchCanvas" width="340" height="220"></canvas>
+    <canvas id="scratchCanvas" width="340" height="230"></canvas>
 </div>
 
 <div class="result-text outline-text" id="finalResult"></div>
+
+<button class="order-btn" id="orderBtn">
+ডিসকাউন্ট অর্ডার করতে চাই
+</button>
 
 <script>
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 let scratching = false;
 
-let discount = Math.floor(Math.random() * 21) + 30; 
+let discount = Math.floor(Math.random() * 21) + 30;
 let originalPrice = 999;
 let discountedPrice = Math.round(originalPrice - (originalPrice * discount / 100));
 
-// অটো ইমেজ সিঙ্ক
 const mainImage = document.getElementById("mainProduct");
 const cardImage = document.getElementById("cardProduct");
 cardImage.src = mainImage.src;
@@ -136,7 +176,7 @@ document.getElementById("discountText").innerHTML =
 "আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
 function drawScratchLayer(){
-    let gradient = ctx.createLinearGradient(0,0,340,220);
+    let gradient = ctx.createLinearGradient(0,0,340,230);
     gradient.addColorStop(0,"red");
     gradient.addColorStop(0.2,"orange");
     gradient.addColorStop(0.4,"yellow");
@@ -144,12 +184,24 @@ function drawScratchLayer(){
     gradient.addColorStop(0.8,"blue");
     gradient.addColorStop(1,"purple");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,340,220);
+    ctx.fillRect(0,0,340,230);
 
-    ctx.fillStyle="white";
-    ctx.font="bold 22px Arial";
+    // উপরের নতুন লাইন
+    ctx.fillStyle="yellow";
+    ctx.strokeStyle="red";
+    ctx.lineWidth=1;
+    ctx.font="bold 20px Arial";
     ctx.textAlign="center";
-    ctx.fillText("এখানে ঘষুন",170,120);
+    ctx.strokeText("রমজান অফার গোপন কাট",170,60);
+    ctx.fillText("রমজান অফার গোপন কাট",170,60);
+
+    // এখানে ঘষুন লেখা
+    ctx.fillStyle="red";
+    ctx.strokeStyle="yellow";
+    ctx.lineWidth=1;
+    ctx.font="bold 22px Arial";
+    ctx.strokeText("এখানে ঘষুন",170,130);
+    ctx.fillText("এখানে ঘষুন",170,130);
 }
 
 drawScratchLayer();
@@ -167,25 +219,30 @@ function scratch(e){
     let pos = getPosition(e);
     ctx.globalCompositeOperation="destination-out";
     ctx.beginPath();
-    ctx.arc(pos.x,pos.y,20,0,Math.PI*2);
+    ctx.arc(pos.x,pos.y,22,0,Math.PI*2);
     ctx.fill();
 }
 
 canvas.addEventListener("mousedown",()=>scratching=true);
-canvas.addEventListener("mouseup",()=>{
-    scratching=false;
-    document.getElementById("finalResult").innerHTML=
-    discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
-});
+canvas.addEventListener("mouseup",showResult);
 canvas.addEventListener("mousemove",scratch);
 
 canvas.addEventListener("touchstart",()=>scratching=true);
-canvas.addEventListener("touchend",()=>{
+canvas.addEventListener("touchend",showResult);
+canvas.addEventListener("touchmove",scratch);
+
+function showResult(){
     scratching=false;
     document.getElementById("finalResult").innerHTML=
     discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
-});
-canvas.addEventListener("touchmove",scratch);
+
+    document.getElementById("orderBtn").style.display="block";
+}
+
+// বাটন ক্লিক করলে (ডেমো লিংক)
+document.getElementById("orderBtn").onclick=function(){
+    alert("অর্ডার পেজে নিয়ে যাওয়া হবে");
+};
 </script>
 
 </body>
