@@ -3,316 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methi Mixd Powder Offer</title>
+<title>Methi Mixd Powder</title>
 
 <style>
-html,body{
-    margin:0;
-    padding:0;
-    background:#4b0082;
-    font-family: Arial, sans-serif;
-    text-align:center;
-    overflow-x:hidden;
-    overflow-y:auto;
-    touch-action: pan-y;
+body{
+margin:0;
+font-family: Arial, sans-serif;
+overflow-x:hidden;
 }
 
-/* ===== Smaller Slide Notification ===== */
-.live-notification{
-    position:fixed;
-    top:15px;
-    right:-350px; /* শুরুতে স্ক্রিনের বাইরে */
-    background:rgba(0,0,0,0.8);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    font-size:12px;
-    font-weight:600;
-    box-shadow:0 4px 15px rgba(0,0,0,0.4);
-    z-index:9999;
-    max-width:220px;
-    transition:right 0.6s ease, opacity 0.4s ease;
-    opacity:0;
+/* ================= ORDER PAGE ================= */
+
+#orderPage{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#6a0dad;
+display:none;
+overflow-y:auto;
+padding:20px;
+box-sizing:border-box;
 }
 
-.live-notification.show{
-    right:15px; /* ডান দিক থেকে ঢুকবে */
-    opacity:1;
-}
-/* ======================================= */
-
-.outline-text{
-    color:#ffffff;
-    font-weight:bold;
-    -webkit-text-stroke: 0.6px black;
+.leftTitle{
+text-align:left;
+font-size:26px;
+font-weight:bold;
+margin-top:20px;
 }
 
-.product-name{
-    color:#ff2d2d;
-    -webkit-text-stroke:0.6px black;
-    font-weight:bold;
+.redText{
+color:red;
+-webkit-text-stroke:0.5px black;
 }
 
-.product-wrapper{
-    width:100%;
-    position:relative;
-    height:200px;
-    margin:0;
-    overflow:hidden;
+.greenText{
+color:#00ff00;
+-webkit-text-stroke:0.5px black;
 }
 
-.product-img{
-    width:230px;
-    position:absolute;
-    bottom:0;
-    animation: moveLeftRight 6s ease-in-out infinite alternate;
+.whiteOutline{
+color:white;
+-webkit-text-stroke:0.5px black;
 }
 
-@keyframes moveLeftRight{
-    0%{ left:10%; }
-    100%{ left:55%; }
+.yellowHighlight{
+background:yellow;
+padding:4px 8px;
+display:inline-block;
 }
 
-.offer-box{
-    margin:0 auto 15px auto;
-    width:90%;
-    max-width:500px;
-    padding:15px;
-    background:#4b0082;
-    border:2px solid yellow;
-    border-radius:10px;
+.points{
+margin-top:20px;
 }
 
-.big-text{
-    font-size:22px;
-    margin:10px 0;
+.points li{
+color:white;
+-webkit-text-stroke:0.5px black;
+margin:6px 0;
 }
 
-.scratch-container{
-    position:relative;
-    width:340px;
-    height:240px;
-    margin:10px auto;
+.orderBtn{
+margin-top:20px;
+background:yellow;
+border:1px solid black;
+padding:12px 25px;
+font-size:18px;
+color:white;
+-webkit-text-stroke:0.5px black;
+cursor:pointer;
 }
 
-#scratchCanvas{
-    position:absolute;
-    top:0;
-    left:0;
-    cursor:pointer;
-    border-radius:15px;
-    border:2px solid yellow;
-    touch-action:none;
+/* ================= COUPON SECTION ================= */
+
+#couponSection{
+display:none;
+margin-top:30px;
+text-align:center;
 }
 
-.scratch-content{
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:white;
-    border-radius:15px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:10px;
-    box-sizing:border-box;
+.couponTitle{
+background:yellow;
+padding:6px;
+display:inline-block;
+color:white;
+-webkit-text-stroke:0.5px black;
 }
 
-.scratch-content img{
-    width:120px;
-    margin-bottom:10px;
+.discountText{
+margin-top:10px;
+font-size:20px;
+color:white;
 }
 
-.result-text{
-    margin-top:15px;
-    font-size:20px;
+/* ================= BILLING BOX ================= */
+
+.infoBox{
+margin-top:20px;
+background:#800080;
+border:1px solid yellow;
+padding:10px;
+color:white;
+text-align:center;
 }
 
-.order-btn{
-    display:none;
-    margin:15px auto;
-    width:80%;
-    max-width:350px;
-    padding:14px;
-    font-size:18px;
-    font-weight:bold;
-    color:white;
-    border:2px solid white;
-    border-radius:40px;
-    cursor:pointer;
-    background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
-    background-size: 400% 400%;
-    animation: rainbowMove 4s linear infinite, bounce 1.5s infinite;
+.billing{
+margin-top:20px;
+background:#d8b4fe;
+border:1px solid darkred;
+padding:15px;
 }
 
-@keyframes rainbowMove{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+.productTitle{
+font-size:14px;
+margin-bottom:10px;
 }
 
-@keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-6px);}
+.productTitle span:first-child{
+color:black;
+-webkit-text-stroke:0.5px yellow;
 }
+
+.productTitle span:last-child{
+color:red;
+-webkit-text-stroke:0.5px yellow;
+}
+
+.productRow{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.productRow img{
+width:80px;
+}
+
+.qtyBtn{
+padding:5px 10px;
+cursor:pointer;
+font-weight:bold;
+border:1px solid #b8860b;
+}
+
+.plus{
+background:darkgreen;
+color:black;
+}
+
+.minus{
+background:red;
+color:black;
+}
+
+.equalSign{
+font-weight:bold;
+}
+
+.totalPrice{
+font-size:18px;
+color:black;
+-webkit-text-stroke:0.5px yellow;
+margin-top:10px;
+}
+
+input{
+width:100%;
+padding:8px;
+margin-top:8px;
+box-sizing:border-box;
+}
+
+.greenOutline{
+border:1px solid green;
+}
+
+.redOutline{
+border:1px solid red;
+}
+
+.confirmBtn{
+margin-top:15px;
+width:100%;
+padding:12px;
+background:green;
+color:white;
+border:1px solid red;
+font-size:18px;
+cursor:pointer;
+transition:0.2s;
+}
+
+/* ================= THANK YOU PAGE ================= */
+
+#thankYouPage{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#fffacd;
+display:none;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+box-sizing:border-box;
+}
+
+.thankText{
+font-size:22px;
+color:white;
+-webkit-text-stroke:0.5px black;
+}
+
 </style>
 </head>
-
 <body>
 
-<!-- Live Notification -->
-<div id="liveNotification" class="live-notification"></div>
+<!-- ORDER PAGE -->
+<div id="orderPage">
 
-<div class="product-wrapper">
-    <img id="mainProduct" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAN-w08Gb55AD8HEwmiDiC_crYJ_EN0BLQfqn9gYgKKKnTMDMNog1PIwrfBNYyi4D6iMxbdwI6zNJzyaAtxSuwed3bzEoLBwe58VZ6EWFRwgtIRsqQlQdEYf9wHpjw_u9NtNcXgibLxJgu633h6Bf46fvpmBxP_Xm2aHSwPjZ2LjojMFIYAXkKhhzsg5o/s612/WhatsApp_Image_2026-02-24_at_12.56.43-removebg-preview.png" class="product-img">
+<div class="leftTitle yellowHighlight">
+<span class="redText">Methi Mixd powder</span>
+<span class="greenText"> সাত দিন সেবনের উপকারিতা:</span>
 </div>
 
-<div class="offer-box outline-text">
-আমাদের <span class="product-name">Methi Mixd powder</span> 999tk আমরা রমজান মাস উপলক্ষে একটি লাকি কুপন দিচ্ছি সেই কুপন স্ক্র্যাচ করে আপনি ১০% থেকে ৫০% পর্যন্ত ডিসকাউন্ট পেতে পারেন
+<ul class="points">
+<li>৭ দিন সেবনে কোষ্ঠকাঠিন্যের একদম নিরাময়</li>
+<li>৭ দিন সেবনে গ্যাস্ট্রিক প্রবলেমের সমাধান</li>
+<li>৭ দিন সেবনে বুক জ্বালাপোড়া</li>
+<li>৭ দিন সেবনে মুখের টক স্বাদ নিরাময়</li>
+<li>৭ দিন সেবনে পেট ফাঁপা একদম সমাধান</li>
+<li>৭ দিন মুখে অরুচি ভাব সমাধান</li>
+<li>৭ দিন সেবনে সুগার ডায়াবেটিসের সমাধান</li>
+<li>৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপের সমাধান</li>
+<li>৭ দিন সেবনে পেট পরিষ্কার ও কৃমির সমাধান</li>
+<li>৭ দিন সেবনে শারীরিক ও যৌন শক্তি বৃদ্ধি</li>
+</ul>
+
+<div class="yellowHighlight redText">হাদিসে বর্ণিত আছে</div>
+
+<br>
+<button class="orderBtn" onclick="showCoupon()">অর্ডার করতে চাই</button>
+
+<!-- COUPON SECTION -->
+<div id="couponSection">
+
+<div class="couponTitle">আপনার প্রাপ্ত কুপন স্ক্র্যাচ কার্ড</div>
+
+<br><br>
+<img src="YOUR_PRODUCT_IMAGE_URL" width="120">
+
+<div class="discountText">
+আপনার প্রাপ্ত ডিসকাউন্ট:
+<span id="discountShow">25%</span>
 </div>
 
-<div class="big-text outline-text">
-এই স্ক্রেচ কার্ড ঘোষণ এবং <span class="product-name">Methi Mixd powder</span> এর উপরে ডিসকাউন্ট নিন!!
+<div class="infoBox">
+অর্ডার কনফার্ম করতে নিচে কয়টি নিবেন এবং আপনার ডিটেলস দিন
 </div>
 
-<div class="scratch-container">
-    <div class="scratch-content outline-text">
-        <img id="cardProduct">
-        <div id="discountText"></div>
-    </div>
-    <canvas id="scratchCanvas" width="340" height="240"></canvas>
+<!-- BILLING -->
+<div class="billing">
+
+<div class="productTitle">
+<span>Methi Mixd powder</span>
 </div>
 
-<div class="result-text outline-text" id="finalResult"></div>
+<div class="productRow">
+<img src="YOUR_PRODUCT_IMAGE_URL">
+<span id="qty">1</span>
+<button class="qtyBtn plus" onclick="changeQty(1)">+</button>
+<button class="qtyBtn minus" onclick="changeQty(-1)">-</button>
+<span class="equalSign">=</span>
+</div>
 
-<button class="order-btn" id="orderBtn">
-ডিসকাউন্ট অর্ডার করতে চাই
-</button>
+<div class="totalPrice" id="totalPrice">999 টাকা</div>
+
+<input class="greenOutline" id="discountField" readonly>
+<input class="greenOutline" id="payField" readonly>
+
+<input class="redOutline" id="name" placeholder="আপনার নাম">
+<input class="redOutline" id="address" placeholder="আপনার ঠিকানা">
+<input class="redOutline" id="mobile" placeholder="আপনার মোবাইল নাম্বার">
+
+<button class="confirmBtn" id="confirmBtn" onclick="submitOrder()">কনফার্ম করুন</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- THANK YOU PAGE -->
+<div id="thankYouPage">
+<div class="thankText">
+আপনাকে ধন্যবাদ আপনার অর্ডারটি সফলতার সাথে সাবমিট হয়েছে,<br>
+আমাদের প্রতিনিধি টিম আপনার সাথে অতি দ্রুত যোগাযোগ করবে ইনশাল্লাহ
+</div>
+</div>
 
 <script>
 
-/* ===== Slide Notification System ===== */
+const price = 999;
+let qty = 1;
+let discount = 25;
 
-const names = [
-"মাহমুদুল হাসান","সুমাইয়া আক্তার","রাকিব হোসেন","তাসনিম জাহান",
-"সোহেল রানা","নুসরাত জাহান","আরিফুল ইসলাম","মিম আক্তার",
-"শাকিল আহমেদ","সাদিয়া ইসলাম","ইমন খান","মারিয়া সুলতানা",
-"জুবায়ের রহমান","ফারজানা ইয়াসমিন","হাসান মাহমুদ",
-"তানজিনা আক্তার","মোস্তাফিজুর রহমান","সাবিনা ইয়াসমিন",
-"রিফাত হোসেন","তাহমিনা আক্তার"
-];
-
-let notificationIndex = 0;
-const notificationBox = document.getElementById("liveNotification");
-
-function showNotification(){
-
-    if(notificationIndex >= names.length){
-        notificationIndex = 0;
-    }
-
-    let randomDiscount = Math.floor(Math.random() * 16) + 10;
-
-    notificationBox.innerHTML =
-    names[notificationIndex] + " " + randomDiscount +
-    "% ডিসকাউন্ট পেয়েছে 🎉 এবং অর্ডার করেছে";
-
-    notificationBox.classList.add("show");
-
-    setTimeout(()=>{
-        notificationBox.classList.remove("show");
-    },2500);
-
-    notificationIndex++;
+function showCoupon(){
+document.getElementById("couponSection").style.display="block";
+updateCalculation();
 }
 
-setTimeout(()=>{
-    showNotification();
-    setInterval(showNotification,3000);
-},3000);
-
-/* ===== Scratch Card (Unchanged) ===== */
-
-const canvas = document.getElementById("scratchCanvas");
-const ctx = canvas.getContext("2d");
-let scratching = false;
-
-let discount = Math.floor(Math.random() * 21) + 30;
-let originalPrice = 999;
-let discountedPrice = Math.round(originalPrice - (originalPrice * discount / 100));
-
-const mainImage = document.getElementById("mainProduct");
-const cardImage = document.getElementById("cardProduct");
-cardImage.src = mainImage.src;
-
-document.getElementById("discountText").innerHTML =
-"আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
-
-function drawScratchLayer(){
-    let gradient = ctx.createLinearGradient(0,0,340,240);
-    gradient.addColorStop(0,"red");
-    gradient.addColorStop(0.2,"orange");
-    gradient.addColorStop(0.4,"yellow");
-    gradient.addColorStop(0.6,"green");
-    gradient.addColorStop(0.8,"blue");
-    gradient.addColorStop(1,"purple");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,340,240);
-
-    ctx.fillStyle="yellow";
-    ctx.strokeStyle="red";
-    ctx.lineWidth=1;
-    ctx.font="bold 20px Arial";
-    ctx.textAlign="center";
-    ctx.strokeText("রমজান অফার গোপন কাট",170,50);
-    ctx.fillText("রমজান অফার গোপন কাট",170,50);
-
-    ctx.fillStyle="red";
-    ctx.strokeStyle="yellow";
-    ctx.lineWidth=1;
-    ctx.font="bold 22px Arial";
-    ctx.strokeText("এখানে ঘষুন",170,130);
-    ctx.fillText("এখানে ঘষুন",170,130);
+function changeQty(val){
+qty += val;
+if(qty<1) qty=1;
+document.getElementById("qty").innerText=qty;
+updateCalculation();
 }
 
-drawScratchLayer();
+function updateCalculation(){
+let total = price*qty;
+let discountAmount = total*(discount/100);
+let finalAmount = total-discountAmount;
 
-function getPosition(e){
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x:(e.touches?e.touches[0].clientX:e.clientX)-rect.left,
-        y:(e.touches?e.touches[0].clientY:e.clientY)-rect.top
-    }
+document.getElementById("discountField").value="মোর ডিসকাউন্ট: "+discount+"%";
+document.getElementById("payField").value="মোট পরিশোধ করবেন: "+finalAmount+" টাকা";
+document.getElementById("totalPrice").innerText=finalAmount+" টাকা";
+document.getElementById("confirmBtn").innerText=finalAmount+" টাকা কনফার্ম করুন";
 }
 
-function scratch(e){
-    if(!scratching) return;
-    let pos = getPosition(e);
-    ctx.globalCompositeOperation="destination-out";
-    ctx.beginPath();
-    ctx.arc(pos.x,pos.y,22,0,Math.PI*2);
-    ctx.fill();
+const GOOGLE_SCRIPT_URL="PASTE_YOUR_WEB_APP_URL_HERE";
+
+function submitOrder(){
+
+let finalAmount = price*qty - (price*qty*(discount/100));
+
+fetch(GOOGLE_SCRIPT_URL,{
+method:"POST",
+body:JSON.stringify({
+discount:discount+"%",
+amount:finalAmount,
+name:document.getElementById("name").value,
+address:document.getElementById("address").value,
+mobile:document.getElementById("mobile").value
+})
+})
+.then(res=>res.text())
+.then(()=>{
+document.getElementById("orderPage").style.display="none";
+document.getElementById("thankYouPage").style.display="flex";
+});
 }
-
-canvas.addEventListener("mousedown",()=>scratching=true);
-canvas.addEventListener("mouseup",showResult);
-canvas.addEventListener("mousemove",scratch);
-
-canvas.addEventListener("touchstart",()=>scratching=true);
-canvas.addEventListener("touchend",showResult);
-canvas.addEventListener("touchmove",scratch);
-
-function showResult(){
-    scratching=false;
-    document.getElementById("finalResult").innerHTML=
-    discount+"% ডিসকাউন্টের পর বর্তমান Methi Mixd powder এর দাম আপনার জন্য "+discountedPrice+" টাকা";
-    document.getElementById("orderBtn").style.display="block";
-}
-
-document.getElementById("orderBtn").onclick=function(){
-    alert("অর্ডার পেজে নিয়ে যাওয়া হবে");
-};
 
 </script>
 
