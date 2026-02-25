@@ -1,37 +1,37 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methi Mixd Powder</title>
-
 <style>
-body{
-margin:0;
-font-family: Arial, sans-serif;
-overflow-x:hidden;
-}
 
-/* ================= ORDER PAGE ================= */
+/* ===== ORDER MODAL OVERLAY ===== */
 
-#orderPage{
+#orderOverlay{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:#6a0dad;
+background:rgba(0,0,0,0.6);
 display:none;
+z-index:9999;
+}
+
+#orderPage{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#6a0dad;
 overflow-y:auto;
 padding:20px;
 box-sizing:border-box;
 }
 
-.leftTitle{
-text-align:left;
+/* ===== TITLE ===== */
+
+.mainTitle{
 font-size:26px;
 font-weight:bold;
-margin-top:20px;
+text-align:left;
+margin-top:10px;
 }
 
 .redText{
@@ -44,19 +44,17 @@ color:#00ff00;
 -webkit-text-stroke:0.5px black;
 }
 
-.whiteOutline{
-color:white;
--webkit-text-stroke:0.5px black;
-}
-
 .yellowHighlight{
 background:yellow;
-padding:4px 8px;
+padding:5px 8px;
 display:inline-block;
 }
 
+/* ===== POINTS ===== */
+
 .points{
 margin-top:20px;
+padding-left:20px;
 }
 
 .points li{
@@ -64,6 +62,8 @@ color:white;
 -webkit-text-stroke:0.5px black;
 margin:6px 0;
 }
+
+/* ===== BUTTON ===== */
 
 .orderBtn{
 margin-top:20px;
@@ -76,7 +76,7 @@ color:white;
 cursor:pointer;
 }
 
-/* ================= COUPON SECTION ================= */
+/* ===== COUPON SECTION ===== */
 
 #couponSection{
 display:none;
@@ -86,49 +86,35 @@ text-align:center;
 
 .couponTitle{
 background:yellow;
-padding:6px;
-display:inline-block;
 color:white;
 -webkit-text-stroke:0.5px black;
+padding:5px 8px;
+display:inline-block;
 }
 
 .discountText{
 margin-top:10px;
-font-size:20px;
+font-size:18px;
 color:white;
 }
 
-/* ================= BILLING BOX ================= */
+/* ===== INFO BOX ===== */
 
 .infoBox{
-margin-top:20px;
+margin-top:15px;
 background:#800080;
 border:1px solid yellow;
 padding:10px;
 color:white;
-text-align:center;
 }
+
+/* ===== BILLING ===== */
 
 .billing{
 margin-top:20px;
-background:#d8b4fe;
+background:#e9d5ff;
 border:1px solid darkred;
 padding:15px;
-}
-
-.productTitle{
-font-size:14px;
-margin-bottom:10px;
-}
-
-.productTitle span:first-child{
-color:black;
--webkit-text-stroke:0.5px yellow;
-}
-
-.productTitle span:last-child{
-color:red;
--webkit-text-stroke:0.5px yellow;
 }
 
 .productRow{
@@ -158,15 +144,11 @@ background:red;
 color:black;
 }
 
-.equalSign{
-font-weight:bold;
-}
-
 .totalPrice{
+margin-top:10px;
 font-size:18px;
 color:black;
 -webkit-text-stroke:0.5px yellow;
-margin-top:10px;
 }
 
 input{
@@ -196,16 +178,16 @@ cursor:pointer;
 transition:0.2s;
 }
 
-/* ================= THANK YOU PAGE ================= */
+/* ===== THANK YOU ===== */
 
-#thankYouPage{
-position:fixed;
+#thankYou{
+display:none;
+position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
 background:#fffacd;
-display:none;
 align-items:center;
 justify-content:center;
 text-align:center;
@@ -220,13 +202,13 @@ color:white;
 }
 
 </style>
-</head>
-<body>
 
-<!-- ORDER PAGE -->
+<!-- ===== ORDER MODAL ===== -->
+
+<div id="orderOverlay">
 <div id="orderPage">
 
-<div class="leftTitle yellowHighlight">
+<div class="mainTitle yellowHighlight">
 <span class="redText">Methi Mixd powder</span>
 <span class="greenText"> সাত দিন সেবনের উপকারিতা:</span>
 </div>
@@ -236,20 +218,18 @@ color:white;
 <li>৭ দিন সেবনে গ্যাস্ট্রিক প্রবলেমের সমাধান</li>
 <li>৭ দিন সেবনে বুক জ্বালাপোড়া</li>
 <li>৭ দিন সেবনে মুখের টক স্বাদ নিরাময়</li>
-<li>৭ দিন সেবনে পেট ফাঁপা একদম সমাধান</li>
-<li>৭ দিন মুখে অরুচি ভাব সমাধান</li>
+<li>৭ দিন সেবনে পেট ফাঁপা সমাধান</li>
+<li>৭ দিন মুখে অরুচি সমাধান</li>
 <li>৭ দিন সেবনে সুগার ডায়াবেটিসের সমাধান</li>
-<li>৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপের সমাধান</li>
+<li>৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপ সমাধান</li>
 <li>৭ দিন সেবনে পেট পরিষ্কার ও কৃমির সমাধান</li>
 <li>৭ দিন সেবনে শারীরিক ও যৌন শক্তি বৃদ্ধি</li>
 </ul>
 
 <div class="yellowHighlight redText">হাদিসে বর্ণিত আছে</div>
-
 <br>
 <button class="orderBtn" onclick="showCoupon()">অর্ডার করতে চাই</button>
 
-<!-- COUPON SECTION -->
 <div id="couponSection">
 
 <div class="couponTitle">আপনার প্রাপ্ত কুপন স্ক্র্যাচ কার্ড</div>
@@ -266,19 +246,13 @@ color:white;
 অর্ডার কনফার্ম করতে নিচে কয়টি নিবেন এবং আপনার ডিটেলস দিন
 </div>
 
-<!-- BILLING -->
 <div class="billing">
-
-<div class="productTitle">
-<span>Methi Mixd powder</span>
-</div>
 
 <div class="productRow">
 <img src="YOUR_PRODUCT_IMAGE_URL">
 <span id="qty">1</span>
 <button class="qtyBtn plus" onclick="changeQty(1)">+</button>
 <button class="qtyBtn minus" onclick="changeQty(-1)">-</button>
-<span class="equalSign">=</span>
 </div>
 
 <div class="totalPrice" id="totalPrice">999 টাকা</div>
@@ -293,23 +267,27 @@ color:white;
 <button class="confirmBtn" id="confirmBtn" onclick="submitOrder()">কনফার্ম করুন</button>
 
 </div>
-
-</div>
 </div>
 
-<!-- THANK YOU PAGE -->
-<div id="thankYouPage">
+<div id="thankYou">
 <div class="thankText">
 আপনাকে ধন্যবাদ আপনার অর্ডারটি সফলতার সাথে সাবমিট হয়েছে,<br>
-আমাদের প্রতিনিধি টিম আপনার সাথে অতি দ্রুত যোগাযোগ করবে ইনশাল্লাহ
+আমাদের প্রতিনিধি টিম অতি দ্রুত যোগাযোগ করবে ইনশাল্লাহ
+</div>
+</div>
+
 </div>
 </div>
 
 <script>
 
-const price = 999;
-let qty = 1;
-let discount = 25;
+let price=999;
+let qty=1;
+let discount=25; // এখানে আপনার স্ক্র্যাচ কার্ডের ডিসকাউন্ট বসবে
+
+function openOrderPage(){
+document.getElementById("orderOverlay").style.display="block";
+}
 
 function showCoupon(){
 document.getElementById("couponSection").style.display="block";
@@ -317,16 +295,16 @@ updateCalculation();
 }
 
 function changeQty(val){
-qty += val;
+qty+=val;
 if(qty<1) qty=1;
 document.getElementById("qty").innerText=qty;
 updateCalculation();
 }
 
 function updateCalculation(){
-let total = price*qty;
-let discountAmount = total*(discount/100);
-let finalAmount = total-discountAmount;
+let total=price*qty;
+let discountAmount=total*(discount/100);
+let finalAmount=total-discountAmount;
 
 document.getElementById("discountField").value="মোর ডিসকাউন্ট: "+discount+"%";
 document.getElementById("payField").value="মোট পরিশোধ করবেন: "+finalAmount+" টাকা";
@@ -334,30 +312,8 @@ document.getElementById("totalPrice").innerText=finalAmount+" টাকা";
 document.getElementById("confirmBtn").innerText=finalAmount+" টাকা কনফার্ম করুন";
 }
 
-const GOOGLE_SCRIPT_URL="PASTE_YOUR_WEB_APP_URL_HERE";
-
 function submitOrder(){
-
-let finalAmount = price*qty - (price*qty*(discount/100));
-
-fetch(GOOGLE_SCRIPT_URL,{
-method:"POST",
-body:JSON.stringify({
-discount:discount+"%",
-amount:finalAmount,
-name:document.getElementById("name").value,
-address:document.getElementById("address").value,
-mobile:document.getElementById("mobile").value
-})
-})
-.then(res=>res.text())
-.then(()=>{
-document.getElementById("orderPage").style.display="none";
-document.getElementById("thankYouPage").style.display="flex";
-});
+document.getElementById("thankYou").style.display="flex";
 }
 
 </script>
-
-</body>
-</html>
