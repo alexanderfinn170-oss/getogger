@@ -11,6 +11,8 @@ body{
     background:#ffffff;
     font-family:Arial, sans-serif;
     text-align:center;
+    overflow-x:hidden; /* prevent left-right move */
+    touch-action:manipulation;
 }
 
 /* Product Image */
@@ -38,7 +40,7 @@ body{
     margin:10px 0;
 }
 
-/* Updated Benefit Title */
+/* Benefit Title */
 .benefit-title{
     display:inline-block;
     background:yellow;
@@ -77,13 +79,16 @@ body{
     font-size:40px;
     margin:10px 0;
 }
+
 #scratch-container{
     margin:auto;
-    width:300px;
-    height:150px;
+    width:320px;
+    height:160px;
     border:2px solid red;
     position:relative;
+    overflow:hidden;
 }
+
 #scratch-bottom{
     width:100%;
     height:100%;
@@ -92,19 +97,21 @@ body{
     align-items:center;
     justify-content:center;
     font-weight:bold;
-    padding:10px;
     text-align:center;
+    padding:10px;
 }
+
 #scratch-canvas{
     position:absolute;
     top:0;
     left:0;
 }
 
-/* Result Message */
+/* Result */
 #result-message{
     margin-top:15px;
     font-weight:bold;
+    font-size:16px;
 }
 
 /* Order Button */
@@ -197,112 +204,61 @@ input{
 
 <div id="scratch-container">
 <div id="scratch-bottom"></div>
-<canvas id="scratch-canvas" width="300" height="150"></canvas>
+<canvas id="scratch-canvas" width="320" height="160"></canvas>
 </div>
 
 <div id="result-message"></div>
 
 <button class="order-btn" onclick="showBilling()">অর্ডার করতে চাই</button>
 
-<div id="billing">
-<h3>ক্যাশ অন ডেলিভারি</h3>
-<img src="YOUR_PRODUCT_IMAGE.png" width="120">
-<div style="color:black;background:red;border:2px solid green;padding:5px;">
-নিচে আপনার অর্ডারটি ডিসকাউন্টসহ কনফার্ম করুন
-</div>
-
-<div class="billing-box">
-<div class="billing-title">Discount & Details</div>
-<p>Discount: <span id="final-discount"></span>%</p>
-<p>Price After Discount: <span id="final-price"></span> tk</p>
-
-<p style="border:1px solid green;display:inline-block;padding:5px;">
-কয়টি নিতে চান নির্বাচন করুন:
-</p><br>
-
-<button class="qty-btn" onclick="changeQty(-1)">-</button>
-<span id="qty">1</span>
-<button class="qty-btn" onclick="changeQty(1)">+</button>
-
-<p>মোট দাম : <span id="total-price"></span> tk</p>
-
-<h4>Customer Details *</h4>
-<input type="text" id="discountField" readonly>
-<input type="text" id="priceField" readonly>
-<input type="text" id="name" placeholder="* নাম লিখুন">
-<input type="text" id="phone" placeholder="* নাম্বার লিখুন">
-<input type="text" id="address" placeholder="* ঠিকানা লিখুন">
-
-<button class="submit-btn" onclick="submitOrder()">Submit Order</button>
-</div>
-</div>
-
 <script>
 let originalPrice = 900;
-let discount = Math.floor(Math.random() * 31) + 20; // 20-50%
-let discountedPrice = originalPrice - (originalPrice * discount / 100);
-let qty = 1;
+let discount = Math.floor(Math.random()*31)+20; //20-50%
+let discountedPrice = Math.round(originalPrice - (originalPrice*discount/100));
 
 document.getElementById("scratch-bottom").innerHTML =
-"অভিনন্দন! আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট 🎉";
+"আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
 
-let canvas = document.getElementById("scratch-canvas");
-let ctx = canvas.getContext("2d");
-ctx.fillStyle = "#B0B0B0";
-ctx.fillRect(0,0,300,150);
-ctx.globalCompositeOperation = "destination-out";
+let canvas=document.getElementById("scratch-canvas");
+let ctx=canvas.getContext("2d");
 
-let scratching = false;
+/* Rainbow Top Layer */
+let gradient=ctx.createLinearGradient(0,0,320,0);
+gradient.addColorStop(0,"red");
+gradient.addColorStop(0.17,"orange");
+gradient.addColorStop(0.34,"yellow");
+gradient.addColorStop(0.51,"green");
+gradient.addColorStop(0.68,"blue");
+gradient.addColorStop(0.85,"indigo");
+gradient.addColorStop(1,"violet");
 
-canvas.addEventListener("mousedown",()=>scratching=true);
-canvas.addEventListener("mouseup",()=>{scratching=false;showResult();});
-canvas.addEventListener("mousemove",(e)=>{
-if(scratching){
+ctx.fillStyle=gradient;
+ctx.fillRect(0,0,320,160);
+
+ctx.globalCompositeOperation="destination-out";
+
+let scratching=false;
+
+function scratch(e){
+let rect=canvas.getBoundingClientRect();
+let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
 ctx.beginPath();
-ctx.arc(e.offsetX,e.offsetY,20,0,2*Math.PI);
+ctx.arc(x,y,20,0,Math.PI*2);
 ctx.fill();
 }
-});
+
+canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
+canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
+canvas.addEventListener("mouseup",()=>{scratching=false;showResult()});
+
+canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e);e.preventDefault()});
+canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e);e.preventDefault()});
+canvas.addEventListener("touchend",()=>{scratching=false;showResult()});
 
 function showResult(){
-document.getElementById("result-message").innerHTML =
-discount + "% ডিসকাউন্টের পর Methi Mixd powder এর দাম আপনার জন্য " 
-+ discountedPrice + " টাকা";
-}
-
-document.getElementById("final-discount").innerText=discount;
-document.getElementById("final-price").innerText=discountedPrice;
-document.getElementById("total-price").innerText=discountedPrice;
-document.getElementById("discountField").value=discount+"%";
-document.getElementById("priceField").value=discountedPrice+" tk";
-
-function changeQty(val){
-qty+=val;
-if(qty<1) qty=1;
-document.getElementById("qty").innerText=qty;
-let total=discountedPrice*qty;
-document.getElementById("total-price").innerText=total;
-document.getElementById("priceField").value=total+" tk";
-}
-
-function showBilling(){
-document.getElementById("billing").style.display="block";
-}
-
-function submitOrder(){
-let data={
-discount:document.getElementById("discountField").value,
-price:document.getElementById("priceField").value,
-name:document.getElementById("name").value,
-phone:document.getElementById("phone").value,
-address:document.getElementById("address").value
-};
-
-fetch("YOUR_GOOGLE_SCRIPT_URL",{
-method:"POST",
-body:JSON.stringify(data)
-})
-.then(res=>alert("আপনার অর্ডারটি সাবমিট হয়ে গেছে"));
+document.getElementById("result-message").innerHTML=
+"🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
 }
 </script>
 
