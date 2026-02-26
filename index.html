@@ -46,8 +46,8 @@ body {
 /* Scratch Card */
 .scratch-container {
     margin-top: 20px;
-    position: relative;
     display: inline-block;
+    position: relative;
 }
 
 .card-base {
@@ -64,22 +64,12 @@ body {
     overflow: hidden;
 }
 
-/* Scratch Layer */
+/* Canvas */
 #scratchCanvas {
     position: absolute;
     top: 0;
     left: 0;
     border: 2px solid red;
-}
-
-/* ঘোষণ লেখা */
-.scratch-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    pointer-events: none;
 }
 
 /* Result */
@@ -88,21 +78,8 @@ body {
     font-weight: bold;
 }
 
-/* Button */
-.order-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background: red;
-    color: black;
-    border: 1px solid black;
-    font-weight: bold;
-    cursor: pointer;
-    display: none;
-}
-
 /* Section 2 */
 #section2 {
-    display: none;
     margin-top: 40px;
     padding: 20px;
     border-top: 2px solid black;
@@ -131,17 +108,14 @@ body {
     <!-- Scratch Card -->
     <div class="scratch-container">
 
-        <div class="card-base" id="cardBase">
-            আপনি X% ডিসকাউন্ট পেয়েছেন
+        <div class="card-base">
+            আপনি <span id="discountText"></span>% ডিসকাউন্ট পেয়েছেন
             <canvas id="scratchCanvas" width="300" height="150"></canvas>
-            <div class="scratch-label">👉 এখানে ঘোষণ 👈</div>
         </div>
 
     </div>
 
     <div id="result"></div>
-
-    <button class="order-btn" id="orderBtn" onclick="openSection2()">অর্ডার করতে চাই</button>
 
 </div>
 
@@ -155,7 +129,6 @@ body {
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 const resultDiv = document.getElementById("result");
-const orderBtn = document.getElementById("orderBtn");
 
 let isDrawing = false;
 let scratched = false;
@@ -166,46 +139,44 @@ let originalPrice = 900;
 let discountAmount = (originalPrice * discount) / 100;
 let finalPrice = originalPrice - discountAmount;
 
-document.getElementById("cardBase").innerHTML = 
-`আপনি ${discount}% ডিসকাউন্ট পেয়েছেন
-<canvas id="scratchCanvas" width="300" height="150"></canvas>
-<div class="scratch-label">👉 এখানে ঘোষণ 👈</div>`;
+document.getElementById("discountText").innerText = discount;
 
-setTimeout(() => {
+// Fill scratch layer (ash color)
+ctx.fillStyle = "#bfbfbf";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-const newCanvas = document.getElementById("scratchCanvas");
-const newCtx = newCanvas.getContext("2d");
+// Add scratch text ON scratch layer
+ctx.fillStyle = "black";
+ctx.font = "bold 20px Arial";
+ctx.textAlign = "center";
+ctx.fillText("👉 এখানে ঘোষণ 👈", canvas.width / 2, canvas.height / 2);
 
-newCtx.fillStyle = "#bfbfbf";
-newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
-
-newCtx.globalCompositeOperation = "destination-out";
+// Enable scratching
+ctx.globalCompositeOperation = "destination-out";
 
 function scratch(e) {
     if (!isDrawing) return;
-    const rect = newCanvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const x = (e.clientX || e.touches[0].clientX) - rect.left;
     const y = (e.clientY || e.touches[0].clientY) - rect.top;
-    newCtx.beginPath();
-    newCtx.arc(x, y, 15, 0, Math.PI * 2);
-    newCtx.fill();
+    ctx.beginPath();
+    ctx.arc(x, y, 15, 0, Math.PI * 2);
+    ctx.fill();
 }
 
-newCanvas.addEventListener("mousedown", () => isDrawing = true);
-newCanvas.addEventListener("mouseup", () => {
+canvas.addEventListener("mousedown", () => isDrawing = true);
+canvas.addEventListener("mouseup", () => {
     isDrawing = false;
     if (!scratched) showResult();
 });
-newCanvas.addEventListener("mousemove", scratch);
+canvas.addEventListener("mousemove", scratch);
 
-newCanvas.addEventListener("touchstart", () => isDrawing = true);
-newCanvas.addEventListener("touchend", () => {
+canvas.addEventListener("touchstart", () => isDrawing = true);
+canvas.addEventListener("touchend", () => {
     isDrawing = false;
     if (!scratched) showResult();
 });
-newCanvas.addEventListener("touchmove", scratch);
-
-}, 100);
+canvas.addEventListener("touchmove", scratch);
 
 function showResult() {
     scratched = true;
@@ -214,12 +185,6 @@ function showResult() {
     অরিজিনাল দাম: ${originalPrice} টাকা <br>
     আপনার মূল্য: ${finalPrice} টাকা
     `;
-    orderBtn.style.display = "inline-block";
-}
-
-function openSection2() {
-    document.getElementById("section2").style.display = "block";
-    document.getElementById("section2").scrollIntoView({behavior: "smooth"});
 }
 </script>
 
