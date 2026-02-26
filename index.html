@@ -97,7 +97,7 @@ body {
     font-weight: bold;
 }
 
-/* ====== NEW ADDED STYLE (Only Added Below) ====== */
+/* ====== NEW ADDED STYLE ====== */
 
 .order-btn {
     margin-top: 15px;
@@ -161,12 +161,28 @@ body {
     line-height: 1.7;
 }
 
+/* ===== Image Placeholder Updated ===== */
+
 .image-placeholder {
     width: 90%;
-    max-width: 400px;
-    height: 250px;
+    max-width: 600px;
     margin: 20px auto;
     border: 1px solid red;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.image-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.image-row img {
+    width: 50%;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid #ccc;
 }
 </style>
 </head>
@@ -203,8 +219,6 @@ Methi Mixd MRP-900tk
 
 </div>
 
-<!-- ===== NEW SECTION ADDED BELOW ===== -->
-
 <div id="extraContent">
 
 <div class="video-text">অবশ্যই ভিডিওটি দেখবেন</div>
@@ -222,17 +236,22 @@ Methi Mixd MRP-900tk
 💨 ৭ দিন সেবনে পেট ফাঁপা সম্পূর্ণ সমাধান <br>
 🍽 ৭ দিন সেবনে অরুচি দূর <br>
 🩸 ৭ দিন সেবনে সুগার ডায়াবেটিস নিয়ন্ত্রণে সহায়ক <br>
-💪 ৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপ নিয়ন্ত্রণ <br>
+💪 ৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপ নিয়ন্ত্রণে সহায়ক <br>
 🦠 ৭ দিন সেবনে পেট পরিষ্কার ও কৃমির সমাধান <br>
 ⚡ ৭ দিন সেবনে শারীরিক শক্তি ও যৌন শক্তি বৃদ্ধি
 </div>
 
-<div class="image-placeholder"></div>
+<div class="image-placeholder">
+<div class="image-row">
+<img src="image1.jpg" alt="Image 1">
+<img src="image2.jpg" alt="Image 2">
+</div>
+</div>
 
 </div>
 
 <script>
-/* ===== আপনার আগের JS একদম অপরিবর্তিত রাখা হয়েছে ===== */
+// আপনার আগের JS অপরিবর্তিত
 
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
@@ -298,4 +317,3 @@ document.getElementById("extraContent").style.display="block";
 
 </body>
 </html>
-
