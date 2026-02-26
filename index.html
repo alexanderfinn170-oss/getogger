@@ -14,7 +14,7 @@ body {
     text-align: center;
 }
 
-/* Notification Bar */
+/* Notification */
 .notification {
     position: fixed;
     top: 10px;
@@ -96,6 +96,32 @@ body {
     margin-top: 15px;
     font-weight: bold;
 }
+
+/* Order Button */
+.order-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: red;
+    color: black;
+    border: 1px solid black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Section 2 */
+#section2 {
+    display: none;
+    background: #ffffff;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+.section2-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: black;
+    -webkit-text-stroke: 1px red;
+}
 </style>
 </head>
 
@@ -130,8 +156,13 @@ body {
 
 </div>
 
+<!-- Section 2 -->
+<div id="section2">
+    <div class="section2-title">ভিডিওটি অবশ্যই দেখবেন</div>
+</div>
+
 <script>
-// ================= Notification System =================
+// Notification
 const names = [
 "আরিফুল হক","সুমাইয়া আক্তার","রাকিব হাসান","মাহি ইসলাম","নাসরিন আক্তার",
 "সোহেল রানা","তানজিলা খাতুন","মোস্তাফিজুর রহমান","জান্নাতুল ফেরদৌস",
@@ -146,7 +177,7 @@ function showNotification() {
     let randomName = names[Math.floor(Math.random() * names.length)];
     let randomDiscount = Math.floor(Math.random() * 36) + 15;
 
-    notificationBar.innerHTML = 
+    notificationBar.innerHTML =
     `🎉<span style="color:green;">${randomName}</span> ${randomDiscount}% ডিসকাউন্ট এ অর্ডার করেছে`;
 
     notificationBar.style.animation = "none";
@@ -157,7 +188,7 @@ function showNotification() {
 setInterval(showNotification, 3000);
 showNotification();
 
-// ================= Scratch Card =================
+// Scratch Card
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 const resultDiv = document.getElementById("result");
@@ -212,7 +243,15 @@ function showResult() {
     অভিনন্দন!🎉 আপনি ${discount}% ডিসকাউন্ট পেয়েছেন। <br>
     অরিজিনাল দাম: ${originalPrice} টাকা <br>
     আপনার মূল্য: ${finalPrice} টাকা
+    <br>
+    <button class="order-btn" onclick="openSection2()">অর্ডার করতে চায়</button>
     `;
+}
+
+function openSection2(){
+    document.querySelector(".top-section").style.display="none";
+    document.getElementById("section2").style.display="block";
+    window.scrollTo(0,0);
 }
 </script>
 
