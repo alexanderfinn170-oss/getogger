@@ -11,8 +11,7 @@ body{
     background:#ffffff;
     font-family:Arial, sans-serif;
     text-align:center;
-    overflow-x:hidden; /* prevent left-right move */
-    touch-action:manipulation;
+    overflow-x:hidden;
 }
 
 /* Product Image */
@@ -66,20 +65,7 @@ body{
     color:black;
 }
 
-/* Scratch Section */
-.scratch-title{
-    background:yellow;
-    display:inline-block;
-    padding:6px 10px;
-    border:1px solid black;
-    font-weight:bold;
-    margin-top:15px;
-}
-.arrow{
-    font-size:40px;
-    margin:10px 0;
-}
-
+/* Scratch */
 #scratch-container{
     margin:auto;
     width:320px;
@@ -88,7 +74,6 @@ body{
     position:relative;
     overflow:hidden;
 }
-
 #scratch-bottom{
     width:100%;
     height:100%;
@@ -98,29 +83,33 @@ body{
     justify-content:center;
     font-weight:bold;
     text-align:center;
-    padding:10px;
 }
-
 #scratch-canvas{
     position:absolute;
     top:0;
     left:0;
 }
-
-/* Result */
 #result-message{
     margin-top:15px;
     font-weight:bold;
-    font-size:16px;
 }
 
-/* Order Button */
+/* Buttons */
 .order-btn{
     background:red;
     color:white;
     padding:10px 20px;
     border:1px solid black;
     margin-top:15px;
+    cursor:pointer;
+    animation:move 1s infinite alternate;
+}
+.submit-btn{
+    background:blue;
+    color:white;
+    padding:10px 20px;
+    border:1px solid black;
+    margin-top:10px;
     cursor:pointer;
     animation:move 1s infinite alternate;
 }
@@ -138,14 +127,6 @@ body{
     border:2px solid yellow;
     outline:2px solid black;
     padding:15px;
-    margin-top:10px;
-}
-.billing-title{
-    font-weight:bold;
-    color:black;
-    border:1px solid green;
-    display:inline-block;
-    padding:5px;
 }
 input{
     width:90%;
@@ -159,15 +140,6 @@ input{
     padding:5px 10px;
     font-size:20px;
     cursor:pointer;
-}
-.submit-btn{
-    background:blue;
-    color:white;
-    padding:10px 20px;
-    border:1px solid black;
-    margin-top:10px;
-    cursor:pointer;
-    animation:move 1s infinite alternate;
 }
 </style>
 </head>
@@ -199,8 +171,7 @@ input{
 <li>৭ দিন সেবনে শারীরিক শক্তি এবং যৌন শক্তি বৃদ্ধি</li>
 </ul>
 
-<div class="scratch-title">স্ক্র্যাচ কার্ড ঘষে সর্বোচ্চ ডিসকাউন্ট নিন:</div>
-<div class="arrow">⬇️</div>
+<h3>স্ক্র্যাচ কার্ড ঘষে সর্বোচ্চ ডিসকাউন্ট নিন ⬇️</h3>
 
 <div id="scratch-container">
 <div id="scratch-bottom"></div>
@@ -211,18 +182,53 @@ input{
 
 <button class="order-btn" onclick="showBilling()">অর্ডার করতে চাই</button>
 
+<!-- Billing Section -->
+<div id="billing">
+<h3>ক্যাশ অন ডেলিভারি</h3>
+<img src="YOUR_PRODUCT_IMAGE.png" width="120">
+<p style="background:red;color:black;border:2px solid green;">
+নিচে আপনার অর্ডারটি ডিসকাউন্টসহ কনফার্ম করুন
+</p>
+
+<div class="billing-box">
+<p>Discount: <span id="final-discount"></span>%</p>
+<p>Price After Discount: <span id="final-price"></span> tk</p>
+
+<p>কয়টি নিতে চান নির্বাচন করুন:</p>
+<button class="qty-btn" onclick="changeQty(-1)">-</button>
+<span id="qty">1</span>
+<button class="qty-btn" onclick="changeQty(1)">+</button>
+
+<p>মোট দাম: <span id="total-price"></span> tk</p>
+
+<input type="text" id="discountField" readonly>
+<input type="text" id="priceField" readonly>
+<input type="text" id="name" placeholder="* নাম লিখুন">
+<input type="text" id="phone" placeholder="* নাম্বার লিখুন">
+<input type="text" id="address" placeholder="* ঠিকানা লিখুন">
+
+<button class="submit-btn" onclick="submitOrder()">Submit Order</button>
+</div>
+</div>
+
 <script>
-let originalPrice = 900;
-let discount = Math.floor(Math.random()*31)+20; //20-50%
-let discountedPrice = Math.round(originalPrice - (originalPrice*discount/100));
+let originalPrice=900;
+let discount=Math.floor(Math.random()*31)+20;
+let discountedPrice=Math.round(originalPrice-(originalPrice*discount/100));
+let qty=1;
 
-document.getElementById("scratch-bottom").innerHTML =
-"আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট";
+document.getElementById("scratch-bottom").innerHTML=
+"আপনি পেয়েছেন "+discount+"% ডিসকাউন্ট";
 
+document.getElementById("final-discount").innerText=discount;
+document.getElementById("final-price").innerText=discountedPrice;
+document.getElementById("total-price").innerText=discountedPrice;
+document.getElementById("discountField").value=discount+"%";
+document.getElementById("priceField").value=discountedPrice+" tk";
+
+/* Scratch */
 let canvas=document.getElementById("scratch-canvas");
 let ctx=canvas.getContext("2d");
-
-/* Rainbow Top Layer */
 let gradient=ctx.createLinearGradient(0,0,320,0);
 gradient.addColorStop(0,"red");
 gradient.addColorStop(0.17,"orange");
@@ -231,14 +237,11 @@ gradient.addColorStop(0.51,"green");
 gradient.addColorStop(0.68,"blue");
 gradient.addColorStop(0.85,"indigo");
 gradient.addColorStop(1,"violet");
-
 ctx.fillStyle=gradient;
 ctx.fillRect(0,0,320,160);
-
 ctx.globalCompositeOperation="destination-out";
 
 let scratching=false;
-
 function scratch(e){
 let rect=canvas.getBoundingClientRect();
 let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
@@ -247,11 +250,9 @@ ctx.beginPath();
 ctx.arc(x,y,20,0,Math.PI*2);
 ctx.fill();
 }
-
 canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
 canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
 canvas.addEventListener("mouseup",()=>{scratching=false;showResult()});
-
 canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e);e.preventDefault()});
 canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e);e.preventDefault()});
 canvas.addEventListener("touchend",()=>{scratching=false;showResult()});
@@ -259,6 +260,36 @@ canvas.addEventListener("touchend",()=>{scratching=false;showResult()});
 function showResult(){
 document.getElementById("result-message").innerHTML=
 "🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
+}
+
+/* Billing Functions */
+function showBilling(){
+document.getElementById("billing").style.display="block";
+}
+
+function changeQty(val){
+qty+=val;
+if(qty<1) qty=1;
+document.getElementById("qty").innerText=qty;
+let total=discountedPrice*qty;
+document.getElementById("total-price").innerText=total;
+document.getElementById("priceField").value=total+" tk";
+}
+
+function submitOrder(){
+let data={
+discount:document.getElementById("discountField").value,
+price:document.getElementById("priceField").value,
+name:document.getElementById("name").value,
+phone:document.getElementById("phone").value,
+address:document.getElementById("address").value
+};
+
+fetch("YOUR_GOOGLE_SCRIPT_URL",{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(res=>alert("আপনার অর্ডারটি সাবমিট হয়ে গেছে"));
 }
 </script>
 
