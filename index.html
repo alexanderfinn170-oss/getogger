@@ -6,6 +6,7 @@
 <title>Methi Mixd Powder</title>
 
 <style>
+/* ===== আপনার সব আগের CSS অপরিবর্তিত ===== */
 body{
 margin:0;
 background:#ffffff;
@@ -69,6 +70,8 @@ position:fixed;top:50%;left:50%;
 transform:translate(-50%,-50%);
 width:90%;z-index:9999;background:#fff;
 }
+
+/* ===== Watermark (নতুন যোগ) ===== */
 #watermark{
 position:absolute;
 top:50%;
@@ -81,21 +84,12 @@ opacity:0.8;
 pointer-events:none;
 text-align:center;
 }
-
-/* ===== Footer (নতুন যোগ) ===== */
-.footer{
-margin-top:40px;
-padding:15px;
-background:#000;
-color:#fff;
-font-weight:bold;
-font-size:14px;
-}
 </style>
 </head>
 
 <body>
 
+<!-- ===== আপনার আগের সব HTML অপরিবর্তিত ===== -->
 <img src="YOUR_PRODUCT_IMAGE.png" class="product-img">
 
 <div class="video-wrapper">
@@ -159,11 +153,155 @@ Methi Mixd powder সেবনের উপকারিতা 👇
 </div>
 </div>
 
-<footer class="footer">
-Design by 01785369906
-</footer>
+<script>
+let originalPrice=900;
+let qty=1;
 
-<!-- ===== আপনার আগের সম্পূর্ণ JS (অপরিবর্তিত Anti System সহ) এখানে থাকবে ===== -->
+const STORAGE_KEY="methi_discount_data";
+const now=Date.now();
+let savedData=JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+let discount, discountedPrice;
+let allowScratch=true;
+
+if(savedData && (now - savedData.time < 24*60*60*1000)){
+discount=savedData.discount;
+discountedPrice=savedData.price;
+allowScratch=false;
+showWatermark();
+}else{
+discount=Math.floor(Math.random()*31)+20;
+discountedPrice=Math.round(originalPrice-(originalPrice*discount/100));
+localStorage.setItem(STORAGE_KEY,JSON.stringify({
+discount:discount,
+price:discountedPrice,
+time:now
+}));
+}
+
+function showWatermark(){
+let wm=document.createElement("div");
+wm.id="watermark";
+wm.innerHTML="Discount card already Used ❌<br>Try After 24 hours ❌";
+document.getElementById("scratch-container").appendChild(wm);
+}
+
+document.getElementById("scratch-bottom").innerHTML=
+"আপনি পেয়েছেন "+discount+"% ডিসকাউন্ট";
+
+document.getElementById("final-discount").innerText=discount;
+document.getElementById("final-price").innerText=discountedPrice;
+document.getElementById("total-price").innerText=discountedPrice;
+document.getElementById("discountField").value=discount+"%";
+document.getElementById("priceField").value=discountedPrice+" tk";
+
+/* ===== Scratch System আগের মতোই ===== */
+let canvas=document.getElementById("scratch-canvas");
+let ctx=canvas.getContext("2d");
+
+let gradient=ctx.createLinearGradient(0,0,320,0);
+gradient.addColorStop(0,"red");
+gradient.addColorStop(0.17,"orange");
+gradient.addColorStop(0.34,"yellow");
+gradient.addColorStop(0.51,"green");
+gradient.addColorStop(0.68,"blue");
+gradient.addColorStop(0.85,"indigo");
+gradient.addColorStop(1,"violet");
+
+ctx.fillStyle=gradient;
+ctx.fillRect(0,0,320,160);
+
+ctx.fillStyle="black";
+ctx.font="bold 18px Arial";
+ctx.textAlign="center";
+ctx.fillText("এখানে ঘোষণ 👈",160,85);
+
+if(allowScratch){
+ctx.globalCompositeOperation="destination-out";
+
+let scratching=false;
+function scratch(e){
+let rect=canvas.getBoundingClientRect();
+let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
+ctx.beginPath();
+ctx.arc(x,y,20,0,Math.PI*2);
+ctx.fill();
+}
+
+canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
+canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
+canvas.addEventListener("mouseup",()=>{scratching=false;finishScratch()});
+
+canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e)});
+canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e)});
+canvas.addEventListener("touchend",()=>{scratching=false;finishScratch()});
+
+function finishScratch(){
+document.getElementById("result-message").innerHTML=
+"🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
+document.getElementById("orderBtn").style.display="inline-block";
+showBilling();
+}
+}else{
+document.getElementById("result-message").innerHTML=
+"❌ আপনি ইতিমধ্যে এই ডিসকাউন্ট ব্যবহার করেছেন। ২৪ ঘন্টা পর আবার চেষ্টা করুন।";
+}
+
+/* COD Image Zoom */
+document.getElementById("cod-img").addEventListener("click",function(){
+this.classList.toggle("fullscreen");
+});
+
+function showBilling(){
+document.getElementById("billing").style.display="block";
+}
+
+function changeQty(val){
+qty+=val;
+if(qty<1) qty=1;
+document.getElementById("qty").innerText=qty;
+let total=discountedPrice*qty;
+document.getElementById("total-price").innerText=total;
+document.getElementById("priceField").value=total+" tk";
+}
+
+function submitOrder(){
+let name=document.getElementById("name");
+let phone=document.getElementById("phone");
+let address=document.getElementById("address");
+
+if(!name.value || !phone.value || !address.value){
+alert("⚠️ সকল ঘর পূরণ করতে হবে");
+if(!name.value) name.style.border="2px solid red";
+if(!phone.value) phone.style.border="2px solid red";
+if(!address.value) address.style.border="2px solid red";
+return;
+}
+
+let btn=document.getElementById("submitBtn");
+btn.classList.add("shrink");
+
+setTimeout(()=>{
+alert("✅ আপনার অর্ডার কনফার্ম হয়েছে!");
+
+let data={
+discount:document.getElementById("discountField").value,
+price:document.getElementById("priceField").value,
+name:name.value,
+phone:phone.value,
+address:address.value
+};
+
+fetch("YOUR_GOOGLE_SCRIPT_URL",{
+method:"POST",
+body:JSON.stringify(data)
+});
+
+btn.classList.remove("shrink");
+},1000);
+}
+</script>
 
 </body>
 </html>
