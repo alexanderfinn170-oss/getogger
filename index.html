@@ -6,6 +6,158 @@
 <title>Methi Mixd Landing Page</title>
 
 <style>
+/* ===== তোমার আগের সব CSS অপরিবর্তিত ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* (তোমার আগের সব স্টাইল এখানে অপরিবর্তিত থাকবে — সংক্ষেপের জন্য বাদ দিচ্ছি না, বরং নিচে নতুনগুলো যুক্ত করছি) */
+
+
+/* ================= NEW ADDED SECTION STYLE ================= */
+
+.auto-product-preview{
+    margin-top:30px;
+}
+
+.auto-product-preview img{
+    width:180px;
+    height:auto;
+}
+
+.confirm-text{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+    color:black;
+    -webkit-text-stroke:1px green;
+    background:red;
+    display:inline-block;
+    padding:5px 15px;
+}
+
+.payment-template{
+    width:95%;
+    max-width:600px;
+    margin:25px auto;
+    background:#ffffff;
+    padding:20px;
+    border:2px solid yellow;
+    outline:2px solid black;
+    box-sizing:border-box;
+}
+
+.template-title{
+    font-size:22px;
+    font-weight:bold;
+    color:black;
+    -webkit-text-stroke:1px green;
+    margin-bottom:15px;
+}
+
+.select-text{
+    font-weight:bold;
+    color:black;
+    -webkit-text-stroke:1px green;
+    margin-top:15px;
+}
+
+.qty-control{
+    margin-top:10px;
+    font-size:22px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+
+.qty-btn{
+    padding:5px 15px;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    color:black;
+    -webkit-text-stroke:1px green;
+    border:1px solid black;
+}
+
+.minus{
+    background:yellow;
+}
+
+.plus{
+    background:red;
+}
+
+.total-text{
+    margin-top:15px;
+    font-weight:bold;
+    color:black;
+    -webkit-text-stroke:1px green;
+}
+
+.customer-title{
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.customer-title span{
+    color:red;
+}
+
+.form-input{
+    width:95%;
+    padding:10px;
+    margin:8px 0;
+    box-sizing:border-box;
+}
+
+.red-outline{
+    border:1px solid red;
+}
+
+.black-outline{
+    border:1px solid black;
+}
+
+.submit-btn{
+    margin-top:15px;
+    background:blue;
+    color:white;
+    padding:12px 25px;
+    font-size:18px;
+    border:2px solid black;
+    cursor:pointer;
+    animation: moveSubmit 1.5s infinite;
+}
+
+@keyframes moveSubmit {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(3px); }
+    100% { transform: translateX(0); }
+}
+
+.submit-btn:active{
+    transform:scale(1.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methi Mixd Landing Page</title>
+
+<style>
 body {
     margin: 0;
     padding: 0;
@@ -313,6 +465,95 @@ document.getElementById("orderButtonArea").innerHTML =
 function showExtra(){
 document.getElementById("extraContent").style.display="block";
 }
+</script>
+
+</body>
+</html>
+
+
+<!-- ===== নতুন যুক্ত করা অংশ (দুইটা পিকচারের বক্সের নিচে) ===== -->
+
+<div class="auto-product-preview">
+    <img src="product.png" alt="Main Product">
+</div>
+
+<div class="confirm-text">
+নিচে আপনার অর্ডারটি ডিসকাউন্টসহ কনফার্ম করুন
+</div>
+
+<div class="payment-template">
+
+<div class="template-title">Discount & Details</div>
+
+<div id="discountInfo"></div>
+<div id="priceInfo"></div>
+
+<div class="select-text">কয়টি নিতে চান নির্বাচন করুন:</div>
+
+<div class="qty-control">
+<button class="qty-btn minus" onclick="decreaseQty()">-</button>
+<span id="quantity">1</span>
+<button class="qty-btn plus" onclick="increaseQty()">+</button>
+</div>
+
+<div class="total-text">
+মোট দাম : <span id="totalPrice"></span>
+</div>
+
+<div class="customer-title">
+Customer Details<span>*</span>
+</div>
+
+<input type="text" id="discountAmountField" class="form-input red-outline" readonly>
+<input type="text" id="finalTotalField" class="form-input red-outline" readonly>
+
+<input type="text" placeholder="* নাম লিখুন" class="form-input black-outline" required>
+<input type="text" placeholder="* নাম্বার লিখুন" class="form-input black-outline" required>
+<input type="text" placeholder="* ঠিকানা লিখুন" class="form-input black-outline" required>
+
+<button class="submit-btn" onclick="submitOrder()">Submit Order</button>
+
+</div>
+
+
+<script>
+
+/* ===== আগের JS অপরিবর্তিত থাকবে ===== */
+
+/* ===== নতুন যুক্ত JS ===== */
+
+let quantity = 1;
+
+function updateCalculation(){
+    let total = finalPrice * quantity;
+
+    document.getElementById("quantity").innerText = quantity;
+    document.getElementById("totalPrice").innerText = total + " টাকা";
+    document.getElementById("discountInfo").innerHTML = "প্রাপ্ত ডিসকাউন্ট: " + discount + "%";
+    document.getElementById("priceInfo").innerHTML = "ডিসকাউন্টের পর একক মূল্য: " + finalPrice + " টাকা";
+
+    document.getElementById("discountAmountField").value = "ডিসকাউন্ট এর পরিমাণ: " + discount + "%";
+    document.getElementById("finalTotalField").value = "মোট দাম: " + total + " টাকা";
+}
+
+function increaseQty(){
+    quantity++;
+    updateCalculation();
+}
+
+function decreaseQty(){
+    if(quantity>1){
+        quantity--;
+        updateCalculation();
+    }
+}
+
+function submitOrder(){
+    alert("আপনার অর্ডারটি সাবমিট হয়ে গেছে");
+}
+
+updateCalculation();
+
 </script>
 
 </body>
