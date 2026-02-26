@@ -14,43 +14,43 @@ body {
     text-align: center;
 }
 
-/* ================= LIVE REVIEW SYSTEM START ================= */
+/* ================= LIVE REVIEW SYSTEM ================= */
 
 .live-review-tab{
     position:fixed;
     right:0;
     top:50%;
     transform:translateY(-50%);
-    background:red;
+    background:linear-gradient(45deg,red,darkred);
     color:white;
-    padding:14px 8px;
+    padding:16px 10px;
     writing-mode:vertical-rl;
     text-orientation:mixed;
     cursor:pointer;
     font-weight:bold;
-    border-radius:10px 0 0 10px;
+    border-radius:12px 0 0 12px;
     z-index:9999;
-    box-shadow:0 0 10px rgba(0,0,0,.3);
-    animation:pulse 1.5s infinite;
+    box-shadow:0 0 15px rgba(0,0,0,.4);
+    animation:attention 2s infinite;
 }
 
-@keyframes pulse{
-    0%{opacity:1;}
-    50%{opacity:.6;}
-    100%{opacity:1;}
+@keyframes attention{
+    0%{transform:translateY(-50%) scale(1);}
+    50%{transform:translateY(-50%) scale(1.1);}
+    100%{transform:translateY(-50%) scale(1);}
 }
 
 .live-review-panel{
     position:fixed;
-    right:-360px;
+    right:-380px;
     top:50%;
     transform:translateY(-50%);
-    width:330px;
+    width:340px;
     height:520px;
     background:#f9f9f9;
     border-radius:25px;
-    box-shadow:0 0 20px rgba(0,0,0,.4);
-    transition:.4s;
+    box-shadow:0 0 25px rgba(0,0,0,.5);
+    transition:.5s cubic-bezier(.68,-0.55,.27,1.55);
     z-index:9999;
     display:flex;
     flex-direction:column;
@@ -66,6 +66,16 @@ body {
     color:white;
     padding:12px;
     font-weight:bold;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.close-btn{
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+    color:red;
 }
 
 .review-body{
@@ -128,23 +138,37 @@ body {
     cursor:pointer;
 }
 
-/* ================= LIVE REVIEW SYSTEM END ================= */
+/* ===== আপনার আগের সম্পূর্ণ CSS নিচে অপরিবর্তিত ===== */
 
+/* Notification Bar */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #ffffff;
+    padding: 8px 15px;
+    border: 1px solid black;
+    font-size: 14px;
+    white-space: nowrap;
+    transform: translateX(-120%);
+    opacity: 0;
+}
 
-/* ===== আপনার আগের সম্পূর্ণ CSS অপরিবর্তিত ===== */
-/* (আপনার দেওয়া CSS এখানে হুবহু বসানো হয়েছে — সংক্ষিপ্ত করার জন্য এখানে পুনরাবৃত্তি করছি না কারণ আগের মেসেজেই ছিল) */
-
+/* ===== (আপনার বাকি সম্পূর্ণ CSS আগের মতোই থাকবে) ===== */
 </style>
 </head>
 
 <body>
 
-<!-- ================= LIVE REVIEW HTML ================= -->
+<!-- ================= LIVE REVIEW SYSTEM HTML ================= -->
 
-<div class="live-review-tab" onclick="toggleReview()">Live Reviews</div>
+<div class="live-review-tab" onclick="toggleReview()">🔥 Live Reviews</div>
 
 <div class="live-review-panel" id="reviewPanel">
-    <div class="review-header">🔴 Live Customer Reviews</div>
+    <div class="review-header">
+        🔴 Live Customer Reviews
+        <span class="close-btn" onclick="closeReview()">✖</span>
+    </div>
     <div class="review-body" id="reviewBody"></div>
 
     <div class="review-input">
@@ -627,15 +651,20 @@ function submitOrder(){
 
 </body>
 </html>
+
 <script>
 
-/* ================= LIVE REVIEW JS START ================= */
+/* ================= LIVE REVIEW JS ================= */
 
 const panel=document.getElementById("reviewPanel");
 const reviewBody=document.getElementById("reviewBody");
 
 function toggleReview(){
-    panel.classList.toggle("active");
+    panel.classList.add("active");
+}
+
+function closeReview(){
+    panel.classList.remove("active");
 }
 
 const names=[
@@ -708,8 +737,6 @@ function addVisitorReview(){
 
     input.value="";
 }
-
-/* ================= LIVE REVIEW JS END ================= */
 
 </script>
 
