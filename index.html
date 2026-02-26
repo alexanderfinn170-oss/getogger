@@ -121,6 +121,17 @@ body {
     font-weight: bold;
     color: black;
     -webkit-text-stroke: 1px red;
+    margin-bottom: 5px; /* খুব অল্প গ্যাপ */
+}
+
+/* YouTube Video Wrapper */
+.video-wrapper {
+    display: inline-block;
+    border: 2px solid red; /* চিকন লাল আউটলাইন */
+}
+
+.video-wrapper iframe {
+    display: block;
 }
 </style>
 </head>
@@ -159,6 +170,14 @@ body {
 <!-- Section 2 -->
 <div id="section2">
     <div class="section2-title">ভিডিওটি অবশ্যই দেখবেন</div>
+
+    <div class="video-wrapper">
+        <!-- এখানে তোমার ইউটিউব ভিডিও লিংক বসাবে -->
+        <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        frameborder="0"
+        allowfullscreen></iframe>
+    </div>
 </div>
 
 <script>
