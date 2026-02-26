@@ -20,15 +20,22 @@ body{
     margin-top:20px;
 }
 
-/* Video */
+/* Responsive Video */
 .video-wrapper{
     width:100%;
     border:2px solid red;
     margin-top:10px;
+    position:relative;
+    padding-bottom:56.25%;
+    height:0;
+    overflow:hidden;
 }
 .video-wrapper iframe{
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
-    height:220px;
+    height:100%;
     border:none;
 }
 
@@ -39,17 +46,14 @@ body{
     margin:10px 0;
 }
 
-/* Benefit Title */
+/* Updated Benefit Title */
 .benefit-title{
     display:inline-block;
     background:yellow;
     padding:8px 15px;
     border:1px solid black;
-}
-.benefit-title span{
-    color:white;
     font-weight:bold;
-    -webkit-text-stroke:0.5px black;
+    color:black;
 }
 
 /* Benefits */
@@ -89,6 +93,8 @@ body{
     top:0;
     left:0;
 }
+
+/* Result */
 #result-message{
     margin-top:15px;
     font-weight:bold;
@@ -155,7 +161,7 @@ input{
 <div class="price">MRP-900tk</div>
 
 <div class="benefit-title">
-<span>Methi Mixd powder সেবনের উপকারিতা 👇</span>
+Methi Mixd powder সেবনের উপকারিতা 👇
 </div>
 
 <ul class="benefits">
@@ -229,6 +235,7 @@ document.getElementById("priceField").value=discountedPrice+" tk";
 /* Scratch */
 let canvas=document.getElementById("scratch-canvas");
 let ctx=canvas.getContext("2d");
+
 let gradient=ctx.createLinearGradient(0,0,320,0);
 gradient.addColorStop(0,"red");
 gradient.addColorStop(0.17,"orange");
@@ -237,8 +244,16 @@ gradient.addColorStop(0.51,"green");
 gradient.addColorStop(0.68,"blue");
 gradient.addColorStop(0.85,"indigo");
 gradient.addColorStop(1,"violet");
+
 ctx.fillStyle=gradient;
 ctx.fillRect(0,0,320,160);
+
+/* Text on scratch layer */
+ctx.fillStyle="black";
+ctx.font="bold 18px Arial";
+ctx.textAlign="center";
+ctx.fillText("এখানে ঘোষণ 👈",160,85);
+
 ctx.globalCompositeOperation="destination-out";
 
 let scratching=false;
@@ -250,19 +265,20 @@ ctx.beginPath();
 ctx.arc(x,y,20,0,Math.PI*2);
 ctx.fill();
 }
+
 canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
 canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
-canvas.addEventListener("mouseup",()=>{scratching=false;showResult()});
+canvas.addEventListener("mouseup",()=>{scratching=false;showResult();showBilling();});
+
 canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e);e.preventDefault()});
 canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e);e.preventDefault()});
-canvas.addEventListener("touchend",()=>{scratching=false;showResult()});
+canvas.addEventListener("touchend",()=>{scratching=false;showResult();showBilling();});
 
 function showResult(){
 document.getElementById("result-message").innerHTML=
 "🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
 }
 
-/* Billing Functions */
 function showBilling(){
 document.getElementById("billing").style.display="block";
 }
