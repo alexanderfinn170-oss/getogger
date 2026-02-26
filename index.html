@@ -6,7 +6,6 @@
 <title>Methi Mixd Powder</title>
 
 <style>
-/* ===== আপনার সব আগের CSS অপরিবর্তিত ===== */
 body{
 margin:0;
 background:#ffffff;
@@ -70,8 +69,6 @@ position:fixed;top:50%;left:50%;
 transform:translate(-50%,-50%);
 width:90%;z-index:9999;background:#fff;
 }
-
-/* ===== Watermark (নতুন যোগ) ===== */
 #watermark{
 position:absolute;
 top:50%;
@@ -89,7 +86,6 @@ text-align:center;
 
 <body>
 
-<!-- ===== আপনার আগের সব HTML অপরিবর্তিত ===== -->
 <img src="YOUR_PRODUCT_IMAGE.png" class="product-img">
 
 <div class="video-wrapper">
@@ -162,12 +158,12 @@ const now=Date.now();
 let savedData=JSON.parse(localStorage.getItem(STORAGE_KEY));
 
 let discount, discountedPrice;
-let allowScratch=true;
+let isReturningUser=false;
 
 if(savedData && (now - savedData.time < 24*60*60*1000)){
 discount=savedData.discount;
 discountedPrice=savedData.price;
-allowScratch=false;
+isReturningUser=true;
 showWatermark();
 }else{
 discount=Math.floor(Math.random()*31)+20;
@@ -195,7 +191,6 @@ document.getElementById("total-price").innerText=discountedPrice;
 document.getElementById("discountField").value=discount+"%";
 document.getElementById("priceField").value=discountedPrice+" tk";
 
-/* ===== Scratch System আগের মতোই ===== */
 let canvas=document.getElementById("scratch-canvas");
 let ctx=canvas.getContext("2d");
 
@@ -216,9 +211,8 @@ ctx.font="bold 18px Arial";
 ctx.textAlign="center";
 ctx.fillText("এখানে ঘোষণ 👈",160,85);
 
-if(allowScratch){
+if(!isReturningUser){
 ctx.globalCompositeOperation="destination-out";
-
 let scratching=false;
 function scratch(e){
 let rect=canvas.getBoundingClientRect();
@@ -228,11 +222,9 @@ ctx.beginPath();
 ctx.arc(x,y,20,0,Math.PI*2);
 ctx.fill();
 }
-
 canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
 canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
 canvas.addEventListener("mouseup",()=>{scratching=false;finishScratch()});
-
 canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e)});
 canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e)});
 canvas.addEventListener("touchend",()=>{scratching=false;finishScratch()});
@@ -245,10 +237,11 @@ showBilling();
 }
 }else{
 document.getElementById("result-message").innerHTML=
-"❌ আপনি ইতিমধ্যে এই ডিসকাউন্ট ব্যবহার করেছেন। ২৪ ঘন্টা পর আবার চেষ্টা করুন।";
+"✅ আপনি আগেই "+discount+"% ডিসকাউন্ট পেয়েছেন। এই ডিসকাউন্টেই অর্ডার করতে পারবেন।";
+document.getElementById("orderBtn").style.display="inline-block";
+showBilling();
 }
 
-/* COD Image Zoom */
 document.getElementById("cod-img").addEventListener("click",function(){
 this.classList.toggle("fullscreen");
 });
