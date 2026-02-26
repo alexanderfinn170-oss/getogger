@@ -9,17 +9,17 @@
 body{
     margin:0;
     background:#ffffff;
-    font-family: Arial, sans-serif;
+    font-family:Arial, sans-serif;
     text-align:center;
 }
 
-/* Main Product Image */
+/* Product Image */
 .product-img{
     width:150px;
     margin-top:20px;
 }
 
-/* YouTube Section */
+/* Video */
 .video-wrapper{
     width:100%;
     border:2px solid red;
@@ -38,14 +38,17 @@ body{
     margin:10px 0;
 }
 
-/* Yellow Highlight Title */
-.highlight-title{
+/* Updated Benefit Title */
+.benefit-title{
     display:inline-block;
     background:yellow;
-    color:white;
-    padding:8px 12px;
+    padding:8px 15px;
     border:1px solid black;
+}
+.benefit-title span{
+    color:white;
     font-weight:bold;
+    -webkit-text-stroke:0.5px black;
 }
 
 /* Benefits */
@@ -81,11 +84,6 @@ body{
     border:2px solid red;
     position:relative;
 }
-#scratch-canvas{
-    position:absolute;
-    left:0;
-    top:0;
-}
 #scratch-bottom{
     width:100%;
     height:100%;
@@ -94,19 +92,19 @@ body{
     align-items:center;
     justify-content:center;
     font-weight:bold;
+    padding:10px;
+    text-align:center;
 }
-#scratch-top{
-    width:100%;
-    height:100%;
-    background:gray;
+#scratch-canvas{
     position:absolute;
     top:0;
     left:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+}
+
+/* Result Message */
+#result-message{
+    margin-top:15px;
     font-weight:bold;
-    color:white;
 }
 
 /* Order Button */
@@ -124,7 +122,7 @@ body{
     to{transform:translateY(5px);}
 }
 
-/* Billing Section */
+/* Billing */
 #billing{
     display:none;
     padding:20px;
@@ -177,7 +175,9 @@ input{
 
 <div class="price">MRP-900tk</div>
 
-<div class="highlight-title">Methi Mixd powder সেবনের উপকারিতা</div>
+<div class="benefit-title">
+<span>Methi Mixd powder সেবনের উপকারিতা 👇</span>
+</div>
 
 <ul class="benefits">
 <li>৭ দিন সেবনে কোষ্ঠকাঠিন্যের একদম নিরাময়</li>
@@ -196,12 +196,11 @@ input{
 <div class="arrow">⬇️</div>
 
 <div id="scratch-container">
-<div id="scratch-bottom">আপনি ডিসকাউন্ট পেয়েছেন</div>
+<div id="scratch-bottom"></div>
 <canvas id="scratch-canvas" width="300" height="150"></canvas>
-<div id="scratch-top">এখানে ঘষুন</div>
 </div>
 
-<div id="result"></div>
+<div id="result-message"></div>
 
 <button class="order-btn" onclick="showBilling()">অর্ডার করতে চাই</button>
 
@@ -239,18 +238,41 @@ input{
 </div>
 
 <script>
-let price=900;
-let discount=Math.floor(Math.random()*(50-20+1)+20);
-let discountedPrice=price-(price*discount/100);
-let qty=1;
+let originalPrice = 900;
+let discount = Math.floor(Math.random() * 31) + 20; // 20-50%
+let discountedPrice = originalPrice - (originalPrice * discount / 100);
+let qty = 1;
 
-document.getElementById("scratch-bottom").innerHTML=
-"আপনি ডিসকাউন্ট পেয়েছেন "+discount+"%";
+document.getElementById("scratch-bottom").innerHTML =
+"অভিনন্দন! আপনি পেয়েছেন " + discount + "% ডিসকাউন্ট 🎉";
+
+let canvas = document.getElementById("scratch-canvas");
+let ctx = canvas.getContext("2d");
+ctx.fillStyle = "#B0B0B0";
+ctx.fillRect(0,0,300,150);
+ctx.globalCompositeOperation = "destination-out";
+
+let scratching = false;
+
+canvas.addEventListener("mousedown",()=>scratching=true);
+canvas.addEventListener("mouseup",()=>{scratching=false;showResult();});
+canvas.addEventListener("mousemove",(e)=>{
+if(scratching){
+ctx.beginPath();
+ctx.arc(e.offsetX,e.offsetY,20,0,2*Math.PI);
+ctx.fill();
+}
+});
+
+function showResult(){
+document.getElementById("result-message").innerHTML =
+discount + "% ডিসকাউন্টের পর Methi Mixd powder এর দাম আপনার জন্য " 
++ discountedPrice + " টাকা";
+}
 
 document.getElementById("final-discount").innerText=discount;
 document.getElementById("final-price").innerText=discountedPrice;
 document.getElementById("total-price").innerText=discountedPrice;
-
 document.getElementById("discountField").value=discount+"%";
 document.getElementById("priceField").value=discountedPrice+" tk";
 
@@ -282,21 +304,6 @@ body:JSON.stringify(data)
 })
 .then(res=>alert("আপনার অর্ডারটি সাবমিট হয়ে গেছে"));
 }
-
-/* Scratch Effect */
-let canvas=document.getElementById("scratch-canvas");
-let ctx=canvas.getContext("2d");
-ctx.fillStyle="gray";
-ctx.fillRect(0,0,300,150);
-ctx.globalCompositeOperation="destination-out";
-
-canvas.addEventListener("mousemove",function(e){
-if(e.buttons===1){
-ctx.beginPath();
-ctx.arc(e.offsetX,e.offsetY,15,0,2*Math.PI);
-ctx.fill();
-}
-});
 </script>
 
 </body>
