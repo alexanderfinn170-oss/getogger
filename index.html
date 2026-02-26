@@ -357,7 +357,205 @@ btn.classList.remove("shrink");
 },1000);
 }
 </script>
+<!-- ================= NOTIFICATION BAR ================= -->
+<style>
+#notificationBar{
+position:fixed;
+top:10px;
+left:-400px;
+background:white;
+padding:10px 15px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+border-radius:6px;
+font-size:14px;
+z-index:99999;
+transition:0.5s;
+}
+#notificationBar span{
+color:green;
+font-weight:bold;
+}
+</style>
 
+<div id="notificationBar"></div>
+
+<script>
+const namesList=[
+"আমিনুল ইসলাম","রাকিব হাসান","সুমাইয়া আক্তার","নুসরাত জাহান","মাহমুদুল হাসান",
+"তানভীর আহমেদ","মোস্তাফিজুর রহমান","ইমরান হোসেন","সোহেল রানা","জাহিদুল ইসলাম",
+"মারিয়া আক্তার","ফারহানা ইসলাম","রেজাউল করিম","নাজমুল হোসেন","রিফাত হাসান",
+"শারমিন সুলতানা","তামিম ইকবাল","হাসিবুল ইসলাম","সাবিনা ইয়াসমিন","আল আমিন",
+"জেসমিন আক্তার","সাদিয়া ইসলাম","মিজানুর রহমান","সালমা খাতুন","রুবেল হোসেন",
+"আফসানা মিম","মাহির হাসান","সুমন আহমেদ","তাহমিনা আক্তার","জুবায়ের রহমান"
+];
+
+let notifyIndex=0;
+function showNotification(){
+let bar=document.getElementById("notificationBar");
+let randomDiscount=Math.floor(Math.random()*21)+10;
+bar.innerHTML=`<span>${namesList[notifyIndex]}</span> ${randomDiscount}% ডিসকাউন্টে🎉অর্ডার করেছে`;
+bar.style.left="10px";
+setTimeout(()=>{bar.style.left="-400px";},2500);
+notifyIndex++;
+if(notifyIndex>=namesList.length){notifyIndex=0;}
+}
+setInterval(showNotification,3000);
+</script>
+<!-- ================= END NOTIFICATION ================= -->
+
+
+<!-- ================= REVIEW FLOATING BUTTON ================= -->
+<style>
+#reviewFloatBtn{
+position:fixed;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+background:#ffcc00;
+padding:10px;
+border-radius:20px;
+font-weight:bold;
+cursor:pointer;
+animation:pulse 1.5s infinite;
+z-index:99999;
+}
+@keyframes pulse{
+0%{transform:translateY(-50%) scale(1);}
+50%{transform:translateY(-50%) scale(1.1);}
+100%{transform:translateY(-50%) scale(1);}
+}
+
+/* Review Side Panel */
+#reviewPanel{
+position:fixed;
+right:-350px;
+top:0;
+width:320px;
+height:100%;
+background:white;
+box-shadow:-2px 0 10px rgba(0,0,0,0.2);
+overflow-y:auto;
+transition:0.5s;
+z-index:99998;
+padding:10px;
+}
+.review-item{
+border-bottom:1px solid #ddd;
+padding:8px 0;
+}
+.profile{
+width:35px;
+height:35px;
+border-radius:50%;
+background:#ccc;
+display:inline-block;
+vertical-align:middle;
+margin-right:8px;
+}
+.active-dot{
+width:8px;
+height:8px;
+background:green;
+border-radius:50%;
+display:inline-block;
+margin-left:5px;
+}
+#reviewModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:999999;
+justify-content:center;
+align-items:center;
+}
+#reviewContent{
+background:white;
+width:90%;
+max-width:400px;
+height:80%;
+overflow:auto;
+padding:15px;
+border-radius:10px;
+}
+</style>
+
+<div id="reviewFloatBtn">Customer Reviews</div>
+
+<div id="reviewPanel"></div>
+
+<div id="reviewModal">
+<div id="reviewContent">
+<button onclick="closeModal()">⬅ Back</button>
+<h3>Customer Reviews</h3>
+<div id="modalReviews"></div>
+<textarea id="userReview" placeholder="আপনার রিভিউ লিখুন" style="width:100%;margin-top:10px;"></textarea>
+<button onclick="addUserReview()">Submit Review</button>
+</div>
+</div>
+
+<script>
+const reviewNames=[
+"রাকিব","সুমাইয়া","নুসরাত","তানভীর","মাহমুদ","ইমরান","সোহেল","মারিয়া","ফারহানা","রিফাত",
+"সাবিনা","আল আমিন","জেসমিন","মিজান","রুবেল","মাহির","সুমন","তাহমিনা","জুবায়ের","নাজমুল"
+];
+
+const reviewTexts=[
+"অসাধারণ কাজ করছে পাউডারটি!",
+"গ্যাস্ট্রিক অনেক কমেছে",
+"পেট ফাঁপা একদম ঠিক হয়েছে",
+"ডায়াবেটিস নিয়ন্ত্রণে সাহায্য করছে",
+"৭ দিনে ভালো ফল পেয়েছি",
+"শক্তি বৃদ্ধি পেয়েছে",
+"খুবই উপকারী প্রোডাক্ট",
+"কোষ্ঠকাঠিন্য দূর হয়েছে",
+"বুক জ্বালা কমেছে",
+"খুব সন্তুষ্ট"
+];
+
+let reviewPanel=document.getElementById("reviewPanel");
+let modal=document.getElementById("reviewModal");
+
+function addReview(name,text){
+let div=document.createElement("div");
+div.className="review-item";
+div.innerHTML=`<div class="profile"></div><b>${name}</b> <span class="active-dot"></span><br>${text}`;
+reviewPanel.prepend(div);
+document.getElementById("modalReviews").prepend(div.cloneNode(true));
+}
+
+for(let i=0;i<5;i++){
+addReview(reviewNames[i],reviewTexts[i]);
+}
+
+setInterval(()=>{
+let randName=reviewNames[Math.floor(Math.random()*reviewNames.length)];
+let randText=reviewTexts[Math.floor(Math.random()*reviewTexts.length)];
+addReview(randName,randText);
+},4000);
+
+document.getElementById("reviewFloatBtn").onclick=function(){
+reviewPanel.style.right="0";
+modal.style.display="flex";
+}
+
+function closeModal(){
+modal.style.display="none";
+reviewPanel.style.right="-350px";
+}
+
+function addUserReview(){
+let text=document.getElementById("userReview").value;
+if(text.trim()=="") return;
+addReview("আপনি",text);
+document.getElementById("userReview").value="";
+}
+</script>
+<!-- ================= END REVIEW ================= -->
 </body>
 </html>
+
 
