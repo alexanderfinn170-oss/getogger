@@ -14,6 +14,27 @@ body {
     text-align: center;
 }
 
+/* Notification Bar */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #ffffff;
+    padding: 8px 15px;
+    border: 1px solid black;
+    font-size: 14px;
+    white-space: nowrap;
+    transform: translateX(-120%);
+    opacity: 0;
+}
+
+@keyframes slideInOut {
+    0% { transform: translateX(-120%); opacity: 0; }
+    10% { transform: translateX(0); opacity: 1; }
+    80% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-120%); opacity: 0; }
+}
+
 .top-section {
     padding-top: 10px;
 }
@@ -64,7 +85,6 @@ body {
     overflow: hidden;
 }
 
-/* Canvas */
 #scratchCanvas {
     position: absolute;
     top: 0;
@@ -72,22 +92,16 @@ body {
     border: 2px solid red;
 }
 
-/* Result */
 #result {
     margin-top: 15px;
     font-weight: bold;
-}
-
-/* Section 2 */
-#section2 {
-    margin-top: 40px;
-    padding: 20px;
-    border-top: 2px solid black;
 }
 </style>
 </head>
 
 <body>
+
+<div class="notification" id="notificationBar"></div>
 
 <div class="top-section">
 
@@ -105,27 +119,45 @@ body {
         আমাদের প্রায় সবারই রমজান মাসে রোজা রাখার কারণে গ্যাস্ট্রিক এবং বদ হজমের সমস্যা-সবাই যেন আমাদের প্রোডাক্টটি কিনতে পারে এর জন্য আমরা দিচ্ছি একটি লাকি কুপন
     </div>
 
-    <!-- Scratch Card -->
     <div class="scratch-container">
-
         <div class="card-base">
             আপনি <span id="discountText"></span>% ডিসকাউন্ট পেয়েছেন
             <canvas id="scratchCanvas" width="300" height="150"></canvas>
         </div>
-
     </div>
 
     <div id="result"></div>
 
 </div>
 
-<!-- Section 2 -->
-<div id="section2">
-    <h2>সেকশন ২</h2>
-    <p>এখানে অর্ডার ফর্ম বা বিস্তারিত তথ্য থাকবে।</p>
-</div>
-
 <script>
+// ================= Notification System =================
+const names = [
+"আরিফুল হক","সুমাইয়া আক্তার","রাকিব হাসান","মাহি ইসলাম","নাসরিন আক্তার",
+"সোহেল রানা","তানজিলা খাতুন","মোস্তাফিজুর রহমান","জান্নাতুল ফেরদৌস",
+"রিফাত হোসেন","শারমিন আক্তার","মাহমুদুল হাসান","ইমরান খান",
+"ফারজানা ইয়াসমিন","আব্দুল্লাহ আল মামুন","সাদিয়া ইসলাম",
+"মোঃ ইলিয়াস","তামান্না আক্তার","শামীম আহমেদ","নুসরাত জাহান"
+];
+
+const notificationBar = document.getElementById("notificationBar");
+
+function showNotification() {
+    let randomName = names[Math.floor(Math.random() * names.length)];
+    let randomDiscount = Math.floor(Math.random() * 36) + 15;
+
+    notificationBar.innerHTML = 
+    `🎉<span style="color:green;">${randomName}</span> ${randomDiscount}% ডিসকাউন্ট এ অর্ডার করেছে`;
+
+    notificationBar.style.animation = "none";
+    void notificationBar.offsetWidth;
+    notificationBar.style.animation = "slideInOut 3s linear";
+}
+
+setInterval(showNotification, 3000);
+showNotification();
+
+// ================= Scratch Card =================
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 const resultDiv = document.getElementById("result");
@@ -133,7 +165,6 @@ const resultDiv = document.getElementById("result");
 let isDrawing = false;
 let scratched = false;
 
-// Random Discount 25% - 50%
 let discount = Math.floor(Math.random() * 26) + 25;
 let originalPrice = 900;
 let discountAmount = (originalPrice * discount) / 100;
@@ -141,17 +172,14 @@ let finalPrice = originalPrice - discountAmount;
 
 document.getElementById("discountText").innerText = discount;
 
-// Fill scratch layer (ash color)
 ctx.fillStyle = "#bfbfbf";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-// Add scratch text ON scratch layer
 ctx.fillStyle = "black";
 ctx.font = "bold 20px Arial";
 ctx.textAlign = "center";
 ctx.fillText("👉 এখানে ঘোষণ 👈", canvas.width / 2, canvas.height / 2);
 
-// Enable scratching
 ctx.globalCompositeOperation = "destination-out";
 
 function scratch(e) {
