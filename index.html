@@ -46,7 +46,7 @@ body{
     margin:10px 0;
 }
 
-/* Updated Benefit Title */
+/* Benefit Title */
 .benefit-title{
     display:inline-block;
     background:yellow;
@@ -92,6 +92,7 @@ body{
     position:absolute;
     top:0;
     left:0;
+    touch-action:auto;
 }
 
 /* Result */
@@ -109,6 +110,7 @@ body{
     margin-top:15px;
     cursor:pointer;
     animation:move 1s infinite alternate;
+    display:none;
 }
 .submit-btn{
     background:blue;
@@ -118,6 +120,10 @@ body{
     margin-top:10px;
     cursor:pointer;
     animation:move 1s infinite alternate;
+    transition:0.3s;
+}
+.submit-btn.shrink{
+    transform:scale(0.8);
 }
 @keyframes move{
     from{transform:translateY(0px);}
@@ -147,15 +153,30 @@ input{
     font-size:20px;
     cursor:pointer;
 }
+
+/* COD Image Fullscreen */
+#cod-img{
+    cursor:pointer;
+    transition:0.3s;
+}
+#cod-img.fullscreen{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
+    z-index:9999;
+    background:#fff;
+}
 </style>
 </head>
 
 <body>
 
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRwC81uVcpIj5wIHDnNUhNrStcx8LXmaSmN09sM96cNZMBRrnc3ZHXBZf73rUN_MyDLjaQlc1ZMDIIr4-9F5NlWis6hXQoEghwEEDUHZ6NGdYvwBij7Kg4ItCj5qN7IfyD2t06FdqmTT138fuL-RnOSF4TM5dqhoiIGcR7A9zas7DzBUkgF1Wx3llq2tY/s612/WhatsApp_Image_2026-02-26_at_11.22.35-removebg-preview.png" class="product-img">
+<img src="YOUR_PRODUCT_IMAGE.png" class="product-img">
 
 <div class="video-wrapper">
-<iframe src="https://www.youtube.com/embed/pJrfhCo_dgw" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID" allowfullscreen></iframe>
 </div>
 
 <div class="price">MRP-900tk</div>
@@ -186,12 +207,12 @@ Methi Mixd powder সেবনের উপকারিতা 👇
 
 <div id="result-message"></div>
 
-<button class="order-btn" onclick="showBilling()">অর্ডার করতে চাই</button>
+<button class="order-btn" id="orderBtn" onclick="showBilling()">অর্ডার করতে চাই</button>
 
 <!-- Billing Section -->
 <div id="billing">
 <h3>ক্যাশ অন ডেলিভারি</h3>
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwjoi8RBP65poQRwkTz9IVyQSjAZ5gCvTXYycafCryfXIJ06e2qebmmcGwbn005CyuiliwExeZ08GRKv2BxmDnS1UQzCDNi8aT7Pq1-fmxGZVECjmewLuWjqLcno6MY8W-9GPrsjDzxNw-YVdoHZw0j2gKGINDlvhTLOLLnRewxtnOLnS53Yl3oym2KrM/s1599/WhatsApp%20Image%202026-02-26%20at%2002.38.05.jpeg" width="120">
+<img src="YOUR_PRODUCT_IMAGE.png" width="120" id="cod-img">
 <p style="background:red;color:black;border:2px solid green;">
 নিচে আপনার অর্ডারটি ডিসকাউন্টসহ কনফার্ম করুন
 </p>
@@ -213,7 +234,7 @@ Methi Mixd powder সেবনের উপকারিতা 👇
 <input type="text" id="phone" placeholder="* নাম্বার লিখুন">
 <input type="text" id="address" placeholder="* ঠিকানা লিখুন">
 
-<button class="submit-btn" onclick="submitOrder()">Submit Order</button>
+<button class="submit-btn" id="submitBtn" onclick="submitOrder()">Submit Order</button>
 </div>
 </div>
 
@@ -248,7 +269,6 @@ gradient.addColorStop(1,"violet");
 ctx.fillStyle=gradient;
 ctx.fillRect(0,0,320,160);
 
-/* Text on scratch layer */
 ctx.fillStyle="black";
 ctx.font="bold 18px Arial";
 ctx.textAlign="center";
@@ -268,16 +288,24 @@ ctx.fill();
 
 canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
 canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
-canvas.addEventListener("mouseup",()=>{scratching=false;showResult();showBilling();});
+canvas.addEventListener("mouseup",()=>{scratching=false;finishScratch();});
 
-canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e);e.preventDefault()});
-canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e);e.preventDefault()});
-canvas.addEventListener("touchend",()=>{scratching=false;showResult();showBilling();});
+canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e)});
+canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e)});
+canvas.addEventListener("touchend",()=>{scratching=false;finishScratch();});
 
-function showResult(){
+function finishScratch(){
 document.getElementById("result-message").innerHTML=
 "🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
+
+document.getElementById("orderBtn").style.display="inline-block";
+showBilling();
 }
+
+/* COD Image Zoom */
+document.getElementById("cod-img").addEventListener("click",function(){
+this.classList.toggle("fullscreen");
+});
 
 function showBilling(){
 document.getElementById("billing").style.display="block";
@@ -293,23 +321,42 @@ document.getElementById("priceField").value=total+" tk";
 }
 
 function submitOrder(){
+
+let name=document.getElementById("name");
+let phone=document.getElementById("phone");
+let address=document.getElementById("address");
+
+if(!name.value || !phone.value || !address.value){
+alert("⚠️ সকল ঘর পূরণ করতে হবে");
+if(!name.value) name.style.border="2px solid red";
+if(!phone.value) phone.style.border="2px solid red";
+if(!address.value) address.style.border="2px solid red";
+return;
+}
+
+let btn=document.getElementById("submitBtn");
+btn.classList.add("shrink");
+
+setTimeout(()=>{
+alert("✅ আপনার অর্ডার কনফার্ম হয়েছে!");
+
 let data={
 discount:document.getElementById("discountField").value,
 price:document.getElementById("priceField").value,
-name:document.getElementById("name").value,
-phone:document.getElementById("phone").value,
-address:document.getElementById("address").value
+name:name.value,
+phone:phone.value,
+address:address.value
 };
 
-fetch("https://script.google.com/macros/s/AKfycbwK5jQxGjkVWjl_jrvyPtQpzT1LYBgsNMto9evS0-T7I_BsuFGNCWOoHugplTkYxsDS/exec",{
+fetch("YOUR_GOOGLE_SCRIPT_URL",{
 method:"POST",
 body:JSON.stringify(data)
-})
-.then(res=>alert("আপনার অর্ডারটি সাবমিট হয়ে গেছে WE WILL CALL YOU LATER"));
+});
+
+btn.classList.remove("shrink");
+},1000);
 }
 </script>
 
 </body>
 </html>
-
-
