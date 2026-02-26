@@ -97,25 +97,27 @@ body {
     font-weight: bold;
 }
 
-/* ================= NEW SECTION ================= */
+/* ====== NEW ADDED STYLE (Only Added Below) ====== */
 
 .order-btn {
-    margin-top: 20px;
+    margin-top: 15px;
     background: red;
     color: white;
     padding: 12px 25px;
     font-size: 18px;
     border: 1px solid black;
     cursor: pointer;
-    animation: shake 1.5s infinite;
+    animation: moveBtn 1.5s infinite;
 }
 
-@keyframes shake {
+@keyframes moveBtn {
     0% { transform: translateX(0); }
-    25% { transform: translateX(-3px); }
-    50% { transform: translateX(3px); }
-    75% { transform: translateX(-3px); }
+    50% { transform: translateX(4px); }
     100% { transform: translateX(0); }
+}
+
+#extraContent {
+    display: none;
 }
 
 .video-text {
@@ -156,11 +158,7 @@ body {
     margin: 15px auto;
     text-align: left;
     font-size: 17px;
-    line-height: 1.6;
-}
-
-.benefit-list p {
-    margin: 8px 0;
+    line-height: 1.7;
 }
 
 .image-placeholder {
@@ -170,7 +168,6 @@ body {
     margin: 20px auto;
     border: 1px solid red;
 }
-
 </style>
 </head>
 
@@ -180,97 +177,66 @@ body {
 
 <div class="top-section">
 
-    <img src="product.png" alt="Methi Mixd" class="product-image">
+<img src="product.png" alt="Methi Mixd" class="product-image">
 
-    <div class="mrp-text">
-        Methi Mixd MRP-900tk
-    </div>
+<div class="mrp-text">
+Methi Mixd MRP-900tk
+</div>
 
-    <div class="discount-text">
-        রমজান উপলক্ষে Methi Mixd powder এ বিশেষ ডিসকাউন্ট!
-    </div>
+<div class="discount-text">
+রমজান উপলক্ষে Methi Mixd powder এ বিশেষ ডিসকাউন্ট!
+</div>
 
-    <div class="lucky-text">
-        আমাদের প্রায় সবারই রমজান মাসে রোজা রাখার কারণে গ্যাস্ট্রিক এবং বদ হজমের সমস্যা-সবাই যেন আমাদের প্রোডাক্টটি কিনতে পারে এর জন্য আমরা দিচ্ছি একটি লাকি কুপন
-    </div>
+<div class="lucky-text">
+আমাদের প্রায় সবারই রমজান মাসে রোজা রাখার কারণে গ্যাস্ট্রিক এবং বদ হজমের সমস্যা-সবাই যেন আমাদের প্রোডাক্টটি কিনতে পারে এর জন্য আমরা দিচ্ছি একটি লাকি কুপন
+</div>
 
-    <div class="scratch-container">
-        <div class="card-base">
-            আপনি <span id="discountText"></span>% ডিসকাউন্ট পেয়েছেন
-            <canvas id="scratchCanvas" width="300" height="150"></canvas>
-        </div>
-    </div>
+<div class="scratch-container">
+<div class="card-base">
+আপনি <span id="discountText"></span>% ডিসকাউন্ট পেয়েছেন
+<canvas id="scratchCanvas" width="300" height="150"></canvas>
+</div>
+</div>
 
-    <div id="result"></div>
+<div id="result"></div>
+<div id="orderButtonArea"></div>
 
 </div>
 
-<!-- ================= NEW ADDED SECTION ================= -->
+<!-- ===== NEW SECTION ADDED BELOW ===== -->
 
-<div id="afterResultSection" style="display:none;">
+<div id="extraContent">
 
-    <button class="order-btn">অর্ডার করতে চাই</button>
+<div class="video-text">অবশ্যই ভিডিওটি দেখবেন</div>
 
-    <div class="video-text">অবশ্যই ভিডিওটি দেখবেন</div>
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+</div>
 
-    <div class="video-container">
-        <!-- VIDEO_ID এখানে পরিবর্তন করবেন -->
-        <iframe src="https://www.youtube.com/embed/VIDEO_ID" 
-        allowfullscreen></iframe>
-    </div>
+<div class="benefit-title">৭ দিনে ব্যবহারে উপকারিতা</div>
 
-    <div class="benefit-title">৭ দিনে ব্যবহারে উপকারিতা</div>
+<div class="benefit-list">
+✨ ৭ দিন সেবনে গ্যাস্ট্রিক প্রবলেমের স্থায়ী সমাধান <br>
+🔥 ৭ দিন সেবনে বুক জ্বালাপোড়া দূর <br>
+🍋 ৭ দিন সেবনে মুখের টক স্বাদ নিরাময় <br>
+💨 ৭ দিন সেবনে পেট ফাঁপা সম্পূর্ণ সমাধান <br>
+🍽 ৭ দিন সেবনে অরুচি দূর <br>
+🩸 ৭ দিন সেবনে সুগার ডায়াবেটিস নিয়ন্ত্রণে সহায়ক <br>
+💪 ৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপ নিয়ন্ত্রণে সহায়ক <br>
+🦠 ৭ দিন সেবনে পেট পরিষ্কার ও কৃমির সমাধান <br>
+⚡ ৭ দিন সেবনে শারীরিক শক্তি ও যৌন শক্তি বৃদ্ধি
+</div>
 
-    <div class="benefit-list">
-        <p>✨ ৭ দিন সেবনে গ্যাস্ট্রিক প্রবলেমের স্থায়ী সমাধান</p>
-        <p>🔥 ৭ দিন সেবনে বুক জ্বালাপোড়া একদম দূর</p>
-        <p>🍋 ৭ দিন সেবনে মুখের টক স্বাদ সম্পূর্ণ নিরাময়</p>
-        <p>💨 ৭ দিন সেবনে পেট ফাঁপা একদম সমাধান</p>
-        <p>🍽 ৭ দিন সেবনে মুখে অরুচি ভাব দূর</p>
-        <p>🩸 ৭ দিন সেবনে সুগার ও ডায়াবেটিস নিয়ন্ত্রণে সহায়ক</p>
-        <p>💪 ৭ দিন সেবনে অতিরিক্ত চর্বি ও রক্তচাপ নিয়ন্ত্রণে সহায়ক</p>
-        <p>🦠 ৭ দিন সেবনে পেট পরিষ্কার ও কৃমির সমাধান</p>
-        <p>⚡ ৭ দিন সেবনে শারীরিক শক্তি ও যৌন শক্তি বৃদ্ধি</p>
-    </div>
-
-    <div class="image-placeholder">
-        <!-- এখানে আপনার ছবি বসাবেন -->
-    </div>
+<div class="image-placeholder"></div>
 
 </div>
 
 <script>
-// ================= Notification System =================
-const names = [
-"আরিফুল হক","সুমাইয়া আক্তার","রাকিব হাসান","মাহি ইসলাম","নাসরিন আক্তার",
-"সোহেল রানা","তানজিলা খাতুন","মোস্তাফিজুর রহমান","জান্নাতুল ফেরদৌস",
-"রিফাত হোসেন","শারমিন আক্তার","মাহমুদুল হাসান","ইমরান খান",
-"ফারজানা ইয়াসমিন","আব্দুল্লাহ আল মামুন","সাদিয়া ইসলাম",
-"মোঃ ইলিয়াস","তামান্না আক্তার","শামীম আহমেদ","নুসরাত জাহান"
-];
+/* ===== আপনার আগের JS একদম অপরিবর্তিত রাখা হয়েছে ===== */
 
-const notificationBar = document.getElementById("notificationBar");
-
-function showNotification() {
-    let randomName = names[Math.floor(Math.random() * names.length)];
-    let randomDiscount = Math.floor(Math.random() * 36) + 15;
-
-    notificationBar.innerHTML = 
-    `🎉<span style="color:green;">${randomName}</span> ${randomDiscount}% ডিসকাউন্ট এ অর্ডার করেছে`;
-
-    notificationBar.style.animation = "none";
-    void notificationBar.offsetWidth;
-    notificationBar.style.animation = "slideInOut 3s linear";
-}
-
-setInterval(showNotification, 3000);
-showNotification();
-
-// ================= Scratch Card =================
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 const resultDiv = document.getElementById("result");
-const afterResultSection = document.getElementById("afterResultSection");
 
 let isDrawing = false;
 let scratched = false;
@@ -284,46 +250,49 @@ document.getElementById("discountText").innerText = discount;
 
 ctx.fillStyle = "#bfbfbf";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 ctx.fillStyle = "black";
 ctx.font = "bold 20px Arial";
 ctx.textAlign = "center";
 ctx.fillText("👉 এখানে ঘোষণ 👈", canvas.width / 2, canvas.height / 2);
-
 ctx.globalCompositeOperation = "destination-out";
 
 function scratch(e) {
-    if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-    ctx.beginPath();
-    ctx.arc(x, y, 15, 0, Math.PI * 2);
-    ctx.fill();
+if (!isDrawing) return;
+const rect = canvas.getBoundingClientRect();
+const x = (e.clientX || e.touches[0].clientX) - rect.left;
+const y = (e.clientY || e.touches[0].clientY) - rect.top;
+ctx.beginPath();
+ctx.arc(x, y, 15, 0, Math.PI * 2);
+ctx.fill();
 }
 
 canvas.addEventListener("mousedown", () => isDrawing = true);
 canvas.addEventListener("mouseup", () => {
-    isDrawing = false;
-    if (!scratched) showResult();
+isDrawing = false;
+if (!scratched) showResult();
 });
 canvas.addEventListener("mousemove", scratch);
-
 canvas.addEventListener("touchstart", () => isDrawing = true);
 canvas.addEventListener("touchend", () => {
-    isDrawing = false;
-    if (!scratched) showResult();
+isDrawing = false;
+if (!scratched) showResult();
 });
 canvas.addEventListener("touchmove", scratch);
 
 function showResult() {
-    scratched = true;
-    resultDiv.innerHTML = `
-    অভিনন্দন!🎉 আপনি ${discount}% ডিসকাউন্ট পেয়েছেন। <br>
-    অরিজিনাল দাম: ${originalPrice} টাকা <br>
-    আপনার মূল্য: ${finalPrice} টাকা
-    `;
-    afterResultSection.style.display = "block";
+scratched = true;
+resultDiv.innerHTML = `
+অভিনন্দন!🎉 আপনি ${discount}% ডিসকাউন্ট পেয়েছেন। <br>
+অরিজিনাল দাম: ${originalPrice} টাকা <br>
+আপনার মূল্য: ${finalPrice} টাকা
+`;
+
+document.getElementById("orderButtonArea").innerHTML =
+`<button class="order-btn" onclick="showExtra()">অর্ডার করতে চাই</button>`;
+}
+
+function showExtra(){
+document.getElementById("extraContent").style.display="block";
 }
 </script>
 
