@@ -14,7 +14,6 @@ body {
     text-align: center;
 }
 
-/* Top Section */
 .top-section {
     padding-top: 10px;
 }
@@ -44,16 +43,11 @@ body {
     max-width: 90%;
 }
 
-/* Scratch Card Container */
+/* Scratch Card */
 .scratch-container {
     margin-top: 20px;
     position: relative;
     display: inline-block;
-}
-
-.scratch-title {
-    font-weight: bold;
-    margin-bottom: 5px;
 }
 
 .card-base {
@@ -67,13 +61,25 @@ body {
     padding: 10px;
     box-sizing: border-box;
     position: relative;
+    overflow: hidden;
 }
 
-canvas {
+/* Scratch Layer */
+#scratchCanvas {
     position: absolute;
     top: 0;
     left: 0;
     border: 2px solid red;
+}
+
+/* ঘোষণ লেখা */
+.scratch-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    pointer-events: none;
 }
 
 /* Result */
@@ -124,12 +130,13 @@ canvas {
 
     <!-- Scratch Card -->
     <div class="scratch-container">
-        <div class="scratch-title">👉 এখানে ঘোষণ 👈</div>
 
-        <div class="card-base" id="cardText">
+        <div class="card-base" id="cardBase">
             আপনি X% ডিসকাউন্ট পেয়েছেন
             <canvas id="scratchCanvas" width="300" height="150"></canvas>
+            <div class="scratch-label">👉 এখানে ঘোষণ 👈</div>
         </div>
+
     </div>
 
     <div id="result"></div>
@@ -141,65 +148,67 @@ canvas {
 <!-- Section 2 -->
 <div id="section2">
     <h2>সেকশন ২</h2>
-    <p>এখানে অর্ডার ফর্ম বা ডিটেইলস বসবে।</p>
+    <p>এখানে অর্ডার ফর্ম বা বিস্তারিত তথ্য থাকবে।</p>
 </div>
 
 <script>
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
-const cardText = document.getElementById("cardText");
 const resultDiv = document.getElementById("result");
 const orderBtn = document.getElementById("orderBtn");
 
 let isDrawing = false;
 let scratched = false;
 
-// Random Discount
-let discount = Math.floor(Math.random() * 26) + 25; // 25% to 50%
-cardText.innerHTML = `আপনি ${discount}% ডিসকাউন্ট পেয়েছেন <canvas id="scratchCanvas" width="300" height="150"></canvas>`;
+// Random Discount 25% - 50%
+let discount = Math.floor(Math.random() * 26) + 25;
+let originalPrice = 900;
+let discountAmount = (originalPrice * discount) / 100;
+let finalPrice = originalPrice - discountAmount;
 
-// Redraw canvas after innerHTML reset
+document.getElementById("cardBase").innerHTML = 
+`আপনি ${discount}% ডিসকাউন্ট পেয়েছেন
+<canvas id="scratchCanvas" width="300" height="150"></canvas>
+<div class="scratch-label">👉 এখানে ঘোষণ 👈</div>`;
+
 setTimeout(() => {
-    const newCanvas = document.getElementById("scratchCanvas");
-    const newCtx = newCanvas.getContext("2d");
 
-    newCtx.fillStyle = "#bfbfbf";
-    newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+const newCanvas = document.getElementById("scratchCanvas");
+const newCtx = newCanvas.getContext("2d");
 
-    newCtx.globalCompositeOperation = "destination-out";
+newCtx.fillStyle = "#bfbfbf";
+newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
 
-    function scratch(e) {
-        if (!isDrawing) return;
-        const rect = newCanvas.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - rect.left;
-        const y = (e.clientY || e.touches[0].clientY) - rect.top;
-        newCtx.beginPath();
-        newCtx.arc(x, y, 15, 0, Math.PI * 2);
-        newCtx.fill();
-    }
+newCtx.globalCompositeOperation = "destination-out";
 
-    newCanvas.addEventListener("mousedown", () => isDrawing = true);
-    newCanvas.addEventListener("mouseup", () => {
-        isDrawing = false;
-        if (!scratched) showResult();
-    });
-    newCanvas.addEventListener("mousemove", scratch);
+function scratch(e) {
+    if (!isDrawing) return;
+    const rect = newCanvas.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    newCtx.beginPath();
+    newCtx.arc(x, y, 15, 0, Math.PI * 2);
+    newCtx.fill();
+}
 
-    newCanvas.addEventListener("touchstart", () => isDrawing = true);
-    newCanvas.addEventListener("touchend", () => {
-        isDrawing = false;
-        if (!scratched) showResult();
-    });
-    newCanvas.addEventListener("touchmove", scratch);
+newCanvas.addEventListener("mousedown", () => isDrawing = true);
+newCanvas.addEventListener("mouseup", () => {
+    isDrawing = false;
+    if (!scratched) showResult();
+});
+newCanvas.addEventListener("mousemove", scratch);
+
+newCanvas.addEventListener("touchstart", () => isDrawing = true);
+newCanvas.addEventListener("touchend", () => {
+    isDrawing = false;
+    if (!scratched) showResult();
+});
+newCanvas.addEventListener("touchmove", scratch);
 
 }, 100);
 
 function showResult() {
     scratched = true;
-    let originalPrice = 900;
-    let discountAmount = (originalPrice * discount) / 100;
-    let finalPrice = originalPrice - discountAmount;
-
     resultDiv.innerHTML = `
     অভিনন্দন!🎉 আপনি ${discount}% ডিসকাউন্ট পেয়েছেন। <br>
     অরিজিনাল দাম: ${originalPrice} টাকা <br>
@@ -210,10 +219,7 @@ function showResult() {
 
 function openSection2() {
     document.getElementById("section2").style.display = "block";
-    window.scrollTo({
-        top: document.getElementById("section2").offsetTop,
-        behavior: "smooth"
-    });
+    document.getElementById("section2").scrollIntoView({behavior: "smooth"});
 }
 </script>
 
