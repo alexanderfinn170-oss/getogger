@@ -1,822 +1,230 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html>
 <head>
 <meta charset="UTF-8">
+<title>Hello World Chatting Room</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methi Mixd Powder</title>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methi Mixd Powder</title>
 
-<!-- 🔥 META PIXEL CODE START -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '915423457740717'); 
-fbq('track', 'PageView');
-</script>
-<noscript>
-<img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=915423457740717&ev=PageView&noscript=1"/>
-</noscript>
-<!-- 🔥 META PIXEL CODE END -->
-
-</head>
 <style>
-*{box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+body{background:#0f172a;color:white;height:100vh;}
 
-body{
-margin:0;
-background:#ffffff;
-font-family:Arial, sans-serif;
-text-align:center;
-overflow-x:hidden;
+.login{
+display:flex;justify-content:center;align-items:center;
+flex-direction:column;height:100vh;
 }
-
-/* 🔥 1:1 IMAGE */
-.image-container{
-width:100%;
-aspect-ratio:1/1;
-max-height:400px;
-overflow:hidden;
+.login input{
+padding:12px;width:250px;border:none;border-radius:8px;margin:10px 0;
 }
-.top-image{
-width:100%;
-height:100%;
-object-fit:contain;
-display:block;
-border:3px solid red;
-background:#fff;
+.login button{
+padding:12px 20px;border:none;border-radius:8px;
+background:#22c55e;color:white;font-weight:bold;cursor:pointer;
 }
 
-/* 🔥 RUNNING HEADLINES */
-.marquee{
-width:100%;
-overflow:hidden;
-white-space:nowrap;
+.header{background:#1e293b;padding:15px;text-align:center;font-size:20px;}
+
+.container{display:flex;height:90vh;}
+
+.sidebar{
+width:250px;background:#1e293b;padding:10px;overflow:auto;
 }
-.marquee span{
-display:inline-block;
-padding-left:100%;
-animation:scroll-left 18s linear infinite;
-font-weight:bold;
-font-size:16px;
+.profile{
+display:flex;align-items:center;padding:8px;margin-bottom:6px;
+background:#334155;border-radius:6px;cursor:pointer;
 }
-@keyframes scroll-left{
-0%{transform:translateX(0);}
-100%{transform:translateX(-100%);}
+.profile:hover{background:#475569;}
+.profile img{
+width:30px;height:30px;border-radius:50%;margin-right:8px;
 }
 
-/* Headline 1 */
-.headline1{
-background:yellow;
-border-top:2px solid black;
-border-bottom:2px solid black;
+.chat{
+flex:1;display:flex;flex-direction:column;
+}
+.messages{
+flex:1;padding:15px;overflow:auto;
+}
+.msg{margin-bottom:10px;}
+.msg span{font-weight:bold;color:#38bdf8;}
+
+.inputBox{
+display:flex;padding:10px;background:#1e293b;
+}
+.inputBox input{
+flex:1;padding:10px;border:none;border-radius:8px;
+}
+.inputBox button{
+padding:10px 15px;margin-left:5px;
+border:none;border-radius:8px;background:#3b82f6;color:white;
 }
 
-/* Headline 2 */
-.headline2{
-background:red;
-color:white;
-border-top:2px solid green;
-border-bottom:2px solid green;
+.privateBox{
+position:fixed;bottom:20px;right:20px;
+width:320px;background:#1e293b;
+border-radius:10px;display:none;
+flex-direction:column;overflow:hidden;
+}
+.privateHeader{
+background:#334155;padding:10px;
+}
+.privateMessages{
+flex:1;padding:10px;height:250px;overflow:auto;
+}
+.privateInput{
+display:flex;padding:10px;background:#334155;
+}
+.privateInput input{
+flex:1;padding:8px;border:none;border-radius:6px;
+}
+.privateInput button{
+padding:8px;margin-left:5px;border:none;border-radius:6px;
+background:#22c55e;color:white;
 }
 
-/* 🔥 VIDEO */
-.video-wrapper{
-width:100%;
-border:2px solid red;
-margin-top:5px;
-position:relative;
-padding-bottom:56.25%;
-height:0;
-overflow:hidden;
+.promoBtn{
+display:block;margin-top:8px;padding:6px;
+background:#ef4444;color:white;text-align:center;
+border-radius:6px;text-decoration:none;font-size:13px;
 }
-.video-wrapper iframe{
-position:absolute;top:0;left:0;width:100%;height:100%;border:none;
-}
-
-/* 🔥 LIVE CUT PRICE */
-.price{
-font-size:28px;
-font-weight:bold;
-margin:15px 0 5px 0;
-color:#000;
-position:relative;
-display:inline-block;
-}
-.price::after{
-content:"";
-position:absolute;
-left:0;
-top:50%;
-width:100%;
-height:3px;
-background:red;
-transform:scaleX(0);
-transform-origin:left;
-animation:cutLine 1s infinite;
-}
-@keyframes cutLine{
-0%{transform:scaleX(0);}
-50%{transform:scaleX(1);}
-100%{transform:scaleX(0);}
-}
-
-/* 🔥 BENEFIT TITLE */
-.benefit-title{
-display:block;
-width:100%;
-background:yellow;
-padding:14px 0;
-border:2px solid red;
-font-weight:bold;
-font-size:18px;
-margin:5px 0 5px 0;
-}
-
-/* Gap Reduced */
-.benefits{
-text-align:left;
-padding:10px;
-margin-top:5px;
-}
-.benefits li{
-background:white;
-border:1px solid black;
-margin:4px 0;
-padding:6px;
-color:black;
-}
-
-/* 🔥 OTHER PART UNCHANGED */
-#scratch-container{
-margin:auto;width:320px;height:160px;border:2px solid red;
-position:relative;overflow:hidden;
-}
-#scratch-bottom{
-width:100%;height:100%;background:yellow;
-display:flex;align-items:center;justify-content:center;
-font-weight:bold;text-align:center;
-}
-#scratch-canvas{position:absolute;top:0;left:0;touch-action:auto;}
-#result-message{margin-top:15px;font-weight:bold;}
-.order-btn{
-background:red;color:white;padding:10px 20px;border:1px solid black;
-margin-top:15px;cursor:pointer;animation:move 1s infinite alternate;display:none;
-}
-.submit-btn{
-background:blue;color:white;padding:10px 20px;border:1px solid black;
-margin-top:10px;cursor:pointer;animation:move 1s infinite alternate;transition:0.3s;
-}
-.submit-btn.shrink{transform:scale(0.8);}
-@keyframes move{from{transform:translateY(0px);}to{transform:translateY(5px);}}
-#billing{display:none;padding:20px;}
-.billing-box{border:2px solid yellow;outline:2px solid black;padding:15px;}
-input{width:90%;padding:8px;margin:5px 0;}
-.qty-btn{
-background:yellow;color:red;border:1px solid green;
-padding:5px 10px;font-size:20px;cursor:pointer;
-}
-#cod-img{cursor:pointer;transition:0.3s;}
-#cod-img.fullscreen{
-position:fixed;top:50%;left:50%;
-transform:translate(-50%,-50%);
-width:90%;z-index:9999;background:#fff;
-}
-#watermark{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) rotate(-20deg);
-font-size:18px;
-color:red;
-font-weight:bold;
-opacity:0.8;
-pointer-events:none;
-text-align:center;
+.note{
+font-size:10px;text-align:center;opacity:.4;margin-top:5px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 IMAGE -->
-<div class="image-container">
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbONT9hdsAB4h-ztFE1oUNQo9D8j1zIip5Ad316qmppcIJDYmwdKOuF1DT85f5ptL6mnlWfDjdG3bJVqsL6ZO2Ul1znLI_vScuBNyV9zLuaZYoyg2BYT9qvar4VZxplQc4ENq3vpsBZVtNWLMZE7zfxoi8pLXdL36-ixvX2zuKrpEsnCo70jxlWI5p7aM/s1599/WhatsApp%20Image%202026-02-26%20at%2016.07.54.jpeg" class="top-image">
+<div class="login" id="login">
+<h2>Hello World Chatting Room</h2>
+<input id="username" placeholder="Enter Username">
+<button onclick="enter()">Enter</button>
 </div>
 
-<!-- 🔥 HEADLINE 1 -->
-<div class="marquee headline1">
-<span>
-আসসালামু আলাইকুম ♥️ সবাইকে মাহে রমজানের শুভেচ্ছা 🌙 সিয়াম সাধনের জন্য আমাদের বেশিরভাগেরই গ্যাস্ট্রিকের সমস্যা হয়, মেথি মিক্সড পাউডার সকল প্রকার গ্যাস্ট্রিকের সমস্যা নিমেষে দূর করে ♥️
-</span>
+<div id="app" style="display:none;">
+<div class="header">Hello World Chatting Room</div>
+
+<div class="container">
+<div class="sidebar" id="profileList"></div>
+
+<div class="chat">
+<div class="messages" id="messages"></div>
+<div class="inputBox">
+<input id="msgInput" placeholder="Type message...">
+<button onclick="sendGroup()">Send</button>
+</div>
+<div class="note">Virtual Users Simulation</div>
+</div>
+</div>
 </div>
 
-<!-- 🔥 HEADLINE 2 -->
-<div class="marquee headline2">
-<span>
-পবিত্র রমজান মাস উপলক্ষে🌙 আমরা মেথি মিক্সড পাউডারে একটি লাকি স্ক্র্যাচ কার্ড দিচ্ছি🎉 সেখানে আপনি সর্বোচ্চ ৫০% ডিসকাউন্টে 🎉 মেথি মিক্সড অর্ডার করতে পারবেন ♥️
-</span>
-</div>
-
-<!-- 🔥 VIDEO -->
-<div class="video-wrapper">
-<iframe src="https://www.youtube.com/embed/pJrfhCo_dgw" allowfullscreen></iframe>
-</div>
-
-<!-- 🔥 LIVE CUT PRICE -->
-<div class="price">MRP-900tk</div>
-
-<!-- 🔥 BENEFIT TITLE -->
-<div class="benefit-title">
-Methi Mixd powder সেবনের উপকারিতা 👇
-</div>
-
-<ul class="benefits">
-<li>৭ দিন সেবনে কোষ্ঠকাঠিন্যের একদম নিরাময়</li>
-<li>৭ দিন সেবনে গ্যাস্ট্রিক প্রবলেমের সমাধান</li>
-<li>৭ দিন সেবনে বুক জ্বালাপোড়া সমাধান</li>
-<li>৭ দিন সেবনে মুখের টক স্বাদ নিরাময়</li>
-<li>৭ দিন সেবনে পেট ফাঁপা একদম সমাধান</li>
-<li>৭ দিন মুখে অরুচি ভাব সমাধান</li>
-<li>৭ দিন সেবনে সুগার ডায়াবেটিসের সমাধান</li>
-<li>৭ দিন সেবনে অতিরিক্ত চর্বি এবং রক্তচাপের সমাধান</li>
-<li>৭ দিন সেবনে পেট পরিষ্কার এবং কৃমির সমাধান</li>
-<li>৭ দিন সেবনে শারীরিক শক্তি এবং যৌ'ন শক্তি বৃদ্ধি</li>
-</ul>
-
-<!-- আপনার বাকি স্ক্র্যাচ কার্ড + বিলিং + JS কোড আগের মতো এখান থেকে বসবে -->
-
-</body>
-</html>
-
-
-<div id="scratch-container">
-<div id="scratch-bottom"></div>
-<canvas id="scratch-canvas" width="320" height="160"></canvas>
-</div>
-
-<div id="result-message"></div>
-<button class="order-btn" id="orderBtn" onclick="showBilling()">অর্ডার করতে চাই</button>
-<!-- 🔥 ORDER BUTTON -->
-<button class="order-btn" id="orderBtn" onclick="showBilling()">অর্ডার করতে চাই</button>
-
-<!-- 🔥 NEW INGREDIENT SECTION START -->
-<style>
-.ingredient-title{
-display:block;
-width:100%;
-background:yellow;
-padding:14px 0;
-border-top:1px solid black;
-border-bottom:1px solid black;
-font-weight:bold;
-font-size:18px;
-margin-top:10px;
-}
-
-.ingredients{
-text-align:left;
-padding:10px;
-margin-top:5px;
-}
-
-.ingredients li{
-background:white;
-border:1px solid black;
-margin:4px 0;
-padding:8px;
-color:black;
-position:relative;
-overflow:hidden;
-}
-
-.circle{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) scale(0);
-width:95%;
-height:80%;
-border-radius:50%;
-border:3px solid red;
-pointer-events:none;
-opacity:0.9;
-}
-
-.animate-circle{
-animation:drawCircle 0.8s ease forwards;
-}
-
-@keyframes drawCircle{
-0%{transform:translate(-50%,-50%) scale(0);}
-60%{transform:translate(-50%,-50%) scale(1.1);}
-100%{transform:translate(-50%,-50%) scale(1);}
-}
-</style>
-
-<div class="ingredient-title">
-Methi Mixd powder এর উপাদান👇
-</div>
-
-<ul class="ingredients" id="ingredientList">
-<li>মেথি বেলচূর্ণ – হজম শক্তি বাড়ায় ও কোষ্ঠকাঠিন্য কমাতে সহায়ক।</li>
-<li>আমলকি – ভিটামিন সি সমৃদ্ধ, রোগ প্রতিরোধ ক্ষমতা বৃদ্ধি করে।</li>
-<li>হরিতকি – পেট পরিষ্কার রাখে ও গ্যাসের সমস্যা কমায়।</li>
-<li>বহেরা – কাশি কমাতে ও হজম উন্নত করতে সাহায্য করে।</li>
-<li>কালোজিরা – শরীরের রোগ প্রতিরোধ ক্ষমতা বাড়ায় ও প্রদাহ কমায়।</li>
-<li>তুলসী – সর্দি-কাশি উপশমে ও শ্বাসতন্ত্র ভালো রাখতে সহায়ক।</li>
-<li>অর্জুন – হৃদযন্ত্রের স্বাস্থ্যের জন্য উপকারী।</li>
-<li>থানকুনি – স্মৃতিশক্তি ও হজম শক্তি বাড়াতে সাহায্য করে।</li>
-<li>মৌরী – বদহজম ও পেট ফাঁপা কমায়।</li>
-<li>জিরা – হজম প্রক্রিয়া উন্নত করে ও ক্ষুধা বাড়ায়।</li>
-<li>পুদিনা – গ্যাস ও বমিভাব কমাতে সহায়ক।</li>
-<li>সোনাপাতা – কোষ্ঠকাঠিন্য দূর করতে কার্যকর।</li>
-<li>ধনিয়া – হজম শক্তি বাড়ায় ও শরীর ঠান্ডা রাখে।</li>
-<li>আদা – হজমে সাহায্য করে ও বমিভাব কমায়।</li>
-</ul>
-
-<script>
-const colors=["red","green","blue","orange","purple","brown","teal","magenta","#ff0077","#0099ff","#00aa55","#ff8800","#9900ff","#444"];
-
-let items=document.querySelectorAll("#ingredientList li");
-let index=0;
-
-function animateNext(){
-items.forEach(li=>{
-let old=li.querySelector(".circle");
-if(old) old.remove();
-});
-
-let circle=document.createElement("div");
-circle.className="circle animate-circle";
-circle.style.borderColor=colors[index%colors.length];
-
-items[index].appendChild(circle);
-
-index++;
-if(index>=items.length) index=0;
-}
-
-setInterval(animateNext,1000);
-
-/* 🔥 SMOOTH SCROLL TO BILLING */
-function showBilling(){
-document.getElementById("billing").style.display="block";
-document.getElementById("billing").scrollIntoView({behavior:"smooth"});
-}
-</script>
-<!-- 🔥 NEW INGREDIENT SECTION END -->
-<div id="billing">
-<h3>ক্যাশ অন ডেলিভারি</h3>
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwjoi8RBP65poQRwkTz9IVyQSjAZ5gCvTXYycafCryfXIJ06e2qebmmcGwbn005CyuiliwExeZ08GRKv2BxmDnS1UQzCDNi8aT7Pq1-fmxGZVECjmewLuWjqLcno6MY8W-9GPrsjDzxNw-YVdoHZw0j2gKGINDlvhTLOLLnRewxtnOLnS53Yl3oym2KrM/s1599/WhatsApp%20Image%202026-02-26%20at%2002.38.05.jpeg" width="120" id="cod-img">
-<p style="background:red;color:black;border:2px solid green;">
-নিচে আপনার অর্ডারটি ডিসকাউন্টসহ কনফার্ম করুন
-</p>
-
-<div class="billing-box">
-<p>Discount: <span id="final-discount"></span>%</p>
-<p>Price After Discount: <span id="final-price"></span> tk</p>
-
-<p>কয়টি নিতে চান নির্বাচন করুন✔:</p>
-<button class="qty-btn" onclick="changeQty(-1)">-</button>
-<span id="qty">1</span>
-<button class="qty-btn" onclick="changeQty(1)">+</button>
-
-<p>মোট দাম: <span id="total-price"></span> tk</p>
-
-<input type="text" id="discountField" readonly>
-<input type="text" id="priceField" readonly>
-<input type="text" id="name" placeholder="* ✔নাম লিখুন">
-<input type="text" id="phone" placeholder="* ✔নাম্বার লিখুন">
-<input type="text" id="address" placeholder="* ✔ঠিকানা লিখুন">
-
-<button class="submit-btn" id="submitBtn" onclick="submitOrder()">Submit Order</button>
+<div class="privateBox" id="privateBox">
+<div class="privateHeader" id="privateName"></div>
+<div class="privateMessages" id="privateMessages"></div>
+<div class="privateInput">
+<input id="privateInput" placeholder="Type message...">
+<button onclick="sendPrivate()">Send</button>
 </div>
 </div>
 
 <script>
-let originalPrice=900;
-let qty=1;
 
-const STORAGE_KEY="methi_discount_data";
-const now=Date.now();
-let savedData=JSON.parse(localStorage.getItem(STORAGE_KEY));
+let user="";
+let activeProfile=null;
+let privateData={};
 
-let discount, discountedPrice;
-let isReturningUser=false;
-
-if(savedData && (now - savedData.time < 24*60*60*1000)){
-discount=savedData.discount;
-discountedPrice=savedData.price;
-isReturningUser=true;
-showWatermark();
-}else{
-discount=Math.floor(Math.random()*31)+20;
-discountedPrice=Math.round(originalPrice-(originalPrice*discount/100));
-localStorage.setItem(STORAGE_KEY,JSON.stringify({
-discount:discount,
-price:discountedPrice,
-time:now
-}));
-}
-
-function showWatermark(){
-let wm=document.createElement("div");
-wm.id="watermark";
-wm.innerHTML="Discount card already Used ❌<br>Try After 24 hours ❌";
-document.getElementById("scratch-container").appendChild(wm);
-}
-
-document.getElementById("scratch-bottom").innerHTML=
-"আপনি পেয়েছেন "+discount+"% ডিসকাউন্ট";
-
-document.getElementById("final-discount").innerText=discount;
-document.getElementById("final-price").innerText=discountedPrice;
-document.getElementById("total-price").innerText=discountedPrice;
-document.getElementById("discountField").value=discount+"%";
-document.getElementById("priceField").value=discountedPrice+" tk";
-
-let canvas=document.getElementById("scratch-canvas");
-let ctx=canvas.getContext("2d");
-
-let gradient=ctx.createLinearGradient(0,0,320,0);
-gradient.addColorStop(0,"red");
-gradient.addColorStop(0.17,"orange");
-gradient.addColorStop(0.34,"yellow");
-gradient.addColorStop(0.51,"green");
-gradient.addColorStop(0.68,"blue");
-gradient.addColorStop(0.85,"indigo");
-gradient.addColorStop(1,"violet");
-
-ctx.fillStyle=gradient;
-ctx.fillRect(0,0,320,160);
-
-ctx.fillStyle="black";
-ctx.font="bold 18px Arial";
-ctx.textAlign="center";
-ctx.fillText("এখানে ঘোষণ 👈",160,85);
-
-if(!isReturningUser){
-ctx.globalCompositeOperation="destination-out";
-let scratching=false;
-function scratch(e){
-let rect=canvas.getBoundingClientRect();
-let x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-let y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-ctx.beginPath();
-ctx.arc(x,y,20,0,Math.PI*2);
-ctx.fill();
-}
-canvas.addEventListener("mousedown",(e)=>{scratching=true;scratch(e)});
-canvas.addEventListener("mousemove",(e)=>{if(scratching)scratch(e)});
-canvas.addEventListener("mouseup",()=>{scratching=false;finishScratch()});
-canvas.addEventListener("touchstart",(e)=>{scratching=true;scratch(e)});
-canvas.addEventListener("touchmove",(e)=>{if(scratching)scratch(e)});
-canvas.addEventListener("touchend",()=>{scratching=false;finishScratch()});
-
-function finishScratch(){
-document.getElementById("result-message").innerHTML=
-"🎉 অভিনন্দন! আপনি "+discount+"% ডিসকাউন্ট পাওয়ার পরে Methi Mixd powder এর বর্তমান দাম আপনার জন্য "+discountedPrice+" টাকা";
-document.getElementById("orderBtn").style.display="inline-block";
-showBilling();
-}
-}else{
-document.getElementById("result-message").innerHTML=
-"✅ আপনি আগেই "+discount+"% ডিসকাউন্ট পেয়েছেন। এই ডিসকাউন্টেই অর্ডার করতে পারবেন।";
-document.getElementById("orderBtn").style.display="inline-block";
-showBilling();
-}
-
-document.getElementById("cod-img").addEventListener("click",function(){
-this.classList.toggle("fullscreen");
-});
-
-function showBilling(){
-document.getElementById("billing").style.display="block";
-}
-
-function changeQty(val){
-qty+=val;
-if(qty<1) qty=1;
-document.getElementById("qty").innerText=qty;
-let total=discountedPrice*qty;
-document.getElementById("total-price").innerText=total;
-document.getElementById("priceField").value=total+" tk";
-}
-
-function submitOrder(){
-let name=document.getElementById("name");
-let phone=document.getElementById("phone");
-let address=document.getElementById("address");
-
-if(!name.value || !phone.value || !address.value){
-alert("⚠️ সকল ঘর পূরণ করতে হবে");
-if(!name.value) name.style.border="2px solid red";
-if(!phone.value) phone.style.border="2px solid red";
-if(!address.value) address.style.border="2px solid red";
-return;
-}
-
-let btn=document.getElementById("submitBtn");
-btn.classList.add("shrink");
-
-setTimeout(()=>{
-alert("✅ আপনার অর্ডার কনফার্ম হয়েছে!আমাদের প্রতিনিধি আপনার সাথে যোগাযোগ করবে ইনশাল্লাহ ♥️");
-
-let data={
-discount:document.getElementById("discountField").value,
-price:document.getElementById("priceField").value,
-name:name.value,
-phone:phone.value,
-address:address.value
-};
-
-fetch("https://script.google.com/macros/s/AKfycbwK5jQxGjkVWjl_jrvyPtQpzT1LYBgsNMto9evS0-T7I_BsuFGNCWOoHugplTkYxsDS/exec",{
-method:"POST",
-body:JSON.stringify(data)
-});
-
-btn.classList.remove("shrink");
-},1000);
-}
-</script>
-<style>
-#notification-box{
-position:fixed;
-top:20px;
-left:-400px;
-background:#111;
-color:#fff;
-padding:12px 18px;
-border-radius:8px;
-box-shadow:0 0 15px rgba(0,0,0,0.4);
-font-size:15px;
-z-index:9999;
-transition:0.6s;
-min-width:280px;
-}
-#notification-box span{
-color:#00ff4c;
-font-weight:bold;
-}
-
-#live-review-tab{
-position:fixed;
-right:0;
-top:50%;
-transform:translateY(-50%);
-background:red;
-color:#fff;
-padding:12px 8px;
-writing-mode:vertical-rl;
-text-orientation:mixed;
-font-weight:bold;
-cursor:pointer;
-border-radius:8px 0 0 8px;
-z-index:9999;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
-}
-
-#review-popup{
-position:fixed;
-right:-400px;
-top:50%;
-transform:translateY(-50%);
-width:320px;
-height:480px;
-background:#fff;
-border-radius:20px;
-box-shadow:0 0 25px rgba(0,0,0,0.5);
-z-index:99999;
-display:flex;
-flex-direction:column;
-overflow:hidden;
-transition:0.5s;
-}
-
-#review-header{
-background:#111;
-color:#fff;
-padding:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:14px;
-}
-
-#review-messages{
-flex:1;
-padding:10px;
-overflow-y:auto;
-font-size:13px;
-background:#f5f5f5;
-}
-
-.review-item{
-margin-bottom:10px;
-background:#fff;
-padding:8px;
-border-radius:8px;
-box-shadow:0 0 5px rgba(0,0,0,0.1);
-}
-
-.profile{
-display:flex;
-align-items:center;
-margin-bottom:5px;
-}
-
-.avatar{
-width:30px;
-height:30px;
-border-radius:50%;
-margin-right:6px;
-position:relative;
-}
-
-.online-dot{
-position:absolute;
-bottom:0;
-right:0;
-width:8px;
-height:8px;
-background:#00ff00;
-border-radius:50%;
-border:1px solid #fff;
-}
-
-.review-name{
-font-weight:bold;
-font-size:12px;
-}
-
-#review-input{
-padding:8px;
-border-top:1px solid #ddd;
-display:flex;
-}
-#review-input input{
-flex:1;
-padding:5px;
-font-size:12px;
-}
-#review-input button{
-padding:5px 8px;
-background:red;
-color:#fff;
-border:none;
-cursor:pointer;
-font-size:12px;
-}
-</style>
-
-<div id="notification-box"></div>
-<div id="live-review-tab" onclick="openReview()">Live Reviews</div>
-
-<div id="review-popup">
-<div id="review-header">
-<span>Live Customer Reviews</span>
-<span style="cursor:pointer;" onclick="closeReview()">✖</span>
-</div>
-<div id="review-messages"></div>
-<div id="review-input">
-<input type="text" id="userReview" placeholder="আপনার রিভিউ লিখুন...">
-<button onclick="addUserReview()">Send</button>
-</div>
-</div>
-
-<script>
-const names = ["আমিনুল ইসলাম","তানিয়া আক্তার","রাকিব হাসান","সাবিনা ইয়াসমিন","মোস্তাফিজুর রহমান",
-"নাসরিন আক্তার","ইমরান হোসেন","সুমাইয়া ইসলাম","শাহাদাত হোসেন","মাহি আক্তার",
-"সোহেল রানা","জান্নাতুল ফেরদৌস","রিয়াজ উদ্দিন","মৌসুমী আক্তার","ফারুক হোসেন",
-"রুমানা আক্তার","হাবিবুর রহমান","মিম আক্তার","শামীম আহমেদ","সাব্বির হাসান",
-"রোকেয়া বেগম","আলমগীর হোসেন","নুসরাত জাহান","আরিফুল ইসলাম","সাদিয়া আফরিন",
-"জুবায়ের রহমান","লাবনী আক্তার","রিফাত হাসান","মারুফ হোসেন","তৃষা ইসলাম"];
-
-const discounts = ["৫%","৭%","১০%","১২%","১৫%"];
-
-function showNotification(){
-let name = names[Math.floor(Math.random()*names.length)];
-let discount = discounts[Math.floor(Math.random()*discounts.length)];
-let box = document.getElementById("notification-box");
-box.innerHTML = `<span>${name}</span> ${discount} ডিসকাউন্টে 🎉 অর্ডার করেছে`;
-box.style.left="20px";
-setTimeout(()=>{box.style.left="-400px";},2500);
-}
-setInterval(showNotification,3000);
-
-const reviewMessages = [
-"৭ দিনেই গ্যাস্ট্রিক অনেক কমেছে!",
-"পেট পরিষ্কার হচ্ছে প্রতিদিন 👍",
-"বুক জ্বালাপোড়া এখন নেই।",
-"ডায়াবেটিস কন্ট্রোলে সাহায্য করছে।",
-"খুব ভালো কাজ করছে আলহামদুলিল্লাহ।",
-"শরীরের শক্তি বেড়েছে।",
-"কোষ্ঠকাঠিন্য পুরো ঠিক।",
-"দাম অনুযায়ী দারুণ প্রোডাক্ট।",
-
-/* ===== নতুন ১৫টি ইউনিক রিভিউ ===== */
-"৩ দিনের মধ্যেই পেট ফাঁপা কমে গেছে!",
-"মুখের টক স্বাদ পুরোপুরি চলে গেছে।",
-"খাওয়ার রুচি অনেক বেড়েছে এখন।",
-"প্রতিদিন সকালে পেট পরিষ্কার হচ্ছে।",
-"রক্তচাপ আগের চেয়ে নিয়ন্ত্রণে।",
-"ডায়াবেটিস রিপোর্টেও উন্নতি দেখছি।",
-"৭ দিন পরেই বুকের জ্বালাপোড়া বন্ধ।",
-"গ্যাসের ব্যথা এখন একদম নেই।",
-"শরীরে আগের চেয়ে এনার্জি বেশি লাগছে।",
-"চর্বি কমাতে সাহায্য করছে।",
-"ঘুমও আগের চেয়ে ভালো হচ্ছে।",
-"কৃমির সমস্যা অনেক কমেছে।",
-"পেটের ভারভাব এখন আর নেই।",
-"পারিবারিকভাবে সবাই ব্যবহার করছি।",
-"এক কথায় অসাধারণ হারবাল প্রোডাক্ট!"
+const names=[
+"Ava","Emma","Sophia","Mia","Luna","Zara","Nora","Layla",
+"Chloe","Scarlett","Aria","Bella","Lucy","Grace",
+"Emily","Mila","Camila","Sofia","Victoria","Lily",
+"Aisha","Fatima","Nadia","Jasmine","Tania"
 ];
 
-function randomAvatar(){
-return "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
+const messages=[
+"Hi there 💕","How are you?","Nice to meet you 😍",
+"You look interesting 😉","Tell me about yourself",
+"I love romantic talks 💖","Where are you from?",
+"Do you like deep conversations?",
+"I enjoy meaningful connections ✨"
+];
+
+function enter(){
+let val=document.getElementById("username").value;
+if(val.trim()=="") return alert("Enter username");
+user=val;
+document.getElementById("login").style.display="none";
+document.getElementById("app").style.display="block";
+loadProfiles();
+simulateGroup();
 }
 
-function addReview(){
-let container = document.getElementById("review-messages");
-let name = names[Math.floor(Math.random()*names.length)];
-let message = reviewMessages[Math.floor(Math.random()*reviewMessages.length)];
-
-let div = document.createElement("div");
-div.className="review-item";
-div.innerHTML=`
-<div class="profile">
-<div style="position:relative;">
-<img src="${randomAvatar()}" class="avatar">
-<div class="online-dot"></div>
-</div>
-<div class="review-name">${name}</div>
-</div>
-<div>${message}</div>
-`;
-container.appendChild(div);
-container.scrollTop = container.scrollHeight;
-}
-
-setInterval(addReview,2500);
-
-function openReview(){
-document.getElementById("review-popup").style.right="20px";
-}
-function closeReview(){
-document.getElementById("review-popup").style.right="-400px";
-}
-
-function addUserReview(){
-let input=document.getElementById("userReview");
-if(input.value.trim()!=""){
-let container=document.getElementById("review-messages");
+function loadProfiles(){
+let list=document.getElementById("profileList");
+names.forEach(n=>{
+let avatar=https://api.dicebear.com/7.x/avataaars/svg?seed=${n};
 let div=document.createElement("div");
-div.className="review-item";
-div.innerHTML="<b>আপনি:</b> "+input.value;
-container.appendChild(div);
-container.scrollTop=container.scrollHeight;
-input.value="";
+div.className="profile";
+div.innerHTML=<img src="${avatar}">${n};
+div.onclick=()=>openPrivate(n);
+list.appendChild(div);
+privateData[n]={count:0};
+});
 }
+
+function simulateGroup(){
+setInterval(()=>{
+let n=names[Math.floor(Math.random()*names.length)];
+let m=messages[Math.floor(Math.random()*messages.length)];
+addGroup(n,m);
+},2000);
 }
+
+function addGroup(name,text){
+let div=document.createElement("div");
+div.className="msg";
+div.innerHTML=<span>${name}:</span> ${text};
+document.getElementById("messages").appendChild(div);
+document.getElementById("messages").scrollTop=999999;
+}
+
+function sendGroup(){
+let txt=document.getElementById("msgInput").value;
+if(txt.trim()=="") return;
+addGroup(user,txt);
+document.getElementById("msgInput").value="";
+}
+
+function openPrivate(name){
+activeProfile=name;
+document.getElementById("privateBox").style.display="flex";
+document.getElementById("privateName").innerText=name;
+document.getElementById("privateMessages").innerHTML="";
+}
+
+function sendPrivate(){
+let txt=document.getElementById("privateInput").value;
+if(txt.trim()=="") return;
+let box=document.getElementById("privateMessages");
+
+box.innerHTML+=<div class="msg"><span>${user}:</span> ${txt}</div>;
+document.getElementById("privateInput").value="";
+
+setTimeout(()=>{
+let reply=messages[Math.floor(Math.random()*messages.length)];
+box.innerHTML+=<div class="msg"><span>${activeProfile}:</span> ${reply}</div>;
+privateData[activeProfile].count++;
+
+if(privateData[activeProfile].count==2){
+box.innerHTML+=`
+<a href="https://safeoffers.pro/a/RozKiOzWhOXLZ" target="_blank" class="promoBtn">
+click-my-private-profile
+</a>
+`;
+}
+
+box.scrollTop=999999;
+},1000);
+}
+
 </script>
-  <footer style="
-margin-top:40px;
-padding:15px;
-background:#000;
-color:#fff;
-font-weight:bold;
-font-size:14px;
-text-align:center;">
-Design by 01785369906
-</footer>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
