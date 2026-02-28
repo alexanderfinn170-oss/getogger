@@ -16,6 +16,7 @@ body{
   flex-direction:column;
 }
 
+/* HEADER */
 .header{
   height:60px;
   background:#202c33;
@@ -26,20 +27,20 @@ body{
   flex-shrink:0;
 }
 
+/* MESSAGE AREA */
 .messages{
   flex:1;
   overflow-y:auto;
   padding:10px;
-  scroll-behavior:smooth;
 }
 
+/* INPUT */
 .inputBox{
   height:60px;
   background:#202c33;
   display:flex;
   align-items:center;
   padding:0 10px;
-  flex-shrink:0;
 }
 
 .inputBox input{
@@ -99,6 +100,7 @@ body{
   margin-top:4px;
 }
 
+/* PRIVATE FULLSCREEN */
 .privateBox{
   position:fixed;
   top:0;
@@ -136,13 +138,56 @@ body{
   flex:1;
   overflow-y:auto;
   padding:10px;
-  scroll-behavior:smooth;
 }
 
 .typing{
   font-size:12px;
   opacity:.6;
   margin:5px;
+}
+
+/* PROFILE TEMPLATE */
+.profileTemplate{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  color:white;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  z-index:2000;
+}
+
+.profileTemplate button{
+  margin-top:20px;
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+  background:#ff0066;
+  color:white;
+  cursor:pointer;
+  animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+  100%{transform:scale(1);}
+}
+
+.backBtn{
+  position:absolute;
+  top:15px;
+  left:15px;
+  font-size:18px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -158,6 +203,7 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
+<!-- PRIVATE -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
@@ -174,105 +220,68 @@ body{
 </div>
 </div>
 
+<!-- PROFILE MODAL -->
+<div class="profileTemplate" id="profileTemplate">
+<div class="backBtn" onclick="closeProfile()">← Back</div>
+<h2>Join with this User Private Profile</h2>
+<p>Continue conversation securely on her private profile.</p>
+<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
+Signup Here
+</button>
+</div>
+
 <script>
 
-const TOTAL_PROFILES=800;
-const PRELOAD_MESSAGES=200;
+const TOTAL_PROFILES=1000;
+const PRELOAD_MESSAGES=150;
 
 let names=[],profiles={};
-let messagePool=[];
-let messageIndex=0;
 let activeProfile=null;
-
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
+let privateReplyCount=0;
+let visitorMessageCount=0;
 
-/* Female profiles */
+/* USERNAMES */
 for(let i=1;i<=TOTAL_PROFILES;i++){
-  let name="Lady"+i;
+  let name="RandomUser"+i;
   names.push(name);
   profiles[name]={
     img:`https://randomuser.me/api/portraits/women/${i%90}.jpg`
   };
 }
 
-/* 300 Unique Adult Dating Discussion Messages */
-const baseMessages = [
-"Girls, what type of confident man attracts you most?",
-"I believe chemistry matters more than looks.",
-"I want a mature man who understands adult dating.",
-"Do you prefer emotional connection first?",
-"I think passion is very important in a relationship.",
-"I like a man who leads but respects.",
+/* GROUP CHAT MESSAGES */
+const groupPool=[
+"Confidence matters most.",
+"I prefer mature dating.",
+"Chemistry is powerful.",
 "Romantic energy is everything.",
-"I prefer experienced men in adult dating.",
-"Confidence is extremely attractive.",
-"I want someone serious about adult romance.",
-"A man with deep conversation skills wins.",
-"Emotional maturity matters.",
-"Playful flirting keeps things exciting.",
-"I love bold masculine energy.",
-"Chemistry should feel natural.",
-"I want strong attraction from the start.",
-"Good communication is sexy.",
-"Stability is attractive.",
-"I prefer romantic tension.",
-"A mature mindset is key.",
-"Girls, do you like dominant vibes?",
-"I love emotional depth.",
-"A confident smile says a lot.",
-"Adult dating needs honesty.",
-"I enjoy intelligent men.",
-"Strong personality is attractive.",
-"I prefer slow romantic build up.",
-"Passion makes it real.",
-"I love mystery in a man.",
-"I want emotional intimacy.",
-"Charm wins my heart.",
-"Confidence plus kindness is perfect.",
-"I love romantic connection.",
-"I prefer serious adult relationships.",
-"Energy and chemistry must match.",
-"I enjoy private deep talks.",
-"I want someone bold.",
-"Romantic excitement keeps it alive.",
-"Emotional closeness is important.",
-"I like adventurous men."
+"Deep connection is important."
 ];
 
-/* Auto expand to 300 variations */
-while(baseMessages.length < 300){
-  baseMessages.push(
-    baseMessages[Math.floor(Math.random()*40)] + 
-    " 🔥 (" + baseMessages.length + ")"
-  );
+function randomGroup(){
+  return groupPool[Math.floor(Math.random()*groupPool.length)];
 }
 
-/* Shuffle once */
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    let j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-}
-shuffle(baseMessages);
-messagePool = baseMessages;
+/* PRIVATE CHAT POOL */
+const privatePool=[
+"I like your vibe already 😉",
+"You seem confident and mature.",
+"I’m interested in knowing you better.",
+"I prefer serious adult dating.",
+"You feel different from others.",
+"I love how you talk.",
+"I think we could have strong chemistry.",
+"I’m curious about you.",
+"I enjoy bold men.",
+"I like emotional connection."
+];
 
-function getMessage(){
-  let msg = messagePool[messageIndex];
-  messageIndex++;
-
-  if(messageIndex >= messagePool.length){
-    messageIndex = 0;
-  }
-  return msg;
+function getPrivateMessage(){
+  return privatePool[Math.floor(Math.random()*privatePool.length)];
 }
 
-function getTime(){
-  let d=new Date();
-  return d.getHours().toString().padStart(2,"0")+":"+
-         d.getMinutes().toString().padStart(2,"0");
-}
-
+/* GROUP CHAT */
 function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
@@ -281,33 +290,28 @@ function addGroup(name,text){
       <div class="bubble">
         <div class="name">${name} <span class="online">● Online</span></div>
         ${text}
-        <div class="time">${getTime()}</div>
+        <div class="time">${new Date().toLocaleTimeString()}</div>
       </div>
     </div>
   `);
+  box.scrollTop=box.scrollHeight;
 }
 
-/* Preload */
 for(let i=0;i<PRELOAD_MESSAGES;i++){
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,getMessage());
+  addGroup(name,randomGroup());
 }
 
-window.onload=()=>{
-  let box=document.getElementById("groupMessages");
-  box.scrollTop=box.scrollHeight;
-}
-
-/* Live public chat */
 setInterval(()=>{
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,getMessage());
-  let box=document.getElementById("groupMessages");
-  box.scrollTop=box.scrollHeight;
-},1400);
+  addGroup(name,randomGroup());
+},1500);
 
+/* PRIVATE */
 function openPrivate(name){
   activeProfile=name;
+  privateReplyCount=0;
+  visitorMessageCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
@@ -319,6 +323,11 @@ function closePrivate(){
 }
 
 function sendPrivate(){
+  if(visitorMessageCount>=2){
+    openProfile();
+    return;
+  }
+
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
 
@@ -329,13 +338,13 @@ function sendPrivate(){
       <div class="bubble">
         <div class="name">${visitorName}</div>
         ${input.value}
-        <div class="time">${getTime()}</div>
       </div>
     </div>
   `);
 
   input.value="";
   box.scrollTop=box.scrollHeight;
+  visitorMessageCount++;
 
   setTimeout(()=>{
     box.insertAdjacentHTML("beforeend",
@@ -345,20 +354,40 @@ function sendPrivate(){
 
     setTimeout(()=>{
       document.querySelector(".typing")?.remove();
+      privateReplyCount++;
+
+      let replyText;
+
+      if(privateReplyCount===3){
+        replyText=`I think you’re interesting... let's continue on my private profile.`;
+        setTimeout(()=>openProfile(),1000);
+      }else{
+        replyText=getPrivateMessage();
+      }
+
       box.insertAdjacentHTML("beforeend",`
         <div class="msg">
           <img src="${profiles[activeProfile].img}">
           <div class="bubble">
             <div class="name">${activeProfile}</div>
-            ${getMessage()}
-            <div class="time">${getTime()}</div>
+            ${replyText}
           </div>
         </div>
       `);
+
       box.scrollTop=box.scrollHeight;
-    },2000);
+
+    },3000);
 
   },2000);
+}
+
+function openProfile(){
+  document.getElementById("profileTemplate").style.display="flex";
+}
+
+function closeProfile(){
+  document.getElementById("profileTemplate").style.display="none";
 }
 
 </script>
