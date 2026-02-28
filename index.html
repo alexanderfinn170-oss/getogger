@@ -2,255 +2,202 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hello World Premium Chat</title>
+<title>Ultra Chat Simulation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0f172a;
-  color:white;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.header{
-  background:#111827;
-  padding:15px;
-  text-align:center;
-  font-size:20px;
-  font-weight:bold;
-}
-
-.container{
-  display:flex;
-  flex:1;
-  overflow:hidden;
-}
-
-.sidebar{
-  width:200px;
-  background:#1e293b;
-  overflow:auto;
-  padding:10px;
-}
-
-.room{
-  padding:8px;
-  margin-bottom:6px;
-  background:#334155;
-  border-radius:6px;
-  cursor:pointer;
-  text-align:center;
-}
-
-.room:hover{background:#475569;}
-
-.chatArea{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-}
-
-.messages{
-  flex:1;
-  padding:10px;
-  overflow:auto;
-}
-
-.msg{
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-}
-
-.msg img{
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  margin-right:6px;
-}
-
-.msg span{
-  font-weight:bold;
-  color:#38bdf8;
-  margin-right:4px;
-}
-
-.inputBox{
-  display:flex;
-  padding:10px;
-  background:#1e293b;
-}
-
-.inputBox input{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:6px;
-}
-
-.inputBox button{
-  padding:10px;
-  margin-left:5px;
-  border:none;
-  border-radius:6px;
-  background:#3b82f6;
-  color:white;
-  cursor:pointer;
-}
-
-.privateBox{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:320px;
-  height:420px;
-  background:#1e293b;
-  border-radius:10px;
-  display:none;
-  flex-direction:column;
-}
-
-.privateHeader{
-  background:#334155;
-  padding:10px;
-  display:flex;
-  align-items:center;
-}
-
-.privateHeader img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-
-.privateMessages{
-  flex:1;
-  overflow:auto;
-  padding:10px;
-}
-
-.note{
-  text-align:center;
-  font-size:11px;
-  opacity:.5;
-}
+body{margin:0;font-family:Arial;background:#0b141a;color:white;height:100vh;display:flex;flex-direction:column;}
+.header{background:#202c33;padding:15px;text-align:center;font-weight:bold;}
+.container{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:220px;background:#111b21;padding:10px;overflow:auto;}
+.room{padding:8px;background:#202c33;margin-bottom:6px;border-radius:6px;cursor:pointer;text-align:center;}
+.room:hover{background:#2a3942;}
+.chatArea{flex:1;display:flex;flex-direction:column;background:#0b141a;}
+.messages{flex:1;padding:10px;overflow:auto;font-size:14px;}
+.msg{display:flex;margin-bottom:8px;align-items:flex-end;}
+.msg img{width:32px;height:32px;border-radius:50%;margin-right:6px;}
+.bubble{background:#202c33;padding:6px 10px;border-radius:10px;max-width:70%;}
+.me .bubble{background:#005c4b;}
+.name{font-size:12px;color:#53bdeb;}
+.status{font-size:10px;opacity:.6;margin-left:5px;}
+.inputBox{display:flex;padding:10px;background:#202c33;}
+.inputBox input{flex:1;padding:8px;border:none;border-radius:20px;}
+.inputBox button{padding:8px 12px;margin-left:5px;border:none;border-radius:20px;background:#25d366;color:white;cursor:pointer;}
+.privateBox{position:fixed;bottom:20px;right:20px;width:350px;height:480px;background:#111b21;border-radius:12px;display:none;flex-direction:column;}
+.privateHeader{padding:10px;background:#202c33;display:flex;align-items:center;}
+.privateHeader img{width:40px;height:40px;border-radius:50%;margin-right:8px;}
+.onlineDot{width:10px;height:10px;background:#25d366;border-radius:50%;margin-left:5px;}
+.privateMessages{flex:1;overflow:auto;padding:10px;font-size:14px;}
+.typing{font-size:12px;opacity:.6;margin:5px;}
+.footerNote{text-align:center;font-size:11px;opacity:.4;padding:5px;}
 </style>
 </head>
 
 <body>
 
-<div class="header">🔥 Hello World Premium Chat</div>
+<div class="header">💬 Ultra Premium Chat</div>
 
 <div class="container">
-  <div class="sidebar">
-    <div class="room" onclick="switchRoom('Single')">Single Room</div>
-    <div class="room" onclick="switchRoom('Merit')">Merit Room</div>
-    <div class="room" onclick="switchRoom('Breakup')">Breakup Room</div>
-    <div class="room" onclick="switchRoom('Random')">Random Room</div>
-  </div>
+<div class="sidebar">
+<div class="room">Single</div>
+<div class="room">Random</div>
+<div class="room">Breakup</div>
+</div>
 
-  <div class="chatArea">
-    <div class="messages" id="groupMessages"></div>
-    <div class="inputBox">
-      <input id="groupInput" placeholder="Type message...">
-      <button onclick="sendGroup()">Send</button>
-    </div>
-    <div class="note">Virtual Chat Simulation</div>
-  </div>
+<div class="chatArea">
+<div class="messages" id="groupMessages"></div>
+<div class="inputBox">
+<input id="groupInput" placeholder="Type message...">
+<button onclick="sendGroup()">Send</button>
+</div>
+<div class="footerNote">Chat Simulation Demo</div>
+</div>
 </div>
 
 <div class="privateBox" id="privateBox">
-  <div class="privateHeader">
-    <img id="privateImg">
-    <div id="privateName"></div>
-  </div>
-  <div class="privateMessages" id="privateMessages"></div>
-  <div class="inputBox">
-    <input id="privateInput" placeholder="Type message...">
-    <button onclick="sendPrivate()">Send</button>
-  </div>
+<div class="privateHeader">
+<img id="privateImg">
+<div id="privateName"></div>
+<div class="onlineDot"></div>
+</div>
+<div class="privateMessages" id="privateMessages"></div>
+<div class="inputBox">
+<input id="privateInput" placeholder="Type message...">
+<button onclick="sendPrivate()">Send</button>
+</div>
 </div>
 
 <script>
-const rooms=['Single','Merit','Breakup','Random'];
-const names=["Ava","Emma","Sophia","Mia","Luna","Zara","Nora","Layla","Bella","Emily"];
-const replies=["Hi 💕","Tell me about you","Where are you from?","You seem cute 😉","Let's talk more 😘"];
-
-let currentRoom='Single';
-let currentUser='Guest'+Math.floor(Math.random()*1000);
-let profiles={};
+const TOTAL_PROFILES=1000;
+const TOTAL_MESSAGES=1000;
+let messageIndex=0;
+let names=[],profiles={};
 let activeProfile=null;
+let currentUser="You";
 
-// Create profiles with random female images
-names.forEach(name=>{
-  profiles[name]={
-    img:`https://source.unsplash.com/50x50/?girl,face&random=${Math.random()}`
-  };
-});
+// Generate profiles
+for(let i=1;i<=TOTAL_PROFILES;i++){
+  let name="User"+i;
+  names.push(name);
+  profiles[name]={img:`https://i.pravatar.cc/50?img=${(i%70)+1}`};
+}
 
-function preloadMessages(){
-  const box=document.getElementById('groupMessages');
-  box.innerHTML='';
-  for(let i=0;i<120;i++){
-    const name=names[Math.floor(Math.random()*names.length)];
-    const msg=replies[Math.floor(Math.random()*replies.length)];
-    box.innerHTML+=`
-      <div class="msg" onclick="openPrivate('${name}')">
-        <img src="${profiles[name].img}">
-        <span>${name}:</span> ${msg}
-      </div>`;
+// Generate smart messages
+let smartMessages=[];
+for(let i=1;i<=TOTAL_MESSAGES;i++){
+  smartMessages.push(`Message #${i} about random topic ${Math.floor(Math.random()*99999)}`);
+}
+
+function getSmartMessage(){
+  let msg=smartMessages[messageIndex];
+  messageIndex++;
+  if(messageIndex>=smartMessages.length){
+    messageIndex=0;
+    smartMessages.sort(()=>Math.random()-0.5);
+  }
+  return msg;
+}
+
+// Preload 1000 messages
+function preload(){
+  let box=document.getElementById("groupMessages");
+  for(let i=0;i<1000;i++){
+    let name=names[Math.floor(Math.random()*names.length)];
+    addGroupMsg(name,getSmartMessage());
   }
   box.scrollTop=box.scrollHeight;
 }
 
-function switchRoom(room){
-  currentRoom=room;
-  preloadMessages();
+function addGroupMsg(name,text){
+  let box=document.getElementById("groupMessages");
+  box.insertAdjacentHTML("beforeend",
+  `<div class="msg" onclick="openPrivate('${name}')">
+    <img src="${profiles[name].img}">
+    <div class="bubble">
+      <div class="name">${name}</div>
+      ${text}
+    </div>
+  </div>`);
+}
+
+function startLive(){
+  setInterval(()=>{
+    let name=names[Math.floor(Math.random()*names.length)];
+    addGroupMsg(name,getSmartMessage());
+    let box=document.getElementById("groupMessages");
+    box.scrollTop=box.scrollHeight;
+  },1500);
 }
 
 function sendGroup(){
-  const input=document.getElementById('groupInput');
-  if(input.value.trim()==='') return;
-  document.getElementById('groupMessages').innerHTML+=`
-    <div class="msg">
-      <span>${currentUser}:</span> ${input.value}
-    </div>`;
-  input.value='';
+  let input=document.getElementById("groupInput");
+  if(!input.value.trim()) return;
+  document.getElementById("groupMessages").insertAdjacentHTML("beforeend",
+  `<div class="msg me">
+    <div class="bubble">
+      ${input.value}
+      <span class="status">✔</span>
+    </div>
+  </div>`);
+  input.value="";
 }
 
+// Private Chat
 function openPrivate(name){
   activeProfile=name;
-  document.getElementById('privateBox').style.display='flex';
-  document.getElementById('privateName').innerText=name;
-  document.getElementById('privateImg').src=profiles[name].img;
-  document.getElementById('privateMessages').innerHTML='';
+  document.getElementById("privateBox").style.display="flex";
+  document.getElementById("privateName").innerText=name;
+  document.getElementById("privateImg").src=profiles[name].img;
+  document.getElementById("privateMessages").innerHTML="";
 }
 
 function sendPrivate(){
-  const input=document.getElementById('privateInput');
-  if(input.value.trim()==='') return;
+  let input=document.getElementById("privateInput");
+  if(!input.value.trim()) return;
+  let box=document.getElementById("privateMessages");
 
-  const box=document.getElementById('privateMessages');
-  box.innerHTML+=`<div class="msg"><span>${currentUser}:</span> ${input.value}</div>`;
-  input.value='';
+  box.insertAdjacentHTML("beforeend",
+  `<div class="msg me">
+    <div class="bubble">
+      ${input.value}
+      <span class="status">✔</span>
+    </div>
+  </div>`);
+
+  input.value="";
+  box.scrollTop=box.scrollHeight;
+
+  // Delivered
+  setTimeout(()=>{
+    let status=box.querySelector(".status:last-child");
+    if(status) status.innerHTML="✔✔";
+  },800);
+
+  // Seen
+  setTimeout(()=>{
+    let status=box.querySelector(".status:last-child");
+    if(status) status.style.color="#53bdeb";
+  },1500);
+
+  // Typing
+  box.insertAdjacentHTML("beforeend",`<div class="typing">typing...</div>`);
+  box.scrollTop=box.scrollHeight;
 
   setTimeout(()=>{
-    const reply=replies[Math.floor(Math.random()*replies.length)];
-    box.innerHTML+=`
-      <div class="msg">
-        <img src="${profiles[activeProfile].img}">
-        <span>${activeProfile}:</span> ${reply}
-      </div>`;
+    box.querySelector(".typing")?.remove();
+    box.insertAdjacentHTML("beforeend",
+    `<div class="msg">
+      <img src="${profiles[activeProfile].img}">
+      <div class="bubble">
+        ${getSmartMessage()}
+      </div>
+    </div>`);
     box.scrollTop=box.scrollHeight;
   },3000);
 }
 
-preloadMessages();
+preload();
+startLive();
 </script>
 
 </body>
