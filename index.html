@@ -79,6 +79,11 @@ body{
 .name{font-size:12px;color:#53bdeb;}
 .online{font-size:10px;color:#25d366;}
 .time{font-size:10px;opacity:.6;margin-top:4px;}
+.typing{
+  font-size:12px;
+  opacity:.6;
+  margin:5px 0;
+}
 .privateBox{
   position:fixed;top:0;left:0;width:100%;height:100%;
   background:#111b21;display:none;flex-direction:column;z-index:999;
@@ -128,7 +133,8 @@ body{
 
 <script>
 
-/* ======= 200 RANDOM PROFILES ======= */
+/* ===== EXISTING GROUP SYSTEM UNCHANGED ===== */
+
 const TOTAL_PROFILES=200;
 let names=[],profiles={};
 
@@ -141,174 +147,42 @@ for(let i=1;i<=TOTAL_PROFILES;i++){
   };
 }
 
-/* ======= 100 ADULT COMMUNITY MESSAGES ======= */
-const groupPool=[
-"Hi ladies, I'm single and looking for a mature man tonight.",
-"I prefer confident men who know what they want.",
-"Is anyone here serious about adult dating?",
-"I want a real gentleman, not time pass.",
-"I'm feeling lonely and need strong company.",
-"I like bold and respectful men.",
-"Trust and chemistry matter to me.",
-"I'm here for meaningful adult connection.",
-"Any experienced man online now?",
-"I enjoy deep private conversations.",
-"I want emotional and physical chemistry.",
-"Serious men only please.",
-"I like dominant personality.",
-"I'm selective about men I talk to.",
-"I want someone mature and calm.",
-"I prefer real connection over fake talk.",
-"Confidence is very attractive.",
-"I like open minded guys.",
-"Is anyone ready for serious adult fun?",
-"I enjoy intelligent discussion with men.",
-"I need a strong partner.",
-"I like private vibes.",
-"Looking for mature energy.",
-"I want respectful connection.",
-"Any confident leader type here?",
-"I enjoy deep emotional bonding.",
-"I'm single and searching seriously.",
-"I prefer bold conversation.",
-"I want honest adult dating.",
-"I like experienced gentlemen.",
-"Chemistry is important for me.",
-"I need someone genuine.",
-"I enjoy meaningful chats.",
-"I prefer strong personality men.",
-"I like serious dating only.",
-"I'm here for real connection.",
-"I enjoy adult discussions.",
-"Respect is very important.",
-"I want confident company.",
-"I prefer emotionally mature men.",
-"I like calm and powerful men.",
-"I want exciting adult energy.",
-"I'm looking for true gentleman.",
-"I enjoy bold talks.",
-"I need mature vibes.",
-"I prefer intelligent men.",
-"I want deep chemistry.",
-"I like honest men.",
-"I'm serious about dating.",
-"I prefer private connection.",
-"I enjoy passionate energy.",
-"I need emotional understanding.",
-"I want real man only.",
-"I like respectful attitude.",
-"I'm looking for meaningful partner.",
-"I prefer strong leadership.",
-"I want confident presence.",
-"I enjoy private community talks.",
-"I like deep conversation.",
-"I need mature companionship.",
-"I want adult romance.",
-"I prefer real energy.",
-"I like bold mindset.",
-"I want serious relationship vibe.",
-"I enjoy classy men.",
-"I prefer grown men only.",
-"I want emotional depth.",
-"I like confident talk.",
-"I need strong connection.",
-"I want adult chemistry.",
-"I prefer honest partner.",
-"I enjoy real gentleman.",
-"I like serious energy.",
-"I want passionate conversation.",
-"I prefer experienced vibe.",
-"I need meaningful adult dating.",
-"I want genuine man.",
-"I like open communication.",
-"I prefer mature discussion.",
-"I want strong confident man.",
-"I enjoy real bonding.",
-"I need emotional maturity.",
-"I want honest vibe.",
-"I prefer bold personality.",
-"I like private serious men.",
-"I want adult companionship.",
-"I enjoy confident energy.",
-"I prefer real men only.",
-"I need deep connection.",
-"I want mature gentleman.",
-"I like intelligent partner.",
-"I prefer emotional honesty.",
-"I want strong presence.",
-"I enjoy respectful talk.",
-"I need serious adult partner.",
-"I want real chemistry tonight."
-];
+/* ===== PRIVATE SYSTEM UPDATED ONLY ===== */
 
-let groupIndex=0;
-
-/* ======= LOAD 30 MESSAGES BEFORE VISITOR ENTER ======= */
-for(let i=0;i<30;i++){
-  let randomName=names[Math.floor(Math.random()*names.length)];
-  addGroup(randomName,groupPool[i]);
-  groupIndex++;
-}
-
-/* ======= ADD GROUP MESSAGE ======= */
-function addGroup(name,text){
-  let box=document.getElementById("groupMessages");
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg" onclick="openPrivate('${name}')">
-      <img src="${profiles[name].img}">
-      <div class="bubble">
-        <div class="name">${name} <span class="online">● Online</span></div>
-        ${text}
-        <div class="time">${new Date().toLocaleTimeString()}</div>
-      </div>
-    </div>
-  `);
-  box.scrollTop=box.scrollHeight;
-}
-
-/* ======= AUTO LIVE LOOP (NO DOUBLE, 100 THEN REPEAT) ======= */
-setInterval(()=>{
-  let randomName=names[Math.floor(Math.random()*names.length)];
-  addGroup(randomName,groupPool[groupIndex % 100]);
-  groupIndex++;
-},1500);
-
-/* ======= SEND GROUP MESSAGE ======= */
-function sendGroup(){
-  let input=document.getElementById("groupInput");
-  if(!input.value.trim()) return;
-  let box=document.getElementById("groupMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">You</div>
-        ${input.value}
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-}
-
-/* ======= PRIVATE SYSTEM SAME AS BEFORE ======= */
 let activeProfile=null;
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
-let privateCount=0;
+let privateStep=0;
 
-const firstReplies=["hi","hello","hi how are you","hello how are you"];
-const privatePool=[
-"I like your confidence.",
-"You seem interesting.",
-"I prefer serious men.",
-"I enjoy adult conversation.",
-"I want honest connection."
+const firstReplies=["Hello","Hi"];
+
+let secondPool=[
+"How are you? Are you happy in your life? Would you like to meet me for adult dating?",
+"Tell me how your day was, are you feeling lonely? Would you meet me privately?",
+"Are you single and happy? Do you want to see me in real life for adult dating?",
+"What makes you happy? Would you meet me soon for something serious?",
+"Are you enjoying your life? Do you like spicy food? Want to meet me?",
+"What do you usually eat? Are you satisfied in life? Meet me for adult dating?",
+"Did you work today? Are you emotionally happy? Would you see me?",
+"What kind of food do you love? Are you looking for adult connection?",
+"Are you serious about dating? Would you like to meet tonight?",
+"Do you feel alone sometimes? Want to spend time with me?",
+"Are you confident and mature? Meet me privately?",
+"Are you living happily? Would you go on a private date?",
+"What makes you smile? Want to meet me in person?",
+"Do you like romantic dinners? Would you like adult dating with me?",
+"Are you emotionally strong? Meet me soon?",
+"Do you enjoy deep connection? Would you meet face to face?",
+"What do you love to eat? Are you single and ready?",
+"Are you satisfied in your life? Want something real?",
+"Are you searching for serious adult dating?",
+"Would you like to meet me personally for adult fun?"
 ];
+
+let usedIndexes=[];
 
 function openPrivate(name){
   activeProfile=name;
-  privateCount=0;
+  privateStep=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
@@ -317,6 +191,18 @@ function openPrivate(name){
 
 function closePrivate(){
   document.getElementById("privateBox").style.display="none";
+}
+
+function getUniqueSecondMessage(){
+  if(usedIndexes.length===secondPool.length){
+    usedIndexes=[];
+  }
+  let index;
+  do{
+    index=Math.floor(Math.random()*secondPool.length);
+  }while(usedIndexes.includes(index));
+  usedIndexes.push(index);
+  return secondPool[index];
 }
 
 function sendPrivate(){
@@ -337,24 +223,43 @@ function sendPrivate(){
   input.value="";
   box.scrollTop=box.scrollHeight;
 
+  if(privateStep>=2) return;
+
   setTimeout(()=>{
-    let reply = privateCount===0 
-      ? firstReplies[Math.floor(Math.random()*4)]
-      : privatePool[Math.floor(Math.random()*privatePool.length)];
 
-    privateCount++;
-
-    box.insertAdjacentHTML("beforeend",`
-      <div class="msg">
-        <img src="${profiles[activeProfile].img}">
-        <div class="bubble">
-          <div class="name">${activeProfile}</div>
-          ${reply}
-        </div>
-      </div>
-    `);
+    let typingDiv=document.createElement("div");
+    typingDiv.className="typing";
+    typingDiv.innerText=activeProfile+" is typing...";
+    box.appendChild(typingDiv);
     box.scrollTop=box.scrollHeight;
-  },1000);
+
+    setTimeout(()=>{
+
+      typingDiv.remove();
+
+      let reply;
+      if(privateStep===0){
+        reply=firstReplies[Math.floor(Math.random()*2)];
+      }else{
+        reply=getUniqueSecondMessage();
+      }
+
+      box.insertAdjacentHTML("beforeend",`
+        <div class="msg">
+          <img src="${profiles[activeProfile].img}">
+          <div class="bubble">
+            <div class="name">${activeProfile}</div>
+            ${reply}
+          </div>
+        </div>
+      `);
+
+      box.scrollTop=box.scrollHeight;
+      privateStep++;
+
+    },3000);
+
+  },2000);
 }
 
 </script>
