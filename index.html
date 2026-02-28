@@ -97,6 +97,39 @@ body{
   padding:10px;
   padding-bottom:80px;
 }
+
+/* ===== NEW FULL SCREEN TEMPLATE ===== */
+.fullTemplate{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:#0f1720;
+  z-index:3000;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding-top:100px;
+}
+.fullTemplate.alt{
+  background:#2b0000;
+}
+.signupBtn{
+  margin-top:20px;
+  padding:12px 25px;
+  background:red;
+  color:white;
+  border:2px solid #ffb3b3;
+  border-radius:5px;
+  text-decoration:none;
+  font-weight:bold;
+}
+.templateProfile img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  margin-bottom:10px;
+}
 </style>
 </head>
 
@@ -124,6 +157,25 @@ body{
 <input id="privateInput" placeholder="Type message...">
 <button onclick="sendPrivate()">Send</button>
 </div>
+</div>
+
+<!-- PRIVATE TEMPLATE -->
+<div class="fullTemplate" id="privateTemplate">
+<div class="header">🔥 My Live Dating Room</div>
+<div class="templateProfile" id="templateProfile"></div>
+<p>If you want to continue With this Private Profile,<br>
+Click the button below to Signup for free</p>
+<a href="#YOUR_LINK_HERE" class="signupBtn">Signup here</a>
+</div>
+
+<!-- GROUP TEMPLATE -->
+<div class="fullTemplate alt" id="groupTemplate">
+<div class="header">🔥 My Live Dating Room</div>
+<p style="padding:20px;">
+This Chat Room Only For Single Women And We noticed You are Not Women,<br>
+If You want to continue This Chat Room Register for free by clicking the signup button below
+</p>
+<a href="#YOUR_LINK_HERE" class="signupBtn">Signup here</a>
 </div>
 
 <script>
@@ -242,15 +294,15 @@ const groupPool=[
 ];
 
 let groupIndex=0;
+let groupSendCount=0;
 
-/* ======= LOAD 30 MESSAGES BEFORE VISITOR ENTER ======= */
+/* LOAD 30 */
 for(let i=0;i<30;i++){
   let randomName=names[Math.floor(Math.random()*names.length)];
   addGroup(randomName,groupPool[i]);
   groupIndex++;
 }
 
-/* ======= ADD GROUP MESSAGE ======= */
 function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
@@ -266,17 +318,25 @@ function addGroup(name,text){
   box.scrollTop=box.scrollHeight;
 }
 
-/* ======= AUTO LIVE LOOP (NO DOUBLE, 100 THEN REPEAT) ======= */
+/* AUTO LOOP */
 setInterval(()=>{
   let randomName=names[Math.floor(Math.random()*names.length)];
   addGroup(randomName,groupPool[groupIndex % 100]);
   groupIndex++;
 },1500);
 
-/* ======= SEND GROUP MESSAGE ======= */
+/* GROUP SEND */
 function sendGroup(){
+
+  groupSendCount++;
+  if(groupSendCount===5){
+    document.getElementById("groupTemplate").style.display="flex";
+    return;
+  }
+
   let input=document.getElementById("groupInput");
   if(!input.value.trim()) return;
+
   let box=document.getElementById("groupMessages");
 
   box.insertAdjacentHTML("beforeend",`
@@ -292,7 +352,7 @@ function sendGroup(){
   box.scrollTop=box.scrollHeight;
 }
 
-/* ======= PRIVATE SYSTEM SAME AS BEFORE ======= */
+/* PRIVATE SYSTEM */
 let activeProfile=null;
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
 let privateCount=0;
@@ -320,6 +380,17 @@ function closePrivate(){
 }
 
 function sendPrivate(){
+
+  privateCount++;
+
+  if(privateCount===2){
+    document.getElementById("privateTemplate").style.display="flex";
+    document.getElementById("templateProfile").innerHTML=
+    `<img src="${profiles[activeProfile].img}">
+     <div>${activeProfile}</div>`;
+    return;
+  }
+
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
 
@@ -337,24 +408,37 @@ function sendPrivate(){
   input.value="";
   box.scrollTop=box.scrollHeight;
 
+  /* TYPING SYSTEM */
   setTimeout(()=>{
-    let reply = privateCount===0 
-      ? firstReplies[Math.floor(Math.random()*4)]
-      : privatePool[Math.floor(Math.random()*privatePool.length)];
-
-    privateCount++;
-
     box.insertAdjacentHTML("beforeend",`
-      <div class="msg">
+      <div class="msg" id="typing">
         <img src="${profiles[activeProfile].img}">
-        <div class="bubble">
-          <div class="name">${activeProfile}</div>
-          ${reply}
-        </div>
+        <div class="bubble">Typing...</div>
       </div>
     `);
     box.scrollTop=box.scrollHeight;
-  },1000);
+
+    setTimeout(()=>{
+      document.getElementById("typing").remove();
+
+      let reply = privateCount===1 
+        ? firstReplies[Math.floor(Math.random()*4)]
+        : privatePool[Math.floor(Math.random()*privatePool.length)];
+
+      box.insertAdjacentHTML("beforeend",`
+        <div class="msg">
+          <img src="${profiles[activeProfile].img}">
+          <div class="bubble">
+            <div class="name">${activeProfile}</div>
+            ${reply}
+          </div>
+        </div>
+      `);
+      box.scrollTop=box.scrollHeight;
+
+    },3000);
+
+  },2000);
 }
 
 </script>
