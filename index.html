@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Dating Chat Simulation</title>
+<title>Live Dating Chat</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -16,42 +16,61 @@ body{
   flex-direction:column;
 }
 
+/* FIXED HEADER */
 .header{
+  height:60px;
   background:#202c33;
-  padding:15px;
-  text-align:center;
-  font-weight:bold;
-}
-
-.chatArea{
-  flex:1;
   display:flex;
-  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  flex-shrink:0;
 }
 
+/* MESSAGE AREA ONLY SCROLLS */
 .messages{
   flex:1;
+  overflow-y:auto;
   padding:10px;
-  overflow:auto;
-  font-size:14px;
+}
+
+/* FIXED INPUT */
+.inputBox{
+  height:60px;
+  background:#202c33;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  flex-shrink:0;
+}
+
+.inputBox input{
+  flex:1;
+  padding:10px;
+  border-radius:20px;
+  border:none;
+}
+
+.inputBox button{
+  margin-left:5px;
+  padding:10px 15px;
+  border:none;
+  border-radius:20px;
+  background:#25d366;
+  color:white;
 }
 
 .msg{
   display:flex;
-  margin-bottom:10px;
-  align-items:flex-end;
+  margin-bottom:12px;
   cursor:pointer;
 }
 
-.msg img, .avatar{
+.msg img{
   width:34px;
   height:34px;
   border-radius:50%;
   margin-right:8px;
-}
-
-.avatar{
-  background:white;
 }
 
 .bubble{
@@ -70,39 +89,22 @@ body{
   color:#53bdeb;
 }
 
-.inputBox{
-  display:flex;
-  padding:10px;
-  background:#202c33;
+.online{
+  font-size:10px;
+  color:#25d366;
 }
 
-.inputBox input{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:20px;
-}
-
-.inputBox button{
-  padding:10px 15px;
-  margin-left:6px;
-  border:none;
-  border-radius:20px;
-  background:#25d366;
-  color:white;
-  cursor:pointer;
-}
-
+/* PRIVATE CHAT */
 .privateBox{
   position:fixed;
-  bottom:20px;
   right:20px;
+  bottom:20px;
   width:350px;
-  height:480px;
+  height:500px;
   background:#111b21;
-  border-radius:12px;
   display:none;
   flex-direction:column;
+  border-radius:12px;
 }
 
 .privateHeader{
@@ -121,30 +123,16 @@ body{
 
 .privateMessages{
   flex:1;
-  overflow:auto;
+  overflow-y:auto;
   padding:10px;
-}
-
-.typing{
-  font-size:12px;
-  opacity:.6;
-  margin:5px;
-}
-
-.footerNote{
-  text-align:center;
-  font-size:11px;
-  opacity:.4;
-  padding:5px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">💬 Dating Chat Room</div>
+<div class="header">💬 Live Dating Chat</div>
 
-<div class="chatArea">
 <div class="messages" id="groupMessages"></div>
 
 <div class="inputBox">
@@ -152,13 +140,14 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<div class="footerNote">Chat Simulation Demo</div>
-</div>
-
+<!-- PRIVATE CHAT -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
+<div>
 <div id="privateName"></div>
+<div class="online">● Online</div>
+</div>
 </div>
 <div class="privateMessages" id="privateMessages"></div>
 <div class="inputBox">
@@ -168,61 +157,55 @@ body{
 </div>
 
 <script>
-const TOTAL_PROFILES=1000;
-const TOTAL_MESSAGES=1200;
+const TOTAL_PROFILES=1200;
+const PRELOAD_MESSAGES=150;
 
-let names=[], profiles={}, activeProfile=null;
+let names=[],profiles={};
+let messagePool=[];
 let messageIndex=0;
+let activeProfile=null;
+let replyCount=0;
 
-let visitorName="User"+Math.floor(Math.random()*9999);
+let visitorName="Visitor"+Math.floor(Math.random()*9999);
 
-// Generate profiles
+/* Generate 1200 RandomUser profiles */
 for(let i=1;i<=TOTAL_PROFILES;i++){
-  let name="Girl"+i;
+  let name="RandomUser"+i;
   names.push(name);
   profiles[name]={img:`https://i.pravatar.cc/50?img=${(i%70)+1}`};
 }
 
-// Generate 1200 dating related messages
-let datingMessages=[];
-let topics=[
-"Do you believe in love at first sight?",
-"What kind of relationship are you looking for?",
-"I love deep late night conversations.",
-"What makes you smile the most?",
-"I enjoy romantic movies.",
-"I like honest and caring people.",
-"Where would you take someone on a first date?",
-"I enjoy meaningful connections.",
-"Tell me something interesting about you.",
-"What do you do in your free time?"
+/* Generate 3000+ Unique Dating Messages */
+const topics=[
+"Do you believe in true love?",
+"What’s your ideal romantic date?",
+"I love meaningful conversations.",
+"What makes you feel special?",
+"I enjoy deep emotional connection.",
+"I’m looking for something serious.",
+"What kind of partner do you prefer?",
+"Do you like romantic surprises?",
+"What makes you happy in a relationship?",
+"I love late night talks."
 ];
 
-for(let i=1;i<=TOTAL_MESSAGES;i++){
+for(let i=1;i<=3000;i++){
   let t=topics[Math.floor(Math.random()*topics.length)];
-  datingMessages.push(t+" 💕 ("+i+")");
+  messagePool.push(t+" 💕 ("+i+")");
 }
 
-function getSmartMessage(){
-  let msg=datingMessages[messageIndex];
+/* Smart unique message system */
+function getUniqueMessage(){
+  let msg=messagePool[messageIndex];
   messageIndex++;
-  if(messageIndex>=datingMessages.length){
+  if(messageIndex>=messagePool.length){
     messageIndex=0;
-    datingMessages.sort(()=>Math.random()-0.5);
+    messagePool.sort(()=>Math.random()-0.5);
   }
   return msg;
 }
 
-// Preload 1000 messages
-function preload(){
-  let box=document.getElementById("groupMessages");
-  for(let i=0;i<1000;i++){
-    let name=names[Math.floor(Math.random()*names.length)];
-    addGroupMessage(name,getSmartMessage());
-  }
-  box.scrollTop=box.scrollHeight;
-}
-
+/* Add message to group */
 function addGroupMessage(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
@@ -234,42 +217,48 @@ function addGroupMessage(name,text){
       </div>
     </div>
   `);
+  box.scrollTop=box.scrollHeight;
 }
 
-// Live auto chat
+/* Preload 150 messages */
+for(let i=0;i<PRELOAD_MESSAGES;i++){
+  let name=names[Math.floor(Math.random()*names.length)];
+  addGroupMessage(name,getUniqueMessage());
+}
+
+/* Live auto chat */
 setInterval(()=>{
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroupMessage(name,getSmartMessage());
-  let box=document.getElementById("groupMessages");
-  box.scrollTop=box.scrollHeight;
+  addGroupMessage(name,getUniqueMessage());
 },1500);
 
+/* Send group message */
 function sendGroup(){
   let input=document.getElementById("groupInput");
   if(!input.value.trim()) return;
 
   document.getElementById("groupMessages").insertAdjacentHTML("beforeend",`
     <div class="msg me">
-      <div class="avatar"></div>
       <div class="bubble">
         <div class="name">${visitorName}</div>
         ${input.value}
       </div>
     </div>
   `);
-
   input.value="";
 }
 
-// Private Chat
+/* Open private chat */
 function openPrivate(name){
   activeProfile=name;
+  replyCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
   document.getElementById("privateMessages").innerHTML="";
 }
 
+/* Send private message */
 function sendPrivate(){
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
@@ -278,7 +267,6 @@ function sendPrivate(){
 
   box.insertAdjacentHTML("beforeend",`
     <div class="msg me">
-      <div class="avatar"></div>
       <div class="bubble">
         <div class="name">${visitorName}</div>
         ${input.value}
@@ -289,24 +277,20 @@ function sendPrivate(){
   input.value="";
   box.scrollTop=box.scrollHeight;
 
-  box.insertAdjacentHTML("beforeend",`<div class="typing">typing...</div>`);
-
   setTimeout(()=>{
-    box.querySelector(".typing")?.remove();
+    replyCount++;
     box.insertAdjacentHTML("beforeend",`
       <div class="msg">
         <img src="${profiles[activeProfile].img}">
         <div class="bubble">
           <div class="name">${activeProfile}</div>
-          ${getSmartMessage()}
+          ${getUniqueMessage()}
         </div>
       </div>
     `);
     box.scrollTop=box.scrollHeight;
   },3000);
 }
-
-preload();
 </script>
 
 </body>
