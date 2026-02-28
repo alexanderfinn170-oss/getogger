@@ -141,25 +141,114 @@ for(let i=1;i<=TOTAL_PROFILES;i++){
   };
 }
 
-/* ======= GROUP MESSAGE POOL ======= */
+/* ======= 100 ADULT COMMUNITY MESSAGES ======= */
 const groupPool=[
-"Looking for a confident mature man.",
-"I like bold and open minded guys.",
+"Hi ladies, I'm single and looking for a mature man tonight.",
+"I prefer confident men who know what they want.",
+"Is anyone here serious about adult dating?",
+"I want a real gentleman, not time pass.",
+"I'm feeling lonely and need strong company.",
+"I like bold and respectful men.",
+"Trust and chemistry matter to me.",
+"I'm here for meaningful adult connection.",
+"Any experienced man online now?",
+"I enjoy deep private conversations.",
+"I want emotional and physical chemistry.",
+"Serious men only please.",
+"I like dominant personality.",
+"I'm selective about men I talk to.",
+"I want someone mature and calm.",
+"I prefer real connection over fake talk.",
+"Confidence is very attractive.",
+"I like open minded guys.",
+"Is anyone ready for serious adult fun?",
+"I enjoy intelligent discussion with men.",
+"I need a strong partner.",
+"I like private vibes.",
+"Looking for mature energy.",
+"I want respectful connection.",
+"Any confident leader type here?",
+"I enjoy deep emotional bonding.",
+"I'm single and searching seriously.",
+"I prefer bold conversation.",
+"I want honest adult dating.",
+"I like experienced gentlemen.",
 "Chemistry is important for me.",
-"I prefer real connection not fake talk.",
-"I want a serious adult partner.",
-"Trust matters in adult dating.",
-"I enjoy deep conversations.",
-"Passion and honesty are important.",
-"I’m here for meaningful fun.",
-"I like experienced men."
+"I need someone genuine.",
+"I enjoy meaningful chats.",
+"I prefer strong personality men.",
+"I like serious dating only.",
+"I'm here for real connection.",
+"I enjoy adult discussions.",
+"Respect is very important.",
+"I want confident company.",
+"I prefer emotionally mature men.",
+"I like calm and powerful men.",
+"I want exciting adult energy.",
+"I'm looking for true gentleman.",
+"I enjoy bold talks.",
+"I need mature vibes.",
+"I prefer intelligent men.",
+"I want deep chemistry.",
+"I like honest men.",
+"I'm serious about dating.",
+"I prefer private connection.",
+"I enjoy passionate energy.",
+"I need emotional understanding.",
+"I want real man only.",
+"I like respectful attitude.",
+"I'm looking for meaningful partner.",
+"I prefer strong leadership.",
+"I want confident presence.",
+"I enjoy private community talks.",
+"I like deep conversation.",
+"I need mature companionship.",
+"I want adult romance.",
+"I prefer real energy.",
+"I like bold mindset.",
+"I want serious relationship vibe.",
+"I enjoy classy men.",
+"I prefer grown men only.",
+"I want emotional depth.",
+"I like confident talk.",
+"I need strong connection.",
+"I want adult chemistry.",
+"I prefer honest partner.",
+"I enjoy real gentleman.",
+"I like serious energy.",
+"I want passionate conversation.",
+"I prefer experienced vibe.",
+"I need meaningful adult dating.",
+"I want genuine man.",
+"I like open communication.",
+"I prefer mature discussion.",
+"I want strong confident man.",
+"I enjoy real bonding.",
+"I need emotional maturity.",
+"I want honest vibe.",
+"I prefer bold personality.",
+"I like private serious men.",
+"I want adult companionship.",
+"I enjoy confident energy.",
+"I prefer real men only.",
+"I need deep connection.",
+"I want mature gentleman.",
+"I like intelligent partner.",
+"I prefer emotional honesty.",
+"I want strong presence.",
+"I enjoy respectful talk.",
+"I need serious adult partner.",
+"I want real chemistry tonight."
 ];
 
-while(groupPool.length<100){
-  groupPool.push("Looking for a mature confident man who knows what he wants.");
-}
-
 let groupIndex=0;
+
+/* ======= LOAD 30 MESSAGES BEFORE VISITOR ENTER ======= */
+for(let i=0;i<30;i++){
+  let randomName=names[Math.floor(Math.random()*names.length)];
+  addGroup(randomName,groupPool[i]);
+  groupIndex++;
+}
 
 /* ======= ADD GROUP MESSAGE ======= */
 function addGroup(name,text){
@@ -177,19 +266,10 @@ function addGroup(name,text){
   box.scrollTop=box.scrollHeight;
 }
 
-/* ======= LOAD 30 MESSAGES BEFORE VISITOR ENTER ======= */
-for(let i=0;i<30;i++){
-  let name=names[i % names.length];
-  let text=groupPool[i % 100];
-  addGroup(name,text);
-  groupIndex++;
-}
-
-/* ======= AUTO LIVE MESSAGES ======= */
+/* ======= AUTO LIVE LOOP (NO DOUBLE, 100 THEN REPEAT) ======= */
 setInterval(()=>{
-  let name=names[groupIndex % names.length];
-  let text=groupPool[groupIndex % 100];
-  addGroup(name,text);
+  let randomName=names[Math.floor(Math.random()*names.length)];
+  addGroup(randomName,groupPool[groupIndex % 100]);
   groupIndex++;
 },1500);
 
@@ -212,7 +292,7 @@ function sendGroup(){
   box.scrollTop=box.scrollHeight;
 }
 
-/* ======= PRIVATE SYSTEM ======= */
+/* ======= PRIVATE SYSTEM SAME AS BEFORE ======= */
 let activeProfile=null;
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
 let privateCount=0;
