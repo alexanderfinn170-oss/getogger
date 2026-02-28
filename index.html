@@ -79,11 +79,6 @@ body{
 .name{font-size:12px;color:#53bdeb;}
 .online{font-size:10px;color:#25d366;}
 .time{font-size:10px;opacity:.6;margin-top:4px;}
-.typing{
-  font-size:12px;
-  opacity:.6;
-  margin:5px 0;
-}
 .privateBox{
   position:fixed;top:0;left:0;width:100%;height:100%;
   background:#111b21;display:none;flex-direction:column;z-index:999;
@@ -101,6 +96,11 @@ body{
   overflow-y:auto;
   padding:10px;
   padding-bottom:80px;
+}
+.typing{
+  font-size:12px;
+  opacity:.6;
+  margin:5px 0;
 }
 </style>
 </head>
@@ -133,8 +133,7 @@ body{
 
 <script>
 
-/* ===== EXISTING GROUP SYSTEM UNCHANGED ===== */
-
+/* ======= GROUP SYSTEM UNCHANGED ======= */
 const TOTAL_PROFILES=200;
 let names=[],profiles={};
 
@@ -147,7 +146,7 @@ for(let i=1;i<=TOTAL_PROFILES;i++){
   };
 }
 
-/* ===== PRIVATE SYSTEM UPDATED ONLY ===== */
+/* ======= PRIVATE SYSTEM UPDATED ONLY ======= */
 
 let activeProfile=null;
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
@@ -155,30 +154,30 @@ let privateStep=0;
 
 const firstReplies=["Hello","Hi"];
 
-let secondPool=[
-"How are you? Are you happy in your life? Would you like to meet me for adult dating?",
-"Tell me how your day was, are you feeling lonely? Would you meet me privately?",
-"Are you single and happy? Do you want to see me in real life for adult dating?",
-"What makes you happy? Would you meet me soon for something serious?",
-"Are you enjoying your life? Do you like spicy food? Want to meet me?",
-"What do you usually eat? Are you satisfied in life? Meet me for adult dating?",
-"Did you work today? Are you emotionally happy? Would you see me?",
-"What kind of food do you love? Are you looking for adult connection?",
-"Are you serious about dating? Would you like to meet tonight?",
-"Do you feel alone sometimes? Want to spend time with me?",
-"Are you confident and mature? Meet me privately?",
-"Are you living happily? Would you go on a private date?",
-"What makes you smile? Want to meet me in person?",
-"Do you like romantic dinners? Would you like adult dating with me?",
-"Are you emotionally strong? Meet me soon?",
-"Do you enjoy deep connection? Would you meet face to face?",
-"What do you love to eat? Are you single and ready?",
-"Are you satisfied in your life? Want something real?",
-"Are you searching for serious adult dating?",
-"Would you like to meet me personally for adult fun?"
+const secondPool=[
+"How are you? Are you happy in life? What did Siraj do today? What food do you love? Would you meet me for adult dating?",
+"Tell me how you are feeling. Are you truly happy? What did Siraj plan today? What do you like to eat? Meet me?",
+"Are you living peacefully? Is Siraj busy? Do you enjoy spicy food? Want to meet for adult dating?",
+"Are you emotionally happy? What did Siraj say today? What is your favorite meal? See me?",
+"Do you feel satisfied in life? Is Siraj working? What food makes you smile? Meet me privately?",
+"Are you confident and happy? What did Siraj achieve? Do you love sweet dishes? Meet me?",
+"How is your day going? Did Siraj call you? What do you enjoy eating? Adult date?",
+"Are you single and happy? Is Siraj around? What cuisine do you prefer? Meet me?",
+"Are you enjoying life? What is Siraj doing? Do you like seafood? See me?",
+"Are you serious about dating? What did Siraj finish today? Favorite food? Meet me?",
+"Do you feel lonely? Is Siraj home? Do you like biryani? Meet me?",
+"Are you relaxed and happy? What did Siraj cook? Favorite snacks? Meet?",
+"Are you strong mentally? Is Siraj okay? Do you love fast food? Meet?",
+"Are you emotionally ready? What did Siraj buy? Like desserts? Meet me?",
+"Are you satisfied with life? Siraj busy today? What do you enjoy eating? Meet?",
+"Do you want serious dating? What did Siraj complete? Favorite dish? Meet?",
+"Are you calm and happy? Is Siraj traveling? Like homemade food? Meet?",
+"Are you confident in life? Siraj working hard? Love spicy curry? Meet?",
+"Are you free tonight? What did Siraj plan? Favorite drink? Meet?",
+"Are you looking for adult dating? Siraj okay? What food do you crave? Meet me?"
 ];
 
-let usedIndexes=[];
+let usedSecondIndexes=[];
 
 function openPrivate(name){
   activeProfile=name;
@@ -193,15 +192,15 @@ function closePrivate(){
   document.getElementById("privateBox").style.display="none";
 }
 
-function getUniqueSecondMessage(){
-  if(usedIndexes.length===secondPool.length){
-    usedIndexes=[];
+function getUniqueSecond(){
+  if(usedSecondIndexes.length===secondPool.length){
+    usedSecondIndexes=[];
   }
   let index;
   do{
     index=Math.floor(Math.random()*secondPool.length);
-  }while(usedIndexes.includes(index));
-  usedIndexes.push(index);
+  }while(usedSecondIndexes.includes(index));
+  usedSecondIndexes.push(index);
   return secondPool[index];
 }
 
@@ -227,22 +226,19 @@ function sendPrivate(){
 
   setTimeout(()=>{
 
-    let typingDiv=document.createElement("div");
-    typingDiv.className="typing";
-    typingDiv.innerText=activeProfile+" is typing...";
-    box.appendChild(typingDiv);
+    let typing=document.createElement("div");
+    typing.className="typing";
+    typing.innerText=activeProfile+" is typing...";
+    box.appendChild(typing);
     box.scrollTop=box.scrollHeight;
 
     setTimeout(()=>{
 
-      typingDiv.remove();
+      typing.remove();
 
-      let reply;
-      if(privateStep===0){
-        reply=firstReplies[Math.floor(Math.random()*2)];
-      }else{
-        reply=getUniqueSecondMessage();
-      }
+      let reply = privateStep===0 
+        ? firstReplies[Math.floor(Math.random()*2)]
+        : getUniqueSecond();
 
       box.insertAdjacentHTML("beforeend",`
         <div class="msg">
