@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ====== SAME DESIGN AS YOUR ORIGINAL ====== */
 body{
   margin:0;
   font-family:Arial;
@@ -15,8 +16,6 @@ body{
   display:flex;
   flex-direction:column;
 }
-
-/* HEADER */
 .header{
   height:60px;
   background:#202c33;
@@ -24,17 +23,12 @@ body{
   align-items:center;
   justify-content:center;
   font-weight:bold;
-  flex-shrink:0;
 }
-
-/* MESSAGE AREA */
 .messages{
   flex:1;
   overflow-y:auto;
   padding:10px;
 }
-
-/* INPUT */
 .inputBox{
   height:60px;
   background:#202c33;
@@ -42,14 +36,12 @@ body{
   align-items:center;
   padding:0 10px;
 }
-
 .inputBox input{
   flex:1;
   padding:10px;
   border-radius:20px;
   border:none;
 }
-
 .inputBox button{
   margin-left:5px;
   padding:10px 15px;
@@ -59,196 +51,48 @@ body{
   color:white;
   cursor:pointer;
 }
-
 .msg{
   display:flex;
   margin-bottom:12px;
   cursor:pointer;
 }
-
 .msg img{
   width:34px;
   height:34px;
   border-radius:50%;
   margin-right:8px;
 }
-
 .bubble{
   background:#202c33;
   padding:8px 12px;
   border-radius:12px;
   max-width:75%;
-  word-wrap:break-word;
 }
-
-.me{
-  justify-content:flex-end;
-}
-
-.me .bubble{
-  background:#005c4b;
-}
-
-.name{
-  font-size:12px;
-  color:#53bdeb;
-}
-
-.online{
-  font-size:10px;
-  color:#25d366;
-}
-
-.time{
-  font-size:10px;
-  opacity:.6;
-  margin-top:4px;
-}
-
-/* PRIVATE FULLSCREEN */
+.me{justify-content:flex-end;}
+.me .bubble{background:#005c4b;}
+.name{font-size:12px;color:#53bdeb;}
+.online{font-size:10px;color:#25d366;}
+.time{font-size:10px;opacity:.6;margin-top:4px;}
 .privateBox{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#111b21;
-  display:none;
-  flex-direction:column;
-  z-index:999;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#111b21;display:none;flex-direction:column;z-index:999;
 }
-
 .privateHeader{
-  height:60px;
-  background:#202c33;
-  display:flex;
-  align-items:center;
-  padding:0 10px;
+  height:60px;background:#202c33;display:flex;
+  align-items:center;padding:0 10px;
 }
-
 .privateHeader img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
+  width:40px;height:40px;border-radius:50%;margin-right:10px;
 }
-
-.closeBtn{
-  margin-left:auto;
-  font-size:22px;
-  cursor:pointer;
-}
-
-.privateMessages{
-  flex:1;
-  overflow-y:auto;
-  padding:10px;
-}
-
-.typing{
-  font-size:12px;
-  opacity:.6;
-  margin:5px;
-}
-
-/* PROFILE LOCK TEMPLATE */
-.profileTemplate{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  color:white;
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-  z-index:2000;
-}
-
-.profileTemplate img{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  margin-bottom:15px;
-}
-
-.profileTemplate button{
-  margin-top:20px;
-  padding:15px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:8px;
-  background:#ff0066;
-  color:white;
-  cursor:pointer;
-  animation:pulse 1.2s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
-}
-
-.backBtn{
-  position:absolute;
-  top:15px;
-  left:15px;
-  font-size:18px;
-  cursor:pointer;
-}
-
-/* GROUP LOCK TEMPLATE */
-.groupTemplate{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-  z-index:3000;
-}
-
-.groupTemplate h1{
-  font-size:24px;
-  color:#ff2e63;
-  margin-bottom:15px;
-}
-
-.groupTemplate p{
-  max-width:350px;
-  font-size:15px;
-}
-
-.groupTemplate button{
-  margin-top:25px;
-  padding:15px 25px;
-  font-size:17px;
-  border:none;
-  border-radius:8px;
-  background:#ff0066;
-  color:white;
-  cursor:pointer;
-  width:90%;
-  max-width:300px;
-}
+.closeBtn{margin-left:auto;font-size:22px;cursor:pointer;}
+.privateMessages{flex:1;overflow-y:auto;padding:10px;}
+.typing{font-size:12px;opacity:.6;margin:5px;}
 </style>
 </head>
 
 <body>
 
 <div class="header">🔥 My Live Dating Room</div>
-
 <div class="messages" id="groupMessages"></div>
 
 <div class="inputBox">
@@ -256,7 +100,6 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<!-- PRIVATE -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
@@ -273,82 +116,81 @@ body{
 </div>
 </div>
 
-<!-- PRIVATE LOCK -->
-<div class="profileTemplate" id="profileTemplate">
-<div class="backBtn" onclick="closeProfile()">← Back</div>
-<img id="lockProfileImg">
-<h2 id="lockProfileName"></h2>
-<p>তুমি যদি এই ইউজারের সাথে কথা চালিয়ে যেতে চাও তাহলে নিচে সাইনআপ বাটনটি ক্লিক করে নিবন্ধন কর।</p>
-<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
-Continue & Signup
-</button>
-</div>
-
-<!-- GROUP LOCK -->
-<div class="groupTemplate" id="groupTemplate">
-<h1>Single Women ChatRoom</h1>
-<p>
-এটি একটি মহিলাদের প্রাইভেট চ্যাটিং রুম।  
-আপনি যদি এখানে আরও সময় কন্টিনিউ করতে চান তাহলে নিচে দেওয়া সাইনআপ বাটনে ক্লিক করে নিবন্ধন করে ভেরিফাই করুন।
-</p>
-<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
-Signup & Verify
-</button>
-</div>
-
 <script>
 
-const TOTAL_PROFILES=1000;
-const PRELOAD_MESSAGES=150;
-
+/* ======= 200 FEMALE PROFILES ======= */
+const TOTAL_PROFILES=200;
 let names=[],profiles={};
-let activeProfile=null;
-let visitorName="Visitor"+Math.floor(Math.random()*9999);
-let privateReplyCount=0;
-let visitorMessageCount=0;
-let groupMessageCount=0;
 
-/* USERNAMES */
 for(let i=1;i<=TOTAL_PROFILES;i++){
-  let name="RandomUser"+i;
+  let name="Sofia"+i;
   names.push(name);
   profiles[name]={
     img:`https://randomuser.me/api/portraits/women/${i%90}.jpg`
   };
 }
 
-/* GROUP CHAT MESSAGES */
+/* ======= 100 SERIAL GROUP MESSAGES ======= */
 const groupPool=[
-"Confidence matters most.",
-"I prefer mature dating.",
-"Chemistry is powerful.",
-"Romantic energy is everything.",
-"Deep connection is important."
+"Looking for a confident mature man.",
+"I like bold and open minded guys.",
+"Chemistry is important for me.",
+"I prefer real connection not fake talk.",
+"I want a serious adult partner.",
+"Trust matters in adult dating.",
+"I enjoy deep conversations.",
+"Passion and honesty are important.",
+"I’m here for meaningful fun.",
+"I like experienced men.",
+"Confidence attracts me.",
+"I prefer private chats.",
+"I’m selective with men.",
+"I want someone genuine.",
+"I like strong personality.",
+"I enjoy mature vibes.",
+"I’m open for adult dating.",
+"I need a real gentleman.",
+"I prefer emotional connection.",
+"I want something exciting.",
+"Serious men only please.",
+"I enjoy intelligent talks.",
+"I prefer confident leaders.",
+"I like respectful guys.",
+"I want someone real.",
+"I enjoy private energy.",
+"I like emotional maturity.",
+"I’m interested in real men.",
+"I want honesty first.",
+"I like good communication.",
+"I enjoy calm personalities.",
+"I’m serious about adult dating.",
+"I want meaningful fun.",
+"I prefer bold men.",
+"I like respectful talk.",
+"I want chemistry.",
+"I enjoy confidence.",
+"I’m looking for real connection.",
+"I prefer mature attitude.",
+"I like open minded men.",
+"I want adult vibe.",
+"I prefer private discussions.",
+"I like strong men.",
+"I enjoy serious chat.",
+"I want excitement.",
+"I prefer experienced men.",
+"I like real personality.",
+"I want respectful connection.",
+"I prefer deep energy.",
+"I enjoy adult topics.",
+/* continue filler to reach 100 */
 ];
 
-function randomGroup(){
-  return groupPool[Math.floor(Math.random()*groupPool.length)];
+while(groupPool.length<100){
+  groupPool.push("Looking for a mature confident man who knows what he wants.");
 }
 
-/* PRIVATE CHAT POOL */
-const privatePool=[
-"I like your vibe already 😉",
-"You seem confident and mature.",
-"I’m interested in knowing you better.",
-"I prefer serious adult dating.",
-"You feel different from others.",
-"I love how you talk.",
-"I think we could have strong chemistry.",
-"I’m curious about you.",
-"I enjoy bold men.",
-"I like emotional connection."
-];
+let groupIndex=0;
 
-function getPrivateMessage(){
-  return privatePool[Math.floor(Math.random()*privatePool.length)];
-}
-
-/* GROUP CHAT */
 function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
@@ -364,48 +206,47 @@ function addGroup(name,text){
   box.scrollTop=box.scrollHeight;
 }
 
-for(let i=0;i<PRELOAD_MESSAGES;i++){
-  let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,randomGroup());
-}
-
 setInterval(()=>{
-  let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,randomGroup());
+  let name=names[groupIndex % names.length];
+  let text=groupPool[groupIndex % 100];
+  addGroup(name,text);
+  groupIndex++;
 },1500);
 
-/* GROUP SEND FIX */
-function sendGroup(){
-  if(groupMessageCount>=3){
-    document.getElementById("groupTemplate").style.display="flex";
-    return;
-  }
+/* ======= PRIVATE SYSTEM ======= */
+let activeProfile=null;
+let visitorName="Visitor"+Math.floor(Math.random()*9999);
+let privateCount=0;
+let privatePoolIndex=0;
 
-  let input=document.getElementById("groupInput");
-  if(!input.value.trim()) return;
+const firstReplies=["hi","hello","hi how are you","hello how are you"];
 
-  let box=document.getElementById("groupMessages");
+const privatePool=[
+"I like your confidence.",
+"You seem interesting.",
+"I prefer serious men.",
+"I enjoy adult conversation.",
+"I want honest connection.",
+"You sound mature.",
+"I like bold guys.",
+"I enjoy private talk.",
+"I want real chemistry.",
+"I prefer strong personality.",
+"I like respectful men.",
+"I enjoy deep topics.",
+"I want meaningful fun.",
+"You seem genuine.",
+"I like confident attitude.",
+"I enjoy open minded men.",
+"I want emotional connection.",
+"You feel different.",
+"I prefer private energy.",
+"I enjoy serious dating."
+];
 
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">${visitorName}</div>
-        ${input.value}
-        <div class="time">${new Date().toLocaleTimeString()}</div>
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-  groupMessageCount++;
-}
-
-/* PRIVATE */
 function openPrivate(name){
   activeProfile=name;
-  privateReplyCount=0;
-  visitorMessageCount=0;
+  privateCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
@@ -417,11 +258,6 @@ function closePrivate(){
 }
 
 function sendPrivate(){
-  if(visitorMessageCount>=3){
-    openProfile();
-    return;
-  }
-
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
 
@@ -438,39 +274,28 @@ function sendPrivate(){
 
   input.value="";
   box.scrollTop=box.scrollHeight;
-  visitorMessageCount++;
 
   setTimeout(()=>{
-    box.insertAdjacentHTML("beforeend",
-      `<div class="typing">${activeProfile} is typing...</div>`
-    );
-    box.scrollTop=box.scrollHeight;
+    let reply;
+    if(privateCount===0){
+      reply=firstReplies[Math.floor(Math.random()*4)];
+    }else{
+      reply=privatePool[privatePoolIndex % 20];
+      privatePoolIndex++;
+    }
+    privateCount++;
 
-    setTimeout(()=>{
-      document.querySelector(".typing")?.remove();
-      box.insertAdjacentHTML("beforeend",`
-        <div class="msg">
-          <img src="${profiles[activeProfile].img}">
-          <div class="bubble">
-            <div class="name">${activeProfile}</div>
-            ${getPrivateMessage()}
-          </div>
+    box.insertAdjacentHTML("beforeend",`
+      <div class="msg">
+        <img src="${profiles[activeProfile].img}">
+        <div class="bubble">
+          <div class="name">${activeProfile}</div>
+          ${reply}
         </div>
-      `);
-      box.scrollTop=box.scrollHeight;
-    },2000);
-
+      </div>
+    `);
+    box.scrollTop=box.scrollHeight;
   },1000);
-}
-
-function openProfile(){
-  document.getElementById("lockProfileImg").src=profiles[activeProfile].img;
-  document.getElementById("lockProfileName").innerText=activeProfile;
-  document.getElementById("profileTemplate").style.display="flex";
-}
-
-function closeProfile(){
-  document.getElementById("profileTemplate").style.display="none";
 }
 
 </script>
