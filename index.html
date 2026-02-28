@@ -16,7 +16,7 @@ body{
   flex-direction:column;
 }
 
-/* HEADER FIXED */
+/* HEADER */
 .header{
   height:60px;
   background:#202c33;
@@ -35,7 +35,7 @@ body{
   scroll-behavior:smooth;
 }
 
-/* INPUT FIXED */
+/* INPUT */
 .inputBox{
   height:60px;
   background:#202c33;
@@ -80,7 +80,6 @@ body{
   padding:8px 12px;
   border-radius:12px;
   max-width:75%;
-  position:relative;
 }
 
 .me .bubble{
@@ -103,12 +102,7 @@ body{
   margin-top:4px;
 }
 
-.tick{
-  font-size:10px;
-  margin-left:5px;
-}
-
-/* PRIVATE CHAT FULLSCREEN */
+/* PRIVATE FULLSCREEN */
 .privateBox{
   position:fixed;
   top:0;
@@ -168,7 +162,7 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<!-- PRIVATE CHAT -->
+<!-- PRIVATE -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
@@ -196,38 +190,115 @@ let activeProfile=null;
 
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
 
-/* Generate profiles */
+/* Mostly Female Profiles */
 for(let i=1;i<=TOTAL_PROFILES;i++){
   let name="RandomUser"+i;
   names.push(name);
-  profiles[name]={img:`https://i.pravatar.cc/50?img=${(i%70)+1}`};
+  profiles[name]={
+    img:`https://randomuser.me/api/portraits/women/${i%90}.jpg`
+  };
 }
 
-/* Large smart dating message pool */
-const lines=[
-"Hey, are you single?",
-"I like confident personalities 😉",
-"What attracts you the most?",
-"I love deep late night talks.",
-"Are you into romantic vibes?",
+/* Expanded Adult-Romantic Message Pool */
+const adultRomance=[
+"Hey handsome, are you single tonight?",
+"I love confident energy 😉",
+"Do you enjoy slow romantic moments?",
+"I like intense eye contact.",
+"I enjoy deep chemistry.",
+"What makes you feel attracted?",
+"I love playful teasing.",
+"I’m into mature conversations.",
+"Are you passionate?",
+"I like bold personalities.",
+"Let’s talk about attraction 😏",
+"I enjoy late night flirting.",
+"I’m craving emotional connection.",
+"What excites you in romance?",
+"I enjoy sensual vibes.",
+"I like spontaneous romance.",
+"Do you like meaningful affection?",
+"I enjoy emotional intimacy.",
+"I’m searching for strong chemistry.",
+"I love passionate energy.",
+"I prefer deep bonding.",
+"I enjoy mature dating.",
+"Are you adventurous in love?",
+"I like romantic surprises.",
+"I enjoy emotional closeness.",
+"I love confident men.",
+"I’m attracted to strong personalities.",
 "I enjoy playful flirting.",
-"Do you believe in chemistry?",
-"I prefer meaningful connection.",
-"Tell me something about you.",
-"I enjoy passionate conversation.",
-"Are you open minded?",
-"I love spontaneous dates.",
-"What excites you in a partner?",
-"I enjoy bold energy.",
-"I like honest communication.",
-"Do you like intense attraction?",
-"I enjoy mature conversations.",
-"What kind of relationship do you want?"
+"Do you believe in intense attraction?",
+"I like slow romantic buildup.",
+"I enjoy private conversations.",
+"I love charming vibes.",
+"I’m into exciting romance.",
+"I enjoy affectionate talk.",
+"Are you romantic at heart?",
+"I love strong chemistry.",
+"I enjoy seductive conversations.",
+"I like mysterious personalities.",
+"I enjoy emotional warmth.",
+"I love passionate communication.",
+"I’m into deep connection.",
+"I enjoy meaningful romance.",
+"I like confident moves.",
+"I enjoy affectionate teasing.",
+"I love strong attraction.",
+"I’m craving romance tonight.",
+"I enjoy bold flirting.",
+"I love mature energy.",
+"I enjoy slow passionate talks.",
+"I like romantic tension.",
+"I enjoy emotional spark.",
+"I love playful charm.",
+"I enjoy loving connection.",
+"I’m attracted to real chemistry.",
+"I enjoy romantic vibes.",
+"I like sensual energy.",
+"I enjoy exciting attraction.",
+"I love deep feelings.",
+"I enjoy warm affection.",
+"I like late night intimacy.",
+"I enjoy romantic excitement.",
+"I love confident affection.",
+"I enjoy strong bonding.",
+"I like emotional spark.",
+"I enjoy passionate energy.",
+"I love charming conversations.",
+"I enjoy romantic fun.",
+"I like playful tension.",
+"I enjoy exciting romance.",
+"I love emotional closeness.",
+"I enjoy mature flirting.",
+"I like deep attraction.",
+"I enjoy loving energy.",
+"I love romantic chemistry.",
+"I enjoy sensual talks.",
+"I like confident connection.",
+"I enjoy bold affection.",
+"I love affectionate vibes.",
+"I enjoy romantic thrill.",
+"I like passionate spark.",
+"I enjoy emotional warmth.",
+"I love playful romance.",
+"I enjoy charming flirt.",
+"I like intense connection.",
+"I enjoy affectionate moments.",
+"I love romantic adventure.",
+"I enjoy deep bonding.",
+"I like confident romance.",
+"I enjoy passionate vibe.",
+"I love meaningful spark.",
+"I enjoy emotional desire.",
+"I like playful affection.",
+"I enjoy romantic attraction."
 ];
 
-for(let i=0;i<8000;i++){
+for(let i=0;i<6000;i++){
   messagePool.push(
-    lines[Math.floor(Math.random()*lines.length)]
+    adultRomance[Math.floor(Math.random()*adultRomance.length)]
   );
 }
 
@@ -272,35 +343,15 @@ window.onload=()=>{
   box.scrollTop=box.scrollHeight;
 }
 
-/* Live auto chat */
+/* Live public chat */
 setInterval(()=>{
   let name=names[Math.floor(Math.random()*names.length)];
   addGroup(name,getMessage());
   let box=document.getElementById("groupMessages");
   box.scrollTop=box.scrollHeight;
-},1200);
+},1300);
 
-/* Send group */
-function sendGroup(){
-  let input=document.getElementById("groupInput");
-  if(!input.value.trim()) return;
-  let box=document.getElementById("groupMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">${visitorName}</div>
-        ${input.value}
-        <div class="time">${getTime()}</div>
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-}
-
-/* Private */
+/* Private chat */
 function openPrivate(name){
   activeProfile=name;
   document.getElementById("privateBox").style.display="flex";
@@ -324,7 +375,7 @@ function sendPrivate(){
       <div class="bubble">
         <div class="name">${visitorName}</div>
         ${input.value}
-        <div class="time">${getTime()} <span class="tick">✓</span></div>
+        <div class="time">${getTime()}</div>
       </div>
     </div>
   `);
@@ -332,25 +383,30 @@ function sendPrivate(){
   input.value="";
   box.scrollTop=box.scrollHeight;
 
-  box.insertAdjacentHTML("beforeend",`<div class="typing">${activeProfile} is typing...</div>`);
-  box.scrollTop=box.scrollHeight;
-
+  /* 2 sec later typing */
   setTimeout(()=>{
-    document.querySelector(".typing")?.remove();
-
     box.insertAdjacentHTML("beforeend",`
-      <div class="msg">
-        <img src="${profiles[activeProfile].img}">
-        <div class="bubble">
-          <div class="name">${activeProfile}</div>
-          ${getMessage()}
-          <div class="time">${getTime()}</div>
-        </div>
-      </div>
+      <div class="typing">${activeProfile} is typing...</div>
     `);
-
     box.scrollTop=box.scrollHeight;
-  },3000);
+
+    /* 2 sec later message */
+    setTimeout(()=>{
+      document.querySelector(".typing")?.remove();
+      box.insertAdjacentHTML("beforeend",`
+        <div class="msg">
+          <img src="${profiles[activeProfile].img}">
+          <div class="bubble">
+            <div class="name">${activeProfile}</div>
+            ${getMessage()}
+            <div class="time">${getTime()}</div>
+          </div>
+        </div>
+      `);
+      box.scrollTop=box.scrollHeight;
+    },2000);
+
+  },2000);
 }
 </script>
 
