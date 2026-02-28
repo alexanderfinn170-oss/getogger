@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hello World Chatting Room</title>
+<title>Hello World Premium Chat</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -17,10 +17,11 @@ body{
 }
 
 .header{
-  background:#1e293b;
+  background:#111827;
   padding:15px;
   text-align:center;
   font-size:20px;
+  font-weight:bold;
 }
 
 .container{
@@ -36,13 +37,6 @@ body{
   padding:10px;
 }
 
-.sidebar h3{
-  margin-top:0;
-  margin-bottom:10px;
-  font-size:16px;
-  text-align:center;
-}
-
 .room{
   padding:8px;
   margin-bottom:6px;
@@ -52,15 +46,12 @@ body{
   text-align:center;
 }
 
-.room:hover{
-  background:#475569;
-}
+.room:hover{background:#475569;}
 
 .chatArea{
   flex:1;
   display:flex;
   flex-direction:column;
-  position:relative;
 }
 
 .messages{
@@ -71,11 +62,21 @@ body{
 
 .msg{
   margin-bottom:8px;
+  display:flex;
+  align-items:center;
+}
+
+.msg img{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  margin-right:6px;
 }
 
 .msg span{
   font-weight:bold;
   color:#38bdf8;
+  margin-right:4px;
 }
 
 .inputBox{
@@ -105,8 +106,8 @@ body{
   position:fixed;
   bottom:20px;
   right:20px;
-  width:300px;
-  height:350px;
+  width:320px;
+  height:420px;
   background:#1e293b;
   border-radius:10px;
   display:none;
@@ -115,54 +116,27 @@ body{
 
 .privateHeader{
   background:#334155;
-  padding:8px;
-  font-weight:bold;
+  padding:10px;
+  display:flex;
+  align-items:center;
+}
+
+.privateHeader img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
 }
 
 .privateMessages{
   flex:1;
   overflow:auto;
-  padding:8px;
-}
-
-.privateInput{
-  display:flex;
-  padding:8px;
-  background:#334155;
-}
-
-.privateInput input{
-  flex:1;
-  padding:6px;
-  border:none;
-  border-radius:5px;
-}
-
-.privateInput button{
-  padding:6px;
-  margin-left:5px;
-  border:none;
-  border-radius:5px;
-  background:#22c55e;
-  color:white;
-  cursor:pointer;
-}
-
-.promoBtn{
-  display:block;
-  margin-top:6px;
-  background:#ef4444;
-  color:white;
-  text-align:center;
-  padding:5px;
-  border-radius:5px;
-  text-decoration:none;
-  font-size:13px;
+  padding:10px;
 }
 
 .note{
-  font-size:10px;
   text-align:center;
+  font-size:11px;
   opacity:.5;
 }
 </style>
@@ -170,139 +144,113 @@ body{
 
 <body>
 
-<div class="header">Hello World Chatting Room</div>
+<div class="header">🔥 Hello World Premium Chat</div>
 
 <div class="container">
   <div class="sidebar">
-    <h3>Chat Rooms</h3>
-    <div class="room" onclick="switchRoom('Single')">Single Chatting Room</div>
-    <div class="room" onclick="switchRoom('Merit')">Merit Chatting Room</div>
-    <div class="room" onclick="switchRoom('Breakup')">Breakup Chatting Room</div>
-    <div class="room" onclick="switchRoom('Random')">Random Chatting Room</div>
-    <div class="room" onclick="switchRoom('18+')">18+ Chatting Room</div>
+    <div class="room" onclick="switchRoom('Single')">Single Room</div>
+    <div class="room" onclick="switchRoom('Merit')">Merit Room</div>
+    <div class="room" onclick="switchRoom('Breakup')">Breakup Room</div>
+    <div class="room" onclick="switchRoom('Random')">Random Room</div>
   </div>
 
   <div class="chatArea">
     <div class="messages" id="groupMessages"></div>
     <div class="inputBox">
       <input id="groupInput" placeholder="Type message...">
-      <button id="groupSend">Send</button>
+      <button onclick="sendGroup()">Send</button>
     </div>
-    <div class="note">Virtual Users Simulation</div>
+    <div class="note">Virtual Chat Simulation</div>
   </div>
 </div>
 
 <div class="privateBox" id="privateBox">
-  <div class="privateHeader" id="privateName"></div>
+  <div class="privateHeader">
+    <img id="privateImg">
+    <div id="privateName"></div>
+  </div>
   <div class="privateMessages" id="privateMessages"></div>
-  <div class="privateInput">
+  <div class="inputBox">
     <input id="privateInput" placeholder="Type message...">
-    <button id="privateSend">Send</button>
+    <button onclick="sendPrivate()">Send</button>
   </div>
 </div>
 
 <script>
-const rooms = ['Single','Merit','Breakup','Random','18+'];
-let currentRoom = 'Single';
-let currentUser = 'Guest' + Math.floor(Math.random()*1000);
-let activeProfile = null;
-let privateCount = {};
+const rooms=['Single','Merit','Breakup','Random'];
+const names=["Ava","Emma","Sophia","Mia","Luna","Zara","Nora","Layla","Bella","Emily"];
+const replies=["Hi 💕","Tell me about you","Where are you from?","You seem cute 😉","Let's talk more 😘"];
 
-const profileNames = [
-"Ava","Emma","Sophia","Mia","Luna","Zara","Nora","Layla","Chloe","Bella",
-"Aisha","Fatima","Nadia","Tania","Aria","Lucy","Grace","Emily","Mila","Camila",
-"Sofia","Victoria","Lily"
-];
+let currentRoom='Single';
+let currentUser='Guest'+Math.floor(Math.random()*1000);
+let profiles={};
+let activeProfile=null;
 
-const messages = [
-"Hi 💕","How are you?","Nice to meet you 😍","Tell me about you",
-"You seem interesting 😉","Where are you from?","Let's chat 😘",
-"You look amazing 😍","Love talking with you 💖"
-];
-
-// Setup rooms data
-let roomsData = {};
-rooms.forEach(room=>{
-  roomsData[room] = [];
-  profileNames.forEach(name=>{
-    roomsData[room].push({name:name});
-    privateCount[name] = 0;
-  });
+// Create profiles with random female images
+names.forEach(name=>{
+  profiles[name]={
+    img:`https://source.unsplash.com/50x50/?girl,face&random=${Math.random()}`
+  };
 });
 
-// Switch room
+function preloadMessages(){
+  const box=document.getElementById('groupMessages');
+  box.innerHTML='';
+  for(let i=0;i<120;i++){
+    const name=names[Math.floor(Math.random()*names.length)];
+    const msg=replies[Math.floor(Math.random()*replies.length)];
+    box.innerHTML+=`
+      <div class="msg" onclick="openPrivate('${name}')">
+        <img src="${profiles[name].img}">
+        <span>${name}:</span> ${msg}
+      </div>`;
+  }
+  box.scrollTop=box.scrollHeight;
+}
+
 function switchRoom(room){
-  currentRoom = room;
-  document.getElementById('groupMessages').innerHTML='';
+  currentRoom=room;
+  preloadMessages();
 }
-
-// Add group message
-function addGroupMessage(name,text){
-  const box = document.getElementById('groupMessages');
-  const div = document.createElement('div');
-  div.className='msg';
-  div.innerHTML = `<span>${name}:</span> ${text}`;
-  div.onclick = ()=>openPrivate(name);
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
-
-// Simulate group chat
-setInterval(()=>{
-  const prof = roomsData[currentRoom][Math.floor(Math.random()*roomsData[currentRoom].length)];
-  const msg = messages[Math.floor(Math.random()*messages.length)];
-  addGroupMessage(prof.name,msg);
-},2000);
-
-// Send group message
-document.getElementById('groupSend').addEventListener('click',sendGroup);
-document.getElementById('groupInput').addEventListener('keypress',e=>{
-  if(e.key==='Enter') sendGroup();
-});
 
 function sendGroup(){
-  const input = document.getElementById('groupInput');
-  const txt = input.value.trim();
-  if(txt==='') return;
-  addGroupMessage(currentUser,txt);
+  const input=document.getElementById('groupInput');
+  if(input.value.trim()==='') return;
+  document.getElementById('groupMessages').innerHTML+=`
+    <div class="msg">
+      <span>${currentUser}:</span> ${input.value}
+    </div>`;
   input.value='';
 }
 
-// Open private chat
 function openPrivate(name){
-  activeProfile = name;
+  activeProfile=name;
   document.getElementById('privateBox').style.display='flex';
   document.getElementById('privateName').innerText=name;
+  document.getElementById('privateImg').src=profiles[name].img;
   document.getElementById('privateMessages').innerHTML='';
 }
 
-// Send private message
-document.getElementById('privateSend').addEventListener('click',sendPrivate);
-document.getElementById('privateInput').addEventListener('keypress',e=>{
-  if(e.key==='Enter') sendPrivate();
-});
-
 function sendPrivate(){
-  const input = document.getElementById('privateInput');
-  const txt = input.value.trim();
-  if(txt==='') return;
+  const input=document.getElementById('privateInput');
+  if(input.value.trim()==='') return;
 
-  const box = document.getElementById('privateMessages');
-  box.innerHTML += `<div class="msg"><span>${currentUser}:</span> ${txt}</div>`;
+  const box=document.getElementById('privateMessages');
+  box.innerHTML+=`<div class="msg"><span>${currentUser}:</span> ${input.value}</div>`;
   input.value='';
 
   setTimeout(()=>{
-    const reply = messages[Math.floor(Math.random()*messages.length)];
-    box.innerHTML += `<div class="msg"><span>${activeProfile}:</span> ${reply}</div>`;
-    privateCount[activeProfile]++;
-
-    if(privateCount[activeProfile]===2){
-      box.innerHTML += `<a href="https://safeoffers.pro/a/RozKiOzWhOXLZ" target="_blank" class="promoBtn">click-my-private-profile</a>`;
-    }
-
-    box.scrollTop = box.scrollHeight;
-  },1000);
+    const reply=replies[Math.floor(Math.random()*replies.length)];
+    box.innerHTML+=`
+      <div class="msg">
+        <img src="${profiles[activeProfile].img}">
+        <span>${activeProfile}:</span> ${reply}
+      </div>`;
+    box.scrollTop=box.scrollHeight;
+  },3000);
 }
+
+preloadMessages();
 </script>
 
 </body>
