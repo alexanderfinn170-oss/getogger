@@ -11,39 +11,8 @@ margin:0;
 font-family:Arial;
 background:#0f172a;
 color:white;
-}
-
-#loginPage{
 height:100vh;
 display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-background:linear-gradient(135deg,#0f172a,#1e293b);
-}
-
-#loginPage input{
-padding:12px;
-width:250px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-}
-
-#loginPage button{
-padding:12px 20px;
-margin-top:10px;
-border:none;
-border-radius:8px;
-background:#22c55e;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-#mainApp{
-display:none;
-height:100vh;
 flex-direction:column;
 }
 
@@ -55,12 +24,12 @@ font-size:20px;
 }
 
 .container{
-display:flex;
 flex:1;
+display:flex;
 }
 
 .sidebar{
-width:250px;
+width:240px;
 background:#1e293b;
 overflow:auto;
 padding:10px;
@@ -188,17 +157,12 @@ opacity:.5;
 
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-<h2>Hello World Chatting Room</h2>
-<input id="usernameInput" placeholder="Enter Username">
-<button id="enterBtn">Enter Chat</button>
+<div class="header">
+Hello World Chatting Room
 </div>
 
-<!-- MAIN APP -->
-<div id="mainApp">
-<div class="header">Hello World Chatting Room</div>
 <div class="container">
+
 <div class="sidebar" id="profileList"></div>
 
 <div class="chatArea">
@@ -209,10 +173,9 @@ opacity:.5;
 </div>
 <div class="note">Virtual Users Simulation</div>
 </div>
-</div>
+
 </div>
 
-<!-- PRIVATE CHAT -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader" id="privateName"></div>
 <div class="privateMessages" id="privateMessages"></div>
@@ -224,31 +187,17 @@ opacity:.5;
 
 <script>
 
-let currentUser="";
+// Auto random username for visitor
+const visitorNames=["Guest","Visitor","User","Member"];
+const randomNumber=Math.floor(Math.random()*1000);
+const currentUser=visitorNames[Math.floor(Math.random()*visitorNames.length)] + randomNumber;
+
 let activeProfile=null;
 let privateCount={};
 
 const names=["Ava","Emma","Sophia","Mia","Luna","Zara","Nora","Layla","Chloe","Bella","Aisha","Fatima","Nadia","Tania"];
 
 const replies=["Hi 💕","How are you?","Nice to meet you 😍","Tell me about you","You seem interesting 😉"];
-
-document.getElementById("enterBtn").addEventListener("click", login);
-document.getElementById("usernameInput").addEventListener("keypress", function(e){
-if(e.key==="Enter"){ login(); }
-});
-
-function login(){
-let name=document.getElementById("usernameInput").value.trim();
-if(name===""){
-alert("Please enter username");
-return;
-}
-currentUser=name;
-document.getElementById("loginPage").style.display="none";
-document.getElementById("mainApp").style.display="flex";
-loadProfiles();
-startGroupChat();
-}
 
 function loadProfiles(){
 let list=document.getElementById("profileList");
@@ -313,6 +262,10 @@ click-my-private-profile
 box.scrollTop=box.scrollHeight;
 },1000);
 });
+
+// Initialize
+loadProfiles();
+startGroupChat();
 
 </script>
 
