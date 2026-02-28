@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Live Dating Chat</title>
+<title>Live Dating Room</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -27,7 +27,7 @@ body{
   flex-shrink:0;
 }
 
-/* MESSAGE AREA ONLY SCROLLS */
+/* SCROLLABLE MESSAGE AREA */
 .messages{
   flex:1;
   overflow-y:auto;
@@ -58,6 +58,7 @@ body{
   border-radius:20px;
   background:#25d366;
   color:white;
+  cursor:pointer;
 }
 
 .msg{
@@ -77,7 +78,7 @@ body{
   background:#202c33;
   padding:8px 12px;
   border-radius:12px;
-  max-width:70%;
+  max-width:75%;
 }
 
 .me .bubble{
@@ -94,31 +95,38 @@ body{
   color:#25d366;
 }
 
-/* PRIVATE CHAT */
+/* PRIVATE CHAT FULL SCREEN */
 .privateBox{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  width:350px;
-  height:500px;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   background:#111b21;
   display:none;
   flex-direction:column;
-  border-radius:12px;
+  z-index:999;
 }
 
 .privateHeader{
+  height:60px;
   background:#202c33;
-  padding:10px;
   display:flex;
   align-items:center;
+  padding:0 10px;
 }
 
 .privateHeader img{
   width:40px;
   height:40px;
   border-radius:50%;
-  margin-right:8px;
+  margin-right:10px;
+}
+
+.closeBtn{
+  margin-left:auto;
+  font-size:22px;
+  cursor:pointer;
 }
 
 .privateMessages{
@@ -131,7 +139,7 @@ body{
 
 <body>
 
-<div class="header">💬 Live Dating Chat</div>
+<div class="header">🔥 My Dating Live Room</div>
 
 <div class="messages" id="groupMessages"></div>
 
@@ -148,6 +156,7 @@ body{
 <div id="privateName"></div>
 <div class="online">● Online</div>
 </div>
+<div class="closeBtn" onclick="closePrivate()">×</div>
 </div>
 <div class="privateMessages" id="privateMessages"></div>
 <div class="inputBox">
@@ -158,44 +167,54 @@ body{
 
 <script>
 const TOTAL_PROFILES=1200;
-const PRELOAD_MESSAGES=150;
+const PRELOAD_MESSAGES=200;
 
 let names=[],profiles={};
 let messagePool=[];
 let messageIndex=0;
 let activeProfile=null;
-let replyCount=0;
 
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
 
-/* Generate 1200 RandomUser profiles */
+/* Generate Profiles */
 for(let i=1;i<=TOTAL_PROFILES;i++){
   let name="RandomUser"+i;
   names.push(name);
   profiles[name]={img:`https://i.pravatar.cc/50?img=${(i%70)+1}`};
 }
 
-/* Generate 3000+ Unique Dating Messages */
-const topics=[
-"Do you believe in true love?",
-"What’s your ideal romantic date?",
-"I love meaningful conversations.",
-"What makes you feel special?",
-"I enjoy deep emotional connection.",
-"I’m looking for something serious.",
-"What kind of partner do you prefer?",
-"Do you like romantic surprises?",
-"What makes you happy in a relationship?",
-"I love late night talks."
+/* Large Dating Message Pool */
+const datingLines=[
+"Hey, are you single?",
+"I love confident people 😉",
+"Do you enjoy romantic nights?",
+"I’m looking for something exciting.",
+"Tell me what you like in a partner.",
+"I enjoy deep connection and chemistry.",
+"Do you like playful flirting?",
+"I love passionate conversations.",
+"Are you open minded?",
+"I like bold personalities.",
+"Let’s talk about fantasies 😏",
+"I enjoy late night chats.",
+"What makes you feel attracted?",
+"I prefer honest and mature people.",
+"I’m searching for real chemistry.",
+"I love emotional bonding.",
+"Do you like spontaneous dates?",
+"I enjoy meaningful attraction.",
+"I like people who take initiative.",
+"What kind of relationship excites you?"
 ];
 
-for(let i=1;i<=3000;i++){
-  let t=topics[Math.floor(Math.random()*topics.length)];
-  messagePool.push(t+" 💕 ("+i+")");
+for(let i=0;i<5000;i++){
+  messagePool.push(
+    datingLines[Math.floor(Math.random()*datingLines.length)]
+  );
 }
 
-/* Smart unique message system */
-function getUniqueMessage(){
+/* Unique message system */
+function getMessage(){
   let msg=messagePool[messageIndex];
   messageIndex++;
   if(messageIndex>=messagePool.length){
@@ -205,39 +224,47 @@ function getUniqueMessage(){
   return msg;
 }
 
-/* Add message to group */
-function addGroupMessage(name,text){
+/* Add group message */
+function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
     <div class="msg" onclick="openPrivate('${name}')">
       <img src="${profiles[name].img}">
       <div class="bubble">
-        <div class="name">${name}</div>
+        <div class="name">${name} <span class="online">● Online</span></div>
         ${text}
       </div>
     </div>
   `);
+}
+
+/* Preload old messages */
+for(let i=0;i<PRELOAD_MESSAGES;i++){
+  let name=names[Math.floor(Math.random()*names.length)];
+  addGroup(name,getMessage());
+}
+
+/* Scroll to latest message on load */
+window.onload=()=>{
+  let box=document.getElementById("groupMessages");
   box.scrollTop=box.scrollHeight;
 }
 
-/* Preload 150 messages */
-for(let i=0;i<PRELOAD_MESSAGES;i++){
-  let name=names[Math.floor(Math.random()*names.length)];
-  addGroupMessage(name,getUniqueMessage());
-}
-
-/* Live auto chat */
+/* Live chat simulation */
 setInterval(()=>{
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroupMessage(name,getUniqueMessage());
+  addGroup(name,getMessage());
+  let box=document.getElementById("groupMessages");
+  box.scrollTop=box.scrollHeight;
 },1500);
 
-/* Send group message */
+/* Send group */
 function sendGroup(){
   let input=document.getElementById("groupInput");
   if(!input.value.trim()) return;
 
-  document.getElementById("groupMessages").insertAdjacentHTML("beforeend",`
+  let box=document.getElementById("groupMessages");
+  box.insertAdjacentHTML("beforeend",`
     <div class="msg me">
       <div class="bubble">
         <div class="name">${visitorName}</div>
@@ -245,20 +272,26 @@ function sendGroup(){
       </div>
     </div>
   `);
+
   input.value="";
+  box.scrollTop=box.scrollHeight;
 }
 
-/* Open private chat */
+/* Open private */
 function openPrivate(name){
   activeProfile=name;
-  replyCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
   document.getElementById("privateMessages").innerHTML="";
 }
 
-/* Send private message */
+/* Close private */
+function closePrivate(){
+  document.getElementById("privateBox").style.display="none";
+}
+
+/* Send private */
 function sendPrivate(){
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
@@ -278,13 +311,12 @@ function sendPrivate(){
   box.scrollTop=box.scrollHeight;
 
   setTimeout(()=>{
-    replyCount++;
     box.insertAdjacentHTML("beforeend",`
       <div class="msg">
         <img src="${profiles[activeProfile].img}">
         <div class="bubble">
           <div class="name">${activeProfile}</div>
-          ${getUniqueMessage()}
+          ${getMessage()}
         </div>
       </div>
     `);
