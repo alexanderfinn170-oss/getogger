@@ -16,24 +16,16 @@ body{
   flex-direction:column;
 }
 
-/* HEADER */
 .header{
   height:60px;
   background:#202c33;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 15px;
+  justify-content:center;
   font-weight:bold;
   flex-shrink:0;
 }
 
-.stats{
-  font-size:12px;
-  text-align:right;
-}
-
-/* MESSAGE AREA */
 .messages{
   flex:1;
   overflow-y:auto;
@@ -41,7 +33,6 @@ body{
   scroll-behavior:smooth;
 }
 
-/* INPUT */
 .inputBox{
   height:60px;
   background:#202c33;
@@ -108,7 +99,6 @@ body{
   margin-top:4px;
 }
 
-/* PRIVATE */
 .privateBox{
   position:fixed;
   top:0;
@@ -154,28 +144,12 @@ body{
   opacity:.6;
   margin:5px;
 }
-
-.soundBtn{
-  position:fixed;
-  bottom:80px;
-  right:15px;
-  background:#25d366;
-  padding:12px;
-  border-radius:50%;
-  cursor:pointer;
-}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div>🔥 My Live Dating Room</div>
-  <div class="stats">
-    🟢 Online Now: <span id="onlineCount"></span><br>
-    👀 Visitors Today: <span id="visitorCount"></span>
-  </div>
-</div>
+<div class="header">🔥 My Live Dating Room</div>
 
 <div class="messages" id="groupMessages"></div>
 
@@ -184,11 +158,6 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<div class="soundBtn" onclick="toggleSound()">🔊</div>
-
-<audio id="msgSound" src="https://assets.mixkit.co/sfx/preview/mixkit-message-pop-alert-2354.mp3"></audio>
-
-<!-- PRIVATE -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
@@ -206,98 +175,102 @@ body{
 </div>
 
 <script>
+
 const TOTAL_PROFILES=800;
-const PRELOAD_MESSAGES=300;
+const PRELOAD_MESSAGES=200;
 
 let names=[],profiles={};
 let messagePool=[];
 let messageIndex=0;
 let activeProfile=null;
-let soundOn=true;
 
 let visitorName="Visitor"+Math.floor(Math.random()*9999);
 
-/* Demo counters */
-document.getElementById("onlineCount").innerText=
-  Math.floor(Math.random()*200)+120;
-
-let visits=localStorage.getItem("visits")||0;
-visits++;
-localStorage.setItem("visits",visits);
-document.getElementById("visitorCount").innerText=visits;
-
-/* Female avatars */
+/* Female profiles */
 for(let i=1;i<=TOTAL_PROFILES;i++){
-  let name="RandomUser"+i;
+  let name="Lady"+i;
   names.push(name);
   profiles[name]={
     img:`https://randomuser.me/api/portraits/women/${i%90}.jpg`
   };
 }
 
-/* Romantic pool */
-const romanticLines=[
-"Hey handsome, are you single?",
-"I love confident men 😉",
-"Do you enjoy romantic nights?",
-"I like playful flirting.",
-"I enjoy deep connection.",
-"Are you passionate?",
-"I love slow romantic tension.",
-"I enjoy mature conversations.",
-"I like bold energy.",
-"I love emotional bonding.",
-"What excites you in love?",
-"I enjoy private late night talks.",
-"I like affectionate vibes.",
-"I enjoy strong chemistry.",
-"I love charming personalities.",
-"I enjoy romantic attraction.",
-"I like sensual vibes.",
-"I enjoy exciting romance.",
-"I love confident moves.",
-"I enjoy emotional warmth."
+/* 300 Unique Adult Dating Discussion Messages */
+const baseMessages = [
+"Girls, what type of confident man attracts you most?",
+"I believe chemistry matters more than looks.",
+"I want a mature man who understands adult dating.",
+"Do you prefer emotional connection first?",
+"I think passion is very important in a relationship.",
+"I like a man who leads but respects.",
+"Romantic energy is everything.",
+"I prefer experienced men in adult dating.",
+"Confidence is extremely attractive.",
+"I want someone serious about adult romance.",
+"A man with deep conversation skills wins.",
+"Emotional maturity matters.",
+"Playful flirting keeps things exciting.",
+"I love bold masculine energy.",
+"Chemistry should feel natural.",
+"I want strong attraction from the start.",
+"Good communication is sexy.",
+"Stability is attractive.",
+"I prefer romantic tension.",
+"A mature mindset is key.",
+"Girls, do you like dominant vibes?",
+"I love emotional depth.",
+"A confident smile says a lot.",
+"Adult dating needs honesty.",
+"I enjoy intelligent men.",
+"Strong personality is attractive.",
+"I prefer slow romantic build up.",
+"Passion makes it real.",
+"I love mystery in a man.",
+"I want emotional intimacy.",
+"Charm wins my heart.",
+"Confidence plus kindness is perfect.",
+"I love romantic connection.",
+"I prefer serious adult relationships.",
+"Energy and chemistry must match.",
+"I enjoy private deep talks.",
+"I want someone bold.",
+"Romantic excitement keeps it alive.",
+"Emotional closeness is important.",
+"I like adventurous men."
 ];
 
-for(let i=0;i<6000;i++){
-  messagePool.push(
-    romanticLines[Math.floor(Math.random()*romanticLines.length)]
+/* Auto expand to 300 variations */
+while(baseMessages.length < 300){
+  baseMessages.push(
+    baseMessages[Math.floor(Math.random()*40)] + 
+    " 🔥 (" + baseMessages.length + ")"
   );
 }
 
+/* Shuffle once */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+shuffle(baseMessages);
+messagePool = baseMessages;
+
 function getMessage(){
-  let msg=messagePool[messageIndex];
+  let msg = messagePool[messageIndex];
   messageIndex++;
-  if(messageIndex>=messagePool.length){
-    messageIndex=0;
-    messagePool.sort(()=>Math.random()-0.5);
+
+  if(messageIndex >= messagePool.length){
+    messageIndex = 0;
   }
   return msg;
-}
-
-function contextualReply(text){
-  text=text.toLowerCase();
-  if(text.includes("love")) return "I enjoy talking about love too 💕";
-  if(text.includes("kiss")) return "You sound romantic 😉";
-  if(text.includes("date")) return "What kind of date do you prefer?";
-  return getMessage();
 }
 
 function getTime(){
   let d=new Date();
   return d.getHours().toString().padStart(2,"0")+":"+
          d.getMinutes().toString().padStart(2,"0");
-}
-
-function playSound(){
-  if(soundOn){
-    document.getElementById("msgSound").play();
-  }
-}
-
-function toggleSound(){
-  soundOn=!soundOn;
-  document.querySelector(".soundBtn").innerText=soundOn?"🔊":"🔇";
 }
 
 function addGroup(name,text){
@@ -314,8 +287,10 @@ function addGroup(name,text){
   `);
 }
 
+/* Preload */
 for(let i=0;i<PRELOAD_MESSAGES;i++){
-  addGroup(names[Math.floor(Math.random()*names.length)],getMessage());
+  let name=names[Math.floor(Math.random()*names.length)];
+  addGroup(name,getMessage());
 }
 
 window.onload=()=>{
@@ -323,31 +298,13 @@ window.onload=()=>{
   box.scrollTop=box.scrollHeight;
 }
 
+/* Live public chat */
 setInterval(()=>{
-  addGroup(names[Math.floor(Math.random()*names.length)],getMessage());
+  let name=names[Math.floor(Math.random()*names.length)];
+  addGroup(name,getMessage());
   let box=document.getElementById("groupMessages");
   box.scrollTop=box.scrollHeight;
-  playSound();
-},1500);
-
-function sendGroup(){
-  let input=document.getElementById("groupInput");
-  if(!input.value.trim()) return;
-  let box=document.getElementById("groupMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">${visitorName}</div>
-        ${input.value}
-        <div class="time">${getTime()}</div>
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-}
+},1400);
 
 function openPrivate(name){
   activeProfile=name;
@@ -366,13 +323,12 @@ function sendPrivate(){
   if(!input.value.trim()) return;
 
   let box=document.getElementById("privateMessages");
-  let userText=input.value;
 
   box.insertAdjacentHTML("beforeend",`
     <div class="msg me">
       <div class="bubble">
         <div class="name">${visitorName}</div>
-        ${userText}
+        ${input.value}
         <div class="time">${getTime()}</div>
       </div>
     </div>
@@ -394,17 +350,17 @@ function sendPrivate(){
           <img src="${profiles[activeProfile].img}">
           <div class="bubble">
             <div class="name">${activeProfile}</div>
-            ${contextualReply(userText)}
+            ${getMessage()}
             <div class="time">${getTime()}</div>
           </div>
         </div>
       `);
       box.scrollTop=box.scrollHeight;
-      playSound();
     },2000);
 
   },2000);
 }
+
 </script>
 
 </body>
