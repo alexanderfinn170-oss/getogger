@@ -24,7 +24,6 @@ body{
   align-items:center;
   justify-content:center;
   font-weight:bold;
-  flex-shrink:0;
 }
 
 /* MESSAGE AREA */
@@ -60,10 +59,10 @@ body{
   cursor:pointer;
 }
 
+/* MESSAGE */
 .msg{
   display:flex;
   margin-bottom:12px;
-  cursor:pointer;
 }
 
 .msg img{
@@ -89,18 +88,7 @@ body{
   color:#53bdeb;
 }
 
-.online{
-  font-size:10px;
-  color:#25d366;
-}
-
-.time{
-  font-size:10px;
-  opacity:.6;
-  margin-top:4px;
-}
-
-/* PRIVATE FULLSCREEN */
+/* PRIVATE */
 .privateBox{
   position:fixed;
   top:0;
@@ -110,7 +98,7 @@ body{
   background:#111b21;
   display:none;
   flex-direction:column;
-  z-index:999;
+  z-index:1000;
 }
 
 .privateHeader{
@@ -140,36 +128,36 @@ body{
   padding:10px;
 }
 
-.typing{
-  font-size:12px;
-  opacity:.6;
-  margin:5px;
-}
-
-/* PROFILE TEMPLATE */
-.profileTemplate{
+/* UNLOCK TEMPLATE */
+.unlockModal{
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
   background:#000;
-  color:white;
   display:none;
   flex-direction:column;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   text-align:center;
   padding:20px;
   z-index:2000;
 }
 
-.profileTemplate button{
+.unlockModal img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  margin-bottom:15px;
+}
+
+.unlockModal button{
   margin-top:20px;
   padding:15px 25px;
-  font-size:18px;
   border:none;
   border-radius:8px;
+  font-size:18px;
   background:#ff0066;
   color:white;
   cursor:pointer;
@@ -178,16 +166,8 @@ body{
 
 @keyframes pulse{
   0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
+  50%{transform:scale(1.08);}
   100%{transform:scale(1);}
-}
-
-.backBtn{
-  position:absolute;
-  top:15px;
-  left:15px;
-  font-size:18px;
-  cursor:pointer;
 }
 </style>
 </head>
@@ -203,14 +183,11 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<!-- PRIVATE -->
+<!-- PRIVATE BOX -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
-<div>
 <div id="privateName"></div>
-<div class="online">● Online</div>
-</div>
 <div class="closeBtn" onclick="closePrivate()">×</div>
 </div>
 <div class="privateMessages" id="privateMessages"></div>
@@ -220,26 +197,23 @@ body{
 </div>
 </div>
 
-<!-- PROFILE MODAL -->
-<div class="profileTemplate" id="profileTemplate">
-<div class="backBtn" onclick="closeProfile()">← Back</div>
-<h2>Join with this User Private Profile</h2>
-<p>Continue conversation securely on her private profile.</p>
-<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
-Signup Here
-</button>
+<!-- UNLOCK MODAL -->
+<div class="unlockModal" id="unlockModal">
+<img id="unlockImg">
+<h2 id="unlockTitle"></h2>
+<p id="unlockText"></p>
+<button onclick="window.location.href='#'">Signup & Verify</button>
 </div>
 
 <script>
 
 const TOTAL_PROFILES=1000;
-const PRELOAD_MESSAGES=150;
 
 let names=[],profiles={};
 let activeProfile=null;
-let visitorName="Visitor"+Math.floor(Math.random()*9999);
-let privateReplyCount=0;
-let visitorMessageCount=0;
+
+let privateMsgCount=0;
+let groupMsgCount=0;
 
 /* USERNAMES */
 for(let i=1;i<=TOTAL_PROFILES;i++){
@@ -250,68 +224,44 @@ for(let i=1;i<=TOTAL_PROFILES;i++){
   };
 }
 
-/* GROUP CHAT MESSAGES */
-const groupPool=[
-"Confidence matters most.",
-"I prefer mature dating.",
-"Chemistry is powerful.",
-"Romantic energy is everything.",
-"Deep connection is important."
-];
-
-function randomGroup(){
-  return groupPool[Math.floor(Math.random()*groupPool.length)];
-}
-
-/* PRIVATE CHAT POOL */
-const privatePool=[
-"I like your vibe already 😉",
-"You seem confident and mature.",
-"I’m interested in knowing you better.",
-"I prefer serious adult dating.",
-"You feel different from others.",
-"I love how you talk.",
-"I think we could have strong chemistry.",
-"I’m curious about you.",
-"I enjoy bold men.",
-"I like emotional connection."
-];
-
-function getPrivateMessage(){
-  return privatePool[Math.floor(Math.random()*privatePool.length)];
-}
-
-/* GROUP CHAT */
+/* GROUP CHAT AUTO */
 function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
-    <div class="msg" onclick="openPrivate('${name}')">
+    <div class="msg">
       <img src="${profiles[name].img}">
       <div class="bubble">
-        <div class="name">${name} <span class="online">● Online</span></div>
+        <div class="name">${name}</div>
         ${text}
-        <div class="time">${new Date().toLocaleTimeString()}</div>
       </div>
     </div>
   `);
   box.scrollTop=box.scrollHeight;
 }
 
-for(let i=0;i<PRELOAD_MESSAGES;i++){
-  let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,randomGroup());
-}
-
 setInterval(()=>{
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,randomGroup());
-},1500);
+  addGroup(name,"Romantic chemistry matters most.");
+},2000);
+
+/* GROUP SEND */
+function sendGroup(){
+  if(groupMsgCount>=3){
+    openGroupUnlock();
+    return;
+  }
+
+  let input=document.getElementById("groupInput");
+  if(!input.value.trim()) return;
+
+  groupMsgCount++;
+  input.value="";
+}
 
 /* PRIVATE */
 function openPrivate(name){
   activeProfile=name;
-  privateReplyCount=0;
-  visitorMessageCount=0;
+  privateMsgCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
@@ -323,71 +273,37 @@ function closePrivate(){
 }
 
 function sendPrivate(){
-  if(visitorMessageCount>=2){
-    openProfile();
+  if(privateMsgCount>=3){
+    openPrivateUnlock();
     return;
   }
 
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
 
-  let box=document.getElementById("privateMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">${visitorName}</div>
-        ${input.value}
-      </div>
-    </div>
-  `);
-
+  privateMsgCount++;
   input.value="";
-  box.scrollTop=box.scrollHeight;
-  visitorMessageCount++;
-
-  setTimeout(()=>{
-    box.insertAdjacentHTML("beforeend",
-      `<div class="typing">${activeProfile} is typing...</div>`
-    );
-    box.scrollTop=box.scrollHeight;
-
-    setTimeout(()=>{
-      document.querySelector(".typing")?.remove();
-      privateReplyCount++;
-
-      let replyText;
-
-      if(privateReplyCount===3){
-        replyText=`I think you’re interesting... let's continue on my private profile.`;
-        setTimeout(()=>openProfile(),1000);
-      }else{
-        replyText=getPrivateMessage();
-      }
-
-      box.insertAdjacentHTML("beforeend",`
-        <div class="msg">
-          <img src="${profiles[activeProfile].img}">
-          <div class="bubble">
-            <div class="name">${activeProfile}</div>
-            ${replyText}
-          </div>
-        </div>
-      `);
-
-      box.scrollTop=box.scrollHeight;
-
-    },3000);
-
-  },2000);
 }
 
-function openProfile(){
-  document.getElementById("profileTemplate").style.display="flex";
+/* PRIVATE UNLOCK */
+function openPrivateUnlock(){
+  document.getElementById("unlockImg").src=profiles[activeProfile].img;
+  document.getElementById("unlockTitle").innerText=
+    "Continue chatting with "+activeProfile;
+  document.getElementById("unlockText").innerText=
+    "If you want to continue conversation with this user, please signup below and verify your account.";
+  document.getElementById("unlockModal").style.display="flex";
 }
 
-function closeProfile(){
-  document.getElementById("profileTemplate").style.display="none";
+/* GROUP UNLOCK */
+function openGroupUnlock(){
+  document.getElementById("unlockImg").src=
+    "https://randomuser.me/api/portraits/women/10.jpg";
+  document.getElementById("unlockTitle").innerText=
+    "Private Women's Chat Room";
+  document.getElementById("unlockText").innerText=
+    "This is a women's private chat room. To continue chatting here, please signup and verify your account below.";
+  document.getElementById("unlockModal").style.display="flex";
 }
 
 </script>
