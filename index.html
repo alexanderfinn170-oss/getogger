@@ -14,6 +14,7 @@ body{
   height:100vh;
   display:flex;
   flex-direction:column;
+  overflow:hidden;
 }
 
 /* HEADER */
@@ -24,6 +25,7 @@ body{
   align-items:center;
   justify-content:center;
   font-weight:bold;
+  flex-shrink:0;
 }
 
 /* MESSAGE AREA */
@@ -47,6 +49,7 @@ body{
   padding:10px;
   border-radius:20px;
   border:none;
+  outline:none;
 }
 
 .inputBox button{
@@ -59,7 +62,6 @@ body{
   cursor:pointer;
 }
 
-/* MESSAGE */
 .msg{
   display:flex;
   margin-bottom:12px;
@@ -77,6 +79,11 @@ body{
   padding:8px 12px;
   border-radius:12px;
   max-width:75%;
+  word-wrap:break-word;
+}
+
+.me{
+  justify-content:flex-end;
 }
 
 .me .bubble{
@@ -88,7 +95,18 @@ body{
   color:#53bdeb;
 }
 
-/* PRIVATE */
+.online{
+  font-size:10px;
+  color:#25d366;
+}
+
+.time{
+  font-size:10px;
+  opacity:.6;
+  margin-top:4px;
+}
+
+/* PRIVATE FULLSCREEN */
 .privateBox{
   position:fixed;
   top:0;
@@ -98,7 +116,7 @@ body{
   background:#111b21;
   display:none;
   flex-direction:column;
-  z-index:1000;
+  z-index:999;
 }
 
 .privateHeader{
@@ -128,8 +146,53 @@ body{
   padding:10px;
 }
 
-/* UNLOCK TEMPLATE */
-.unlockModal{
+/* PROFILE LOCK TEMPLATE */
+.profileTemplate{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  z-index:2000;
+}
+
+.profileTemplate img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin-bottom:15px;
+}
+
+.profileTemplate button{
+  margin-top:20px;
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+  background:#ff0066;
+  color:white;
+  cursor:pointer;
+  width:90%;
+  max-width:300px;
+}
+
+.backBtn{
+  position:absolute;
+  top:15px;
+  left:15px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* GROUP LOCK TEMPLATE */
+.groupTemplate{
   position:fixed;
   top:0;
   left:0;
@@ -142,32 +205,31 @@ body{
   align-items:center;
   text-align:center;
   padding:20px;
-  z-index:2000;
+  z-index:3000;
 }
 
-.unlockModal img{
-  width:80px;
-  height:80px;
-  border-radius:50%;
+.groupTemplate h1{
+  font-size:24px;
+  color:#ff2e63;
   margin-bottom:15px;
 }
 
-.unlockModal button{
-  margin-top:20px;
+.groupTemplate p{
+  max-width:350px;
+  font-size:15px;
+}
+
+.groupTemplate button{
+  margin-top:25px;
   padding:15px 25px;
+  font-size:17px;
   border:none;
   border-radius:8px;
-  font-size:18px;
   background:#ff0066;
   color:white;
   cursor:pointer;
-  animation:pulse 1.2s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
+  width:90%;
+  max-width:300px;
 }
 </style>
 </head>
@@ -183,11 +245,14 @@ body{
 <button onclick="sendGroup()">Send</button>
 </div>
 
-<!-- PRIVATE BOX -->
+<!-- PRIVATE -->
 <div class="privateBox" id="privateBox">
 <div class="privateHeader">
 <img id="privateImg">
+<div>
 <div id="privateName"></div>
+<div class="online">● Online</div>
+</div>
 <div class="closeBtn" onclick="closePrivate()">×</div>
 </div>
 <div class="privateMessages" id="privateMessages"></div>
@@ -197,25 +262,41 @@ body{
 </div>
 </div>
 
-<!-- UNLOCK MODAL -->
-<div class="unlockModal" id="unlockModal">
-<img id="unlockImg">
-<h2 id="unlockTitle"></h2>
-<p id="unlockText"></p>
-<button onclick="window.location.href='#'">Signup & Verify</button>
+<!-- PRIVATE LOCK -->
+<div class="profileTemplate" id="profileTemplate">
+<div class="backBtn" onclick="closeProfile()">← Back</div>
+<img id="lockProfileImg">
+<h2 id="lockProfileName"></h2>
+<p>তুমি যদি এই ইউজারের সাথে কথা চালিয়ে যেতে চাও তাহলে নিচে সাইনআপ বাটনটি ক্লিক করে নিবন্ধন কর।</p>
+<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
+Continue & Signup
+</button>
+</div>
+
+<!-- GROUP LOCK -->
+<div class="groupTemplate" id="groupTemplate">
+<h1>Single Women ChatRoom</h1>
+<p>
+এটি একটি মহিলাদের প্রাইভেট চ্যাটিং রুম।  
+আপনি যদি এখানে আরও সময় কন্টিনিউ করতে চান তাহলে নিচে দেওয়া সাইনআপ বাটনে ক্লিক করে নিবন্ধন করে ভেরিফাই করুন।
+</p>
+<button onclick="window.location.href='https://safeoffers.pro/a/RozKiOzWhOXLZ'">
+Signup & Verify
+</button>
 </div>
 
 <script>
 
-const TOTAL_PROFILES=1000;
+const TOTAL_PROFILES=500;
+const PRELOAD_MESSAGES=50;
 
 let names=[],profiles={};
 let activeProfile=null;
+let visitorName="Visitor"+Math.floor(Math.random()*9999);
+let visitorMessageCount=0;
+let groupMessageCount=0;
 
-let privateMsgCount=0;
-let groupMsgCount=0;
-
-/* USERNAMES */
+/* CREATE USERS */
 for(let i=1;i<=TOTAL_PROFILES;i++){
   let name="RandomUser"+i;
   names.push(name);
@@ -224,44 +305,71 @@ for(let i=1;i<=TOTAL_PROFILES;i++){
   };
 }
 
-/* GROUP CHAT AUTO */
+/* RANDOM GROUP MESSAGE */
+const groupPool=[
+"Confidence matters most.",
+"I prefer mature dating.",
+"Chemistry is powerful.",
+"Romantic energy is everything.",
+"Deep connection is important."
+];
+
+function randomGroup(){
+  return groupPool[Math.floor(Math.random()*groupPool.length)];
+}
+
 function addGroup(name,text){
   let box=document.getElementById("groupMessages");
   box.insertAdjacentHTML("beforeend",`
-    <div class="msg">
+    <div class="msg" onclick="openPrivate('${name}')">
       <img src="${profiles[name].img}">
       <div class="bubble">
-        <div class="name">${name}</div>
+        <div class="name">${name} <span class="online">● Online</span></div>
         ${text}
+        <div class="time">${new Date().toLocaleTimeString()}</div>
       </div>
     </div>
   `);
   box.scrollTop=box.scrollHeight;
 }
 
-setInterval(()=>{
+/* PRELOAD */
+for(let i=0;i<PRELOAD_MESSAGES;i++){
   let name=names[Math.floor(Math.random()*names.length)];
-  addGroup(name,"Romantic chemistry matters most.");
-},2000);
+  addGroup(name,randomGroup());
+}
 
 /* GROUP SEND */
 function sendGroup(){
-  if(groupMsgCount>=3){
-    openGroupUnlock();
+  if(groupMessageCount>=3){
+    document.getElementById("groupTemplate").style.display="flex";
     return;
   }
 
   let input=document.getElementById("groupInput");
   if(!input.value.trim()) return;
 
-  groupMsgCount++;
+  let box=document.getElementById("groupMessages");
+
+  box.insertAdjacentHTML("beforeend",`
+    <div class="msg me">
+      <div class="bubble">
+        <div class="name">${visitorName}</div>
+        ${input.value}
+        <div class="time">${new Date().toLocaleTimeString()}</div>
+      </div>
+    </div>
+  `);
+
   input.value="";
+  box.scrollTop=box.scrollHeight;
+  groupMessageCount++;
 }
 
 /* PRIVATE */
 function openPrivate(name){
   activeProfile=name;
-  privateMsgCount=0;
+  visitorMessageCount=0;
   document.getElementById("privateBox").style.display="flex";
   document.getElementById("privateName").innerText=name;
   document.getElementById("privateImg").src=profiles[name].img;
@@ -273,37 +381,42 @@ function closePrivate(){
 }
 
 function sendPrivate(){
-  if(privateMsgCount>=3){
-    openPrivateUnlock();
+  if(visitorMessageCount>=3){
+    openProfile();
     return;
   }
 
   let input=document.getElementById("privateInput");
   if(!input.value.trim()) return;
 
-  privateMsgCount++;
+  let box=document.getElementById("privateMessages");
+
+  box.insertAdjacentHTML("beforeend",`
+    <div class="msg me">
+      <div class="bubble">
+        <div class="name">${visitorName}</div>
+        ${input.value}
+      </div>
+    </div>
+  `);
+
   input.value="";
+  box.scrollTop=box.scrollHeight;
+  visitorMessageCount++;
 }
 
-/* PRIVATE UNLOCK */
-function openPrivateUnlock(){
-  document.getElementById("unlockImg").src=profiles[activeProfile].img;
-  document.getElementById("unlockTitle").innerText=
-    "Continue chatting with "+activeProfile;
-  document.getElementById("unlockText").innerText=
-    "If you want to continue conversation with this user, please signup below and verify your account.";
-  document.getElementById("unlockModal").style.display="flex";
+function openProfile(){
+  document.getElementById("lockProfileImg").src=
+  profiles[activeProfile].img;
+
+  document.getElementById("lockProfileName").innerText=
+  activeProfile;
+
+  document.getElementById("profileTemplate").style.display="flex";
 }
 
-/* GROUP UNLOCK */
-function openGroupUnlock(){
-  document.getElementById("unlockImg").src=
-    "https://randomuser.me/api/portraits/women/10.jpg";
-  document.getElementById("unlockTitle").innerText=
-    "Private Women's Chat Room";
-  document.getElementById("unlockText").innerText=
-    "This is a women's private chat room. To continue chatting here, please signup and verify your account below.";
-  document.getElementById("unlockModal").style.display="flex";
+function closeProfile(){
+  document.getElementById("profileTemplate").style.display="none";
 }
 
 </script>
