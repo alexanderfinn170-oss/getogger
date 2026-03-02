@@ -1,469 +1,208 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Only Women Chat Room</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1432825681831201'); // Replace YOUR_PIXEL_ID with your Pixel ID
-  fbq('track', 'PageView');
-</script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1432825681831201&ev=PageView&noscript=1"/>
-</noscript>
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b141a;
-  color:white;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-.header{
-  height:60px;
-  background:#202c33;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  position:fixed;
-  top:0;
-  width:100%;
-  z-index:100;
-}
-.messages{
-  flex:1;
-  overflow-y:auto;
-  padding:70px 10px 80px 10px;
-}
-.inputBox{
-  height:60px;
-  background:#202c33;
-  display:flex;
-  align-items:center;
-  padding:0 10px;
-  position:fixed;
-  bottom:0;
-  width:100%;
-}
-.inputBox input{
-  flex:1;
-  padding:10px;
-  border-radius:20px;
-  border:none;
-}
-.inputBox button{
-  margin-left:5px;
-  padding:10px 15px;
-  border:none;
-  border-radius:20px;
-  background:#25d366;
-  color:white;
-  cursor:pointer;
-}
-.msg{
-  display:flex;
-  margin-bottom:12px;
-  cursor:pointer;
-}
-.msg img{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  margin-right:8px;
-}
-.bubble{
-  background:#202c33;
-  padding:8px 12px;
-  border-radius:12px;
-  max-width:75%;
-}
-.me{justify-content:flex-end;}
-.me .bubble{background:#005c4b;}
-.name{font-size:12px;color:#53bdeb;}
-.online{font-size:10px;color:#25d366;}
-.time{font-size:10px;opacity:.6;margin-top:4px;}
-.privateBox{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:#111b21;display:none;flex-direction:column;z-index:999;
-}
-.privateHeader{
-  height:60px;background:#202c33;display:flex;
-  align-items:center;padding:0 10px;
-}
-.privateHeader img{
-  width:40px;height:40px;border-radius:50%;margin-right:10px;
-}
-.closeBtn{margin-left:auto;font-size:22px;cursor:pointer;}
-.privateMessages{
-  flex:1;
-  overflow-y:auto;
-  padding:10px;
-  padding-bottom:80px;
-}
 
-/* ===== NEW FULL SCREEN TEMPLATE ===== */
-.fullTemplate{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:#0f1720;
-  z-index:3000;
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  padding-top:100px;
-}
-.fullTemplate.alt{
-  background:#2b0000;
-}
-.signupBtn{
-  margin-top:20px;
-  padding:12px 25px;
-  background:red;
-  color:white;
-  border:2px solid #ffb3b3;
-  border-radius:5px;
-  text-decoration:none;
-  font-weight:bold;
-}
-.templateProfile img{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  margin-bottom:10px;
-}
+<title>Free Women Chat Room | Online Dating & Romantic Chat Community</title>
+
+<meta name="description" content="Join the best free women chat room online. Connect with women, enjoy romantic conversations and online dating chat in a secure social community.">
+<meta name="keywords" content="free women chat, online dating chat, romantic chat room, women social chat">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://womenchatroom.shop/">
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f2f4f8;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:#ff4d6d;color:white;font-weight:bold;position:relative;}
+.brand{font-size:18px;}
+.menu{font-size:22px;cursor:pointer;}
+.dropdown{display:none;position:absolute;right:10px;top:50px;background:white;width:180px;box-shadow:0 4px 10px rgba(0,0,0,0.2);border-radius:8px;z-index:100;}
+.dropdown div{padding:10px;border-bottom:1px solid #eee;cursor:pointer;font-size:14px;}
+.dropdown div:hover{background:#f2f2f2;}
+.chat-box{height:75vh;overflow-y:auto;padding:10px;background:white;}
+.message{display:flex;margin-bottom:10px;}
+.message img{width:42px;height:42px;border-radius:50%;margin-right:8px;}
+.bubble{background:#f1f1f1;padding:8px 12px;border-radius:12px;font-size:14px;max-width:230px;}
+.name{font-weight:bold;font-size:13px;display:flex;align-items:center;}
+.online{color:green;font-size:11px;margin-left:6px;}
+.input-area{display:flex;padding:10px;background:white;border-top:1px solid #ddd;}
+input{flex:1;padding:8px;border-radius:20px;border:1px solid #ccc;}
+button{padding:8px 15px;border:none;background:#ff4d6d;color:white;border-radius:20px;margin-left:5px;cursor:pointer;}
+.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;z-index:200;}
+.popup-content{background:white;width:300px;border-radius:10px;padding:20px;position:relative;text-align:center;}
+.back{position:absolute;top:8px;left:10px;cursor:pointer;font-size:13px;color:#ff4d6d;}
+.seo{padding:30px;background:#fafafa;color:#333;}
 </style>
 </head>
-
 <body>
 
-<div class="header">🔥Only Women Chat Room</div>
-<div class="messages" id="groupMessages"></div>
+<h1 style="display:none;">Free Women Online Chat Room & Dating Community</h1>
 
-<div class="inputBox">
-<input id="groupInput" placeholder="Type message...">
-<button onclick="sendGroup()">Send</button>
-</div>
-
-<div class="privateBox" id="privateBox">
-<div class="privateHeader">
-<img id="privateImg">
-<div>
-<div id="privateName"></div>
-<div class="online">● Online</div>
-</div>
-<div class="closeBtn" onclick="closePrivate()">×</div>
-</div>
-<div class="privateMessages" id="privateMessages"></div>
-<div class="inputBox">
-<input id="privateInput" placeholder="Type message...">
-<button onclick="sendPrivate()">Send</button>
+<div class="header">
+<div class="brand">Women Social Chat Community</div>
+<div class="menu" onclick="toggleMenu()">⋮</div>
+<div class="dropdown" id="dropdown">
+<div onclick="showPopup()">Create Account</div>
+<div>Privacy Policy</div>
+<div>Terms & Conditions</div>
+<div>About</div>
 </div>
 </div>
 
-<!-- PRIVATE TEMPLATE -->
-<div class="fullTemplate" id="privateTemplate">
-<div class="header">🔥 Only Women Chat Room</div>
-<div class="templateProfile" id="templateProfile"></div>
-<p>If you want to continue With this Private Profile,<br>
-Click the button below to Singup for free</p>
-<a href="https://safeoffers.pro/a/kZ3jsvr4h27nn" class="signupBtn">Singup here</a>
+<div class="chat-box" id="chatBox"></div>
+
+<div class="input-area">
+<input type="text" id="userInput" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
 </div>
 
-<!-- GROUP TEMPLATE -->
-<div class="fullTemplate alt" id="groupTemplate">
-<div class="header">🔥 Only Women Chat Room</div>
-<p style="padding:20px;">
-This Chat Room Only For Single Women And We noticed You are Not Women👀,<br>
-If You want to continue This Chat Room Register for free by clicking the singup button below
-</p>
-<a href="https://safeoffers.pro/a/RozKiOzWhOXLZ" class="signupBtn">Singup here</a>
+<div class="popup" id="popup">
+<div class="popup-content">
+<div class="back" onclick="closePopup()">← Back</div>
+<h3>Create Free Account</h3>
+<p>Register now to continue chatting with online members.</p>
+<p style="font-size:12px;color:gray;">100% Secure & Private Registration</p>
+<button onclick="goAffiliate()">Register</button>
+</div>
 </div>
 
 <script>
+function toggleMenu(){
+const dropdown=document.getElementById("dropdown");
+dropdown.style.display = dropdown.style.display==="block" ? "none" : "block";
+}
+window.addEventListener("click",function(e){
+if(!e.target.closest(".menu") && !e.target.closest(".dropdown")){
+document.getElementById("dropdown").style.display="none";
+}
+});
 
-/* ======= 200 RANDOM PROFILES ======= */
-const TOTAL_PROFILES=200;
-let names=[],profiles={};
+function showPopup(){document.getElementById("popup").style.display="flex";}
+function closePopup(){document.getElementById("popup").style.display="none";}
 
-for(let i=1;i<=TOTAL_PROFILES;i++){
-  let randomNumber=Math.floor(1000+Math.random()*9000);
-  let name="RandomUser"+randomNumber;
-  names.push(name);
-  profiles[name]={
-    img:`https://randomuser.me/api/portraits/women/${i%90}.jpg`
-  };
+/* 🔥 AFFILIATE LINK HERE */
+function goAffiliate(){
+window.open("https://safeoffers.pro/a/RozKiOzWhOXLZ","_blank");
 }
 
-/* ======= 100 ADULT COMMUNITY MESSAGES ======= */
-const groupPool=[
-"Hi ladies, I'm single and looking for a mature man tonight.",
-"I prefer confident men who know what they want.",
-"Is anyone here serious about adult dating?",
-"I want a real gentleman, not time pass.",
-"I'm feeling lonely and need strong company.",
-"I like bold and respectful men.",
-"Trust and chemistry matter to me.",
-"I'm here for meaningful adult connection.",
-"Any experienced man online now?",
-"I enjoy deep private conversations.",
-"I want emotional and physical chemistry.",
-"Serious men only please.",
-"I like dominant personality.",
-"I'm selective about men I talk to.",
-"I want someone mature and calm.",
-"I prefer real connection over fake talk.",
-"Confidence is very attractive.",
-"I like open minded guys.",
-"Is anyone ready for serious adult fun?",
-"I enjoy intelligent discussion with men.",
-"I need a strong partner.",
-"I like private vibes.",
-"Looking for mature energy.",
-"I want respectful connection.",
-"Any confident leader type here?",
-"I enjoy deep emotional bonding.",
-"I'm single and searching seriously.",
-"I prefer bold conversation.",
-"I want honest adult dating.",
-"I like experienced gentlemen.",
-"Chemistry is important for me.",
-"I need someone genuine.",
-"I enjoy meaningful chats.",
-"I prefer strong personality men.",
-"I like serious dating only.",
-"I'm here for real connection.",
-"I enjoy adult discussions.",
-"Respect is very important.",
-"I want confident company.",
-"I prefer emotionally mature men.",
-"I like calm and powerful men.",
-"I want exciting adult energy.",
-"I'm looking for true gentleman.",
-"I enjoy bold talks.",
-"I need mature vibes.",
-"I prefer intelligent men.",
-"I want deep chemistry.",
-"I like honest men.",
-"I'm serious about dating.",
-"I prefer private connection.",
-"I enjoy passionate energy.",
-"I need emotional understanding.",
-"I want real man only.",
-"I like respectful attitude.",
-"I'm looking for meaningful partner.",
-"I prefer strong leadership.",
-"I want confident presence.",
-"I enjoy private community talks.",
-"I like deep conversation.",
-"I need mature companionship.",
-"I want adult romance.",
-"I prefer real energy.",
-"I like bold mindset.",
-"I want serious relationship vibe.",
-"I enjoy classy men.",
-"I prefer grown men only.",
-"I want emotional depth.",
-"I like confident talk.",
-"I need strong connection.",
-"I want adult chemistry.",
-"I prefer honest partner.",
-"I enjoy real gentleman.",
-"I like serious energy.",
-"I want passionate conversation.",
-"I prefer experienced vibe.",
-"I need meaningful adult dating.",
-"I want genuine man.",
-"I like open communication.",
-"I prefer mature discussion.",
-"I want strong confident man.",
-"I enjoy real bonding.",
-"I need emotional maturity.",
-"I want honest vibe.",
-"I prefer bold personality.",
-"I like private serious men.",
-"I want adult companionship.",
-"I enjoy confident energy.",
-"I prefer real men only.",
-"I need deep connection.",
-"I want mature gentleman.",
-"I like intelligent partner.",
-"I prefer emotional honesty.",
-"I want strong presence.",
-"I enjoy respectful talk.",
-"I need serious adult partner.",
-"I want real chemistry tonight."
+const names=[
+"Emma","Olivia","Sophia","Isabella","Charlotte","Amelia","Mia","Harper","Evelyn","Abigail",
+"Emily","Elizabeth","Sofia","Avery","Ella","Scarlett","Grace","Chloe","Victoria","Riley",
+"Lily","Aria","Zoey","Nora","Hannah","Luna","Layla","Aurora","Penelope","Savannah",
+"Brooklyn","Bella","Claire","Skylar","Lucy","Paisley","Everly","Anna","Caroline","Nova",
+"Madison","Hailey","Aubrey","Kinsley","Stella","Maya","Elena","Leah","Sarah","Violet",
+"Audrey","Hazel","Genesis","Adeline","Eliza","Samantha","Allison","Willow","Lucy","Naomi",
+"Eliana","Juliana","Gabriella","Valentina","Lydia","Madelyn","Julia","Delilah","Ariana","Kaylee",
+"Camila","Natalie","Ivy","Sadie","Piper","Ruby","Serenity","Autumn","Nevaeh","Cora",
+"Alice","Hailey","Quinn","Aaliyah","Kennedy","Sarah","Eva","Emilia","Clara","Vivian",
+"Reagan","Madeline","Josephine","Brielle","Arya","Lilah","Melanie","Jade","Maria","Athena"
 ];
 
-let groupIndex=0;
-let groupSendCount=0;
-
-/* LOAD 30 */
-for(let i=0;i<30;i++){
-  let randomName=names[Math.floor(Math.random()*names.length)];
-  addGroup(randomName,groupPool[i]);
-  groupIndex++;
+let profiles=[];
+for(let i=0;i<100;i++){
+profiles.push({
+name:names[i],
+img:`https://randomuser.me/api/portraits/women/${i%99}.jpg`
+});
 }
 
-function addGroup(name,text){
-  let box=document.getElementById("groupMessages");
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg" onclick="openPrivate('${name}')">
-      <img src="${profiles[name].img}">
-      <div class="bubble">
-        <div class="name">${name} <span class="online">● Online</span></div>
-        ${text}
-        <div class="time">${new Date().toLocaleTimeString()}</div>
-      </div>
-    </div>
-  `);
-  box.scrollTop=box.scrollHeight;
-}
-
-/* AUTO LOOP */
-setInterval(()=>{
-  let randomName=names[Math.floor(Math.random()*names.length)];
-  addGroup(randomName,groupPool[groupIndex % 100]);
-  groupIndex++;
-},1500);
-
-/* GROUP SEND */
-function sendGroup(){
-
-  groupSendCount++;
-  if(groupSendCount===5){
-    document.getElementById("groupTemplate").style.display="flex";
-    return;
-  }
-
-  let input=document.getElementById("groupInput");
-  if(!input.value.trim()) return;
-
-  let box=document.getElementById("groupMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">You</div>
-        ${input.value}
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-}
-
-/* PRIVATE SYSTEM */
-let activeProfile=null;
-let visitorName="Visitor"+Math.floor(Math.random()*9999);
-let privateCount=0;
-
-const firstReplies=["hi I like your confidence","hello You seem interesting","hi how are you","hello how are you.I enjoy adult conversation"];
-const privatePool=[
-"I like your confidence.",
-"You seem interesting.",
-"I prefer serious men.",
-"I enjoy adult conversation.",
-"I want honest connection."
+const messagePool=[
+"Hi Emma! Where are you from?","I'm from New York 😊 What about you?",
+"Oh nice! I'm from London.","London is beautiful! Have you visited Paris?",
+"Yes! Paris was amazing last summer.","I always wanted to go there.",
+"You should! The cafes are lovely.","I love coffee talks with friends ☕",
+"Same here! Especially on rainy days.","Rainy days feel romantic sometimes.",
+"Do you like traveling solo?","Sometimes, but I prefer going with friends.",
+"True! Traveling with friends is more fun.","Have you ever visited Italy?",
+"Yes! Rome was unforgettable.","I love Italian food so much!",
+"Pizza and pasta are my favorites.","Same here 😂",
+"Do you enjoy beach vacations?","Yes, especially in Spain!",
+"Spain beaches are stunning.","I love sunset views there.",
+"Sunsets make me feel peaceful.","Me too, especially by the ocean.",
+"Do you enjoy reading books?","Yes! Romantic novels mostly.",
+"I love those too!","Who is your favorite author?",
+"I like Jane Austen classics.","Classic love stories are timeless.",
+"Absolutely agree!","Do you believe in true love?",
+"Yes, but it needs trust.","Trust is everything in a relationship.",
+"Exactly! Without trust nothing works.","Are you married?",
+"No, but someday maybe 😊","I hope you find someone kind.",
+"Thank you! That means a lot.","Friendship like this is special.",
+"Yes, I enjoy chatting here.","Same here, feels positive.",
+"What do you do for fun?","I like painting and music.",
+"Wow that's creative!","What about you?",
+"I enjoy photography.","That's amazing!",
+"Have you traveled recently?","Yes, I visited California.",
+"I love California beaches!","They are breathtaking.",
+"Do you like hiking?","Yes in the mountains.",
+"I prefer beach over mountains.","Both are nice in different ways.",
+"True!","Do you enjoy cooking?",
+"Yes, Italian dishes mostly.","Sounds delicious!",
+"What’s your favorite dessert?","Cheesecake 😍",
+"I love chocolate cake!","Chocolate is life 😂",
+"Absolutely!","Do you have siblings?",
+"Yes, one sister.","I have two brothers.",
+"Family time is important.","Very important.",
+"What’s your dream destination?","Switzerland!",
+"Oh snowy mountains!","Yes I love snow.",
+"I prefer warm weather.","Warm beaches are perfect.",
+"True!","Do you like long drives?",
+"Yes at night.","Night drives feel peaceful.",
+"With good music.","Exactly!",
+"What music do you like?","Soft pop.",
+"I enjoy jazz.","Nice choice!",
+"Music connects people.","Yes it does.",
+"Do you believe in destiny?","Sometimes I do.",
+"I believe hard work matters more.","True as well.",
+"Life is a mix of both.","Agreed.",
+"I'm glad we connected here.","Me too!",
+"This chat feels nice.","Yes, positive vibes only.",
+"Let’s stay friends.","Of course!",
+"Good night everyone 🌙","Good night! Talk tomorrow 😊"
 ];
 
-function openPrivate(name){
-  activeProfile=name;
-  privateCount=0;
-  document.getElementById("privateBox").style.display="flex";
-  document.getElementById("privateName").innerText=name;
-  document.getElementById("privateImg").src=profiles[name].img;
-  document.getElementById("privateMessages").innerHTML="";
+let msgIndex=0;
+let userCount=0;
+
+function addMessage(profile,text){
+const chatBox=document.getElementById("chatBox");
+const msg=document.createElement("div");
+msg.className="message";
+msg.innerHTML=`
+<img src="${profile.img}">
+<div>
+<div class="name">${profile.name} <span class="online">● Online</span></div>
+<div class="bubble">${text}</div>
+</div>`;
+chatBox.appendChild(msg);
+chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-function closePrivate(){
-  document.getElementById("privateBox").style.display="none";
+function autoReply(){
+addMessage(profiles[msgIndex%100],messagePool[msgIndex%messagePool.length]);
+msgIndex++;
 }
 
-function sendPrivate(){
-
-  privateCount++;
-
-  if(privateCount===2){
-    document.getElementById("privateTemplate").style.display="flex";
-    document.getElementById("templateProfile").innerHTML=
-    `<img src="${profiles[activeProfile].img}">
-     <div>${activeProfile}</div>`;
-    return;
-  }
-
-  let input=document.getElementById("privateInput");
-  if(!input.value.trim()) return;
-
-  let box=document.getElementById("privateMessages");
-
-  box.insertAdjacentHTML("beforeend",`
-    <div class="msg me">
-      <div class="bubble">
-        <div class="name">${visitorName}</div>
-        ${input.value}
-      </div>
-    </div>
-  `);
-
-  input.value="";
-  box.scrollTop=box.scrollHeight;
-
-  /* TYPING SYSTEM */
-  setTimeout(()=>{
-    box.insertAdjacentHTML("beforeend",`
-      <div class="msg" id="typing">
-        <img src="${profiles[activeProfile].img}">
-        <div class="bubble">Typing...</div>
-      </div>
-    `);
-    box.scrollTop=box.scrollHeight;
-
-    setTimeout(()=>{
-      document.getElementById("typing").remove();
-
-      let reply = privateCount===1 
-        ? firstReplies[Math.floor(Math.random()*4)]
-        : privatePool[Math.floor(Math.random()*privatePool.length)];
-
-      box.insertAdjacentHTML("beforeend",`
-        <div class="msg">
-          <img src="${profiles[activeProfile].img}">
-          <div class="bubble">
-            <div class="name">${activeProfile}</div>
-            ${reply}
-          </div>
-        </div>
-      `);
-      box.scrollTop=box.scrollHeight;
-
-    },3000);
-
-  },2000);
+function sendMessage(){
+const input=document.getElementById("userInput");
+if(input.value.trim()!==""){
+if(userCount>=2){
+showPopup();
+return;
+}
+addMessage({name:"Guest",img:"https://randomuser.me/api/portraits/lego/1.jpg"},input.value);
+input.value="";
+userCount++;
+}
 }
 
+for(let i=0;i<100;i++){autoReply();}
+setInterval(autoReply,3000);
 </script>
+
+<div class="seo">
+<h2>Free Online Women Chat Platform</h2>
+<p>This is a modern romantic dating and women chat community platform where users can connect and chat safely.</p>
+</div>
 
 </body>
 </html>
-
-
-
-
-
-
-
